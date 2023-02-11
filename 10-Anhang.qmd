@@ -1,0 +1,71 @@
+\clearpage
+
+# (APPENDIX) Anhang {-}
+\addcontentsline{toc}{section}{Anhang}
+
+# Tabellenanhang
+
+```{r echo=FALSE}
+# Sie können hier die Fragen rauslassen, wo jede Antwort im Grunde nur einmal vorkommt, wie bei den offenen Fragen oder PLZ usw. 
+DATEN_BF %>% 
+  frq(GESCHL, NACHRICHT_TITEL1:M112_23, 
+      NACHRICHT_ZEIT:THEMA_WICHTIG6, THEMA_WICHTIG8, THEMA_WICHTIG10, 
+      HAUFIGKEIT_01:HAUFIGKEIT_05, 
+      ERINN_WICHTIG1:SCHLAG_POLITIK,
+      BILDUNG, VERSTAENDNIS, ERNSTHAFT)
+```
+
+# Fragebogen {#Fragebogen}
+<!-- Der Fragebogen muss als FB.pdf.pdf im Unterordner /files gespeichert sein!
+Schauen Sie, dass sie genau so viele Zeilen mit Seitenangaben haben, wie der FB.pdf Seiten im PDF hat (hier 12). -->
+\label{sec:Fragebogen}
+\pdf{FB.pdf}{1} 
+\pdf{FB.pdf}{2} 
+\pdf{FB.pdf}{3} 
+\pdf{FB.pdf}{4} 
+\pdf{FB.pdf}{5} 
+\pdf{FB.pdf}{6} 
+\pdf{FB.pdf}{7} 
+\pdf{FB.pdf}{8} 
+\pdf{FB.pdf}{9} 
+\pdf{FB.pdf}{10} 
+\pdf{FB.pdf}{11} 
+\pdf{FB.pdf}{12} 
+
+# Codebuch {#Codebuch}
+<!-- Das Codebook muss als CB.pdf im Unterordner /files gespeichert sein!
+Schauen Sie, dass sie genau so viele Zeilen mit Seitenangaben haben, wie das CB.pdf Seiten hat (hier 26). -->
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{1} 
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{2} 
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{3} 
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{4} 
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{5} 
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{6} 
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{7} 
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{8} 
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{9} 
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{10} 
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{11} 
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{12} 
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{13} 
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{14} 
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{15} 
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{16} 
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{17} 
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{18} 
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{19} 
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{21} 
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{22} 
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{23} 
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{24}
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{25} 
+\pdf[2cm 2cm 2cm 2cm]{CB.pdf}{26} 
+
+# Literatur
+
+\setlength{\parindent}{-1em}
+\setlength{\leftskip}{1em}
+\noindent
+
+<div id="refs"></div>
+

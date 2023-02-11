@@ -1,0 +1,347 @@
+# Datenaufbereitung
+
+Laden Sie sich als erstes die Datei <a href="templates/Auswertung.Rmd" download>Auswertung.Rmd</a> herunter. Darin finden Sie Codebeispiele, die Sie kopieren können und so ändern, dass Sie auf Ihre Datensätze und zu Ihren Variablen passen. 
+
+```{r}
+ vembedr::embed_youtube("huBJnXr70SE") |> 
+  vembedr::use_rounded()
+```
+
+## Leere Fälle löschen (TF E)
+
+Hier gehe ich davon aus, dass ein Interview erfolgreich beendet wurde, wenn der:die Interviewer:in am Ende etwas zum Verständnis des Interviews eingegeben hat. 
+
+```{r Leere_raus, eval=FALSE, echo=TRUE}
+DATEN_BF <- DATEN_BF |> 
+  filter(!is.na(PLZ))
+
+## Das geht nur einmal, weil R dann die Variablen nicht mehr findet, die wir gerade gelöscht haben, logisch
+DATEN_BF <- DATEN_BF |> 
+  select(-c(SERIAL:MODE)) 
+
+DATEN_BF <- DATEN_BF |> 
+  relocate(INTERVIEWER, .after = STARTED)
+```
+
+## Variablen umbenennen und löschen
+
+Wenn Sie den einfachen Befehl "select" nehmen, dann werden die Variablen behalten, die Sie aufführen. Wenn Sie ein Minus davor schreiben, werden die Variablen gelöscht, die Sie aufführen. Häufig führt das später zu Fehlermeldungen, weil bei mehrfacher Ausführung gelöschte Variablen natürlich nicht mehr im Datensatz gefunden werden. Um diesen Fehlermeldungen aus dem Weg zu gehen, können Sie "any_of" verwenden. Dann prüft R, ob eine der aufgeführten Variablen im Datensatz sind und löscht diese. Wenn die Variablen nicht im Datensatz sind, dann macht R nichts weiter (meldet auch keinen Fehler und stoppt Ihren Durchlauf nicht.). Seien Sie damit also mir Vorsicht. Beim Befehl "rename" können Sie das auch machen. Mit "any_of" werden nur die Variablen umbenannt, die auch wirklich da sind. Manchmal kommt das bei jedem Durchlauf vor, weil zB bei join-Befehlen immer nochmal ein Datensatz gematcht wird und wie im Beispiel vorhandene Variablen wie "Nenn1" umbenannt werden in "Nenn1.x" und Nenn1.y" Wenn Sie jetzt die mit ".y" löschen und die mit ".x" umbenennen, dann haben Sie das Problem auch glöst, wenn Ihnen nicht ganz klar ist, warum die immerwieder auftauchen. Für's Erste ist das also auch eine Lösung eines Problems. ;-)
+
+```{r, eval=FALSE, echo=TRUE}
+# Manchmal macht es Sinn, von einer Variable eine Kopie mit besser lesbarem Namen anzulegen, wie hier:
+
+DATEN_BF <- DATEN_BF |> 
+  mutate(Alter = SD01,
+         Geschlecht = SD02)
+
+# So können Sie Variablen löschen. Durch das -any_of gibt es keine Fehler, wenn R die Variablen nicht findet
+DATEN_BF <- DATEN_BF |> 
+  select(-any_of(c("Nenn1.y", "Nenn2.y", "Nann3.y")))
+# So nenne Sie Variablen um (vorne wie es bisher hiess).
+
+DATEN_BF <- DATEN_BF |> 
+  rename(any_of(c("Nenn1.x" = "Nenn1", "Nenn2.x" = "Nenn2", "Nenn3.x" = "Nenn3"))) 
+```
+
+
+## Label für Variablen und Ausprägungen (teils TF E)
+
+Wenn Sie messen, dann stehen am Ende Zahlen für das was Sie gemessen, also zB erfragt haben. Zum Beispiel steht dann eine 1 für "trifft nicht zu" und 5 für "trifft vollkommen zu". In Ihren Auswertungen müssen Sie aber wieder die verbalen Entsprechungen nutze, statt nur Tabellen oder Grafiken zu haben, wo nur Zahlen ausgewiesen werden (Sie können das noch verbinden, aber Ihre Leser:innen nicht). In anderen Programmen (wie SPSS) ist es daher üblich, dass die gemessenen Zahlen mit verbalen Labeln versehen werden. In Base-R geht das nicht so toll. Da müssen Sie mit "factors" arbeiten, wo also statt der Zahlen die verbalen Entsprechungen verwendet werden. Mühsam an den Faktoren ist, dass man mit ihnen wieder nicht mehr rechnen kann, also z.B. weder einen Mittelwert ausgeben noch eine Korrelation. Da hilft das Paket sjmisc weiter. Mit dem können Sie den Zahlenwerten Ihrer Variablen ihre Merkmalsausprägungen als Label zuordnen. Das geht mit set_label(labels = c("tzrifft nicht zu" = 1, "trifft voll zu" = 5)):
+
+```{r Labelei, eval=FALSE, echo=TRUE}
+# So können Label vergeben werden
+
+DATEN_BF |> sjmisc::frq(GESCHL)
+
+# Hier wird das Variablenlabel vergeben
+
+DATEN_BF <- DATEN_BF |> 
+  sjlabelled::var_labels(GESCHL = "Geschlecht") 
+
+# Hier werden für die einzelnen Ausprägungen die Label vergeben
+DATEN_BF <- DATEN_BF |> 
+  sjlabelled::set_labels(GESCHL, labels = c("mänlich" = 1, "weiblich" = 2, "divers" = 3, "k.A." = NA))
+
+# Mit dem Befehl für Häufigkeitstabellen (frq für frequencies) kann die Labelei schnell angesehen werden:
+
+DATEN_BF |> 
+  sjmisc::frq(GESCHL)
+
+## Hier werden für einige Variablen Label vergeben, die zusammengehören und später als Auswertung für Mehrfrachantworten verarbeitet werden
+
+# Ersteinmal die Variablen angucken. Die Variablen gehen von NACHRICHT_TITEL1 in einer Reihe bis M112_23 (wurde nicht umbenannt in SosciSurvey)
+DATEN_BF |> 
+  select(NACHRICHT_TITEL1:M112_23) |> # Nur die interessierenden Variablen selektieren
+  multiResponse() |> # Mehrfachantworten ansehen
+  arrange(desc(Frequency)) |> # Sortieren nach Häufigkeit
+  kableExtra::kable() |> # besser lesbare Tabelle daraus machen
+  kableExtra::kable_styling() # Styling
+
+
+# Mit set_variable_labels werden hier die Variablenlabel vergeben
+DATEN_BF <- DATEN_BF |>
+  sjlabelled::var_labels(NACHRICHT_TITEL1 = "NZZ", 
+                      NACHRICHT_TITEL2 = "TA", 
+                      NACHRICHT_TITEL3 = "20 Minuten",
+                      NACHRICHT_TITEL4 = "Blick", 
+                      NACHRICHT_TITEL5 = "Watson",
+                      NACHRICHT_TITEL6 = "SRF News", 
+                      M112_20 = "Social Media",
+                      M112_21 = "Google News",
+                      M112_23 = "anderes"
+                      )
+
+# Hier mal für den Nachrichtenfaktor "Kontroverse" aus der Inhaltsanalyse
+
+DATEN_IA <- DATEN_IA |> 
+ sjlabelled::var_labels(KNTR, label = "Kontroverse") |> 
+ sjlabelled::set_labels(KNTR, labels = c("keine" = 0, "gering" = 1, "stark" = 2, "k.A." = NA))
+```
+
+## Befragungstag aus dem Datum
+
+Mit diesem Befehl kann der Befragungstag aus der Datumsvariable erzeugt werden, die von SosciSurvey automatisch erzeugt wird.
+
+```{r Befragungstag aus Datum, eval=FALSE, echo=TRUE}
+DATEN_BF <- DATEN_BF |> 
+  mutate(Befrag_Tag = day(STARTED)) |> # mit day wird aus der Datumsvariable der Tag rausgezogen
+  relocate(Befrag_Tag, .after = STARTED) # Hiermit wird die Variable für den Befragungsstart an den Anfang gepackt
+
+DATEN_BF |> sjmisc::frq(Befrag_Tag)
+```
+
+## Umkodieren
+
+### Werte wechseln
+
+Umkodieren bedeutet, dass Ausprägungen (also Werte) in einer Variablen verändert werden oder zu anderen Werten in einer neuen Variable werden. Typische Umkodierungen sind Veränderungen der Codes (also zB wenn man eine Skala umdrehen möchte von 1 bis 5 auf 5 bis 1) und Zusammenfassungen von Codes, also zB 1 und 2 werden neu in 1 zusammengefasst 3 wird die neue 2 und 4 sowie 5 werden als neue 3 kodiert. Dann hat man jeweils zwei Abstufungen in den Ausprägungen zu jeweils einer zusammengefasst. 
+
+```{r Variable umkodieren, eval=FALSE,echo=TRUE}
+
+## Hier machen wir aus den beiden tieferen Bildungsgruppen eine einzelne Gruppe. In den Klammern kann man die Value Label gleich mit vergeben:
+
+DATEN_BF |> sjmisc::frq(BILDUNG) # erstmal angucken
+
+# Erstelle mit mutate eine neue Variable BILDUNG_gr, die eine Rekodierung (rec) der Variable BILDUNG (zB 1 und 2 werden 1 mit dem Label "tief")
+DATEN_BF <- DATEN_BF |> 
+ mutate(BILDUNG_gr = rec(BILDUNG, rec = "1:2 = 1; 3 = 2; 4 = 3; 5 = 4"))  # die offenen müssen noch kodiert werden
+
+DATEN_BF <- DATEN_BF |> 
+  sjlabelled::set_labels(BILDUNG_gr, labels = c("tief" = 1, "mittel" = 2, "hoch" = 3, "noch kodieren" = 4), force.labels = TRUE) |> 
+  sjlabelled::var_labels(BILDUNG_gr, label = "Bildung (gruppiert)")  # hier das Variablenlabel
+
+DATEN_BF |> 
+    sjmisc::frq(BILDUNG_gr)
+```
+
+### Mehrere auf einmal umkodieren 
+
+```{r Mehrere umkodieren, eval=FALSE, echo=TRUE}
+
+DATEN_BF |> 
+  frq(HAUFIGKEIT_01:HAUFIGKEIT_05)
+
+# mutiere across die ganze Liste der Variablen von:bis, als Funktion (~) rec(.x) wobei .x für die Liste steht
+DATEN_BF <- DATEN_BF |> 
+  mutate(across(HAUFIGKEIT_01:HAUFIGKEIT_05, 
+                ~ rec(.x, rec = "1 = -2 [viel zu wenig]; 2 = -1 [zu wenig]; 3 = 0 [richtig]; 4 = 1  [zu viel]; 5 = 2 [viel zu viel]; else = NA"), 
+                       .names = "{.col}_um0")) |> # HIer werden an die Variablennamen Suffixe "_um0" angehängt
+  sjlabelled::var_labels(HAUFIGKEIT_01_um0 = "Corona", # Hier noch Label für die Variablen
+             HAUFIGKEIT_02_um0 = "Abstimmungen", 
+             HAUFIGKEIT_03_um0 = "Finanz", 
+             HAUFIGKEIT_04_um0 = "Klima", 
+             HAUFIGKEIT_05_um0 = "Geflüchtete")
+
+DATEN_BF |> 
+  sjmisc::frq(HAUFIGKEIT_01_um0:HAUFIGKEIT_05_um0)
+
+```
+
+### NA durch 0 ersetzen
+
+```{r NAist0, eval = FALSE, echo = TRUE}
+DATEN_IA |> 
+  mutate(across(Nenn1:Nenn5), ifelse(is.na(.x) == TRUE, 0, .x)))
+```
+
+
+### Ausprägungen zusammenfassen 
+
+```{r Zusammenfassen, eval=FALSE, echo=TRUE}
+# Das Alter in Gruppen zusammenfassen
+DATEN_BF <- DATEN_BF |> 
+  mutate(ALTER_gr = case_when(
+    ALTER < 0 ~ NA_real_,
+    ALTER <= 25 ~ 1,
+    ALTER <= 45 ~ 2,
+    ALTER <= 65 ~ 3,
+    ALTER <= 85 ~ 4,
+    ALTER > 85 ~ 5
+  ))  |> 
+  sjlabelled::set_labels(ALTER_gr, labels = c("bis 25"  = 1, "26-45" = 2, "46-65" = 3, "66-85" = 4, "85+" = 5)) |> 
+  sjlabelled::var_labels(ALTER_gr = "Alter gruppiert")
+
+DATEN_BF |> frq(ALTER_gr)
+
+# Hier werden für die Inhaltsanalyse die Anzahl Worte in Gruppen zusammengefasst.
+DATEN_IA <- DATEN_IA |> 
+  mutate(WORTE_gr = rec(WORT_AZ, 
+                        rec = "0:100 = 1 [Kurzmeldung];
+                        101:150 = 2 [kurzer Artikel]; 
+                        151:300 = 3 [länger]; 
+                        301:500 = 4 [lang]; 
+                        501:max = 5 [Langtext]")) |> 
+    relocate(WORTE_gr, .after = WORT_AZ) 
+
+
+### Rekodierung der Anzahl Nennungen in wenige Gruppen
+DATEN_IA <- DATEN_IA |> 
+  mutate(Nenn_Gr = rec(Nenn_Gesamt, rec = "1:3 = 1; 4:16 = 2; 17:100 = 3")) |> 
+  sjlabelled::set_labels(Nenn_Gr, labels = (c("selten" = 1, "mittel" = 2, "häufig" = 3)))
+
+```
+
+Medium umkodieren
+
+```{r Medium-umkodieren, eval=FALSE, echo=TRUE}
+# 1	SRF
+# 2	20min
+# 3	Watson
+# 4	NZZ
+# 5	Tagesanzeiger
+# 6	Blick
+
+DATEN_IA <- DATEN_IA |> 
+  mutate(Medium_Q = rec(MEDIUM, 
+                    rec = "1,4,5 = 1 [Qualität]; 2,3,6 = 2 [Boulevard]")) 
+
+DATEN_IA |> sjmisc::frq(Medium_Q)
+```
+
+### Bedingt umkodieren
+
+```{r Bedingt umkodieren, eval=FALSE, echo=TRUE}
+DATEN_BF |> 
+  sjmisc::frq(ALTER, BILDUNG_gr)
+
+DATEN_BF <- DATEN_BF |> 
+  mutate(Alt_Bild1 = if_else(ALTER < 35 & BILDUNG_gr == 3, 1, 2)) 
+
+DATEN_BF |>  frq(Alt_Bild1)
+
+# Hier erstmal umkodieren uns anschauen
+
+DATEN_BF |> 
+  mutate(Alt_Bild2 = case_when(
+    ALTER < 35 & BILDUNG_gr == 3 ~ 1, 
+    ALTER > 75 & BILDUNG_gr == 3 ~ 2,
+  )) |> 
+  var_labels(Alt_Bild2 = "Alter und Bildung") |> 
+  set_labels(Alt_Bild2, labels = c("Junggebildet" = 1, "Altgebildet" = 2)) |> 
+  frq(Alt_Bild2) # erstmal nur eine Frequencies als Ergebnis und nicht gleich den Daten hinzufügen
+
+# Dann dem Datensatz hinzufügen
+DATEN_BF <- DATEN_BF |> 
+  mutate(Alt_Bild2 = case_when(
+    ALTER < 35 & BILDUNG_gr == 3 ~ 1, 
+    ALTER > 75 & BILDUNG_gr == 3 ~ 2,
+  )) |> 
+  sjlabelled::var_labels(Alt_Bild2 = "Alter und Bildung") |> 
+  sjlabelled::set_labels(Alt_Bild2, labels = c("Junggebildet" = 1, "Altgebildet" = 2))
+```
+
+### Variablen zu Indizes zusammenfassen
+
+```{r Indizes, eval=FALSE, echo=TRUE}
+
+# Ein Summenindex für 10 Variablen zur Nachrichtennutzung Es wird zeilenweise die Summe für die Dummys (0/1-Variablen) berechnet
+
+DATEN_BF <- DATEN_BF |> 
+  mutate(MEDIEN_sum = rowSums(across(NACHRICHT_TITEL1:NACHRICHT_TITEL10), na.rm = TRUE))
+
+DATEN_BF |> 
+  sjmisc::frq(MEDIEN_sum)
+
+# Hier noch der Durchschnittswert als Index, was bei Dummys der Anteil der 1-er ist, also wenn 68 von knapp 200 Leuten 2 Medien nannten, dann gibt es 68 mal die 0.2 
+
+DATEN_BF <- DATEN_BF |> 
+  mutate(MEDIEN_mean = rowMeans(across(NACHRICHT_TITEL1:NACHRICHT_TITEL10), na.rm = TRUE))
+
+DATEN_BF |> 
+  sjmisc::frq(MEDIEN_mean)
+
+mutate
+
+DATEN_IA <- DATEN_IA |> 
+  mutate(across(c(PERS:KNTR, KAT:NAEHE), ~replace(.x, is.na(.x),0))) |> 
+  mutate(across(c(PERS:KNTR, KAT:NAEHE), ~replace(.x, .x == -9,0))) |> 
+  rowwise() |> 
+  mutate(Jour_Beacht = sum(c(PERS:KNTR, KAT:NAEHE)))
+
+DATEN_IA |> sjmisc::frq(Jour_Beacht)
+```
+
+
+### Umfangreiche Umkodierungstabellen (TF E)
+
+Zum Beispiel für Ländereigenschaften über die Ländercodes
+
+```{r}
+vembedr::embed_youtube("5BR3m7E6E-s") |> 
+  vembedr::use_rounded()
+```
+
+
+```{r Ländervariablen, eval=FALSE,echo=TRUE}
+
+# Aus der Länderliste mit den Kodierungen kommen die Variablen für eine Laenderliste:
+Laenderliste <- readxl::read_xlsx("Daten/Laender_Liste_Kodierung.xlsx", sheet = "Länderliste")
+
+# Die Codes für die Länder kommen aus einer anderen Untertabelle der Excel, darum steht hinten bei sheets etwas anderes:
+Ländercodes <- readxl::read_xlsx("Daten/Laender_Liste_Kodierung.xlsx", sheet = "Ländercodes")
+
+# Dann gibt es noch lauter weitere Codes, die wir jetzt anmatchen können, die können wir später gut gebrauchen, weil verschiedene Datensätze aus dem Internetz verschiedene Ländercodes verwenden
+
+Land_AlphaISO <- readxl::read_xlsx("Daten/Laender_Liste_Kodierung.xlsx", sheet = "AlphaISO") |> 
+  select(name, "alpha2", "alpha3", "CountryCode")
+
+# Hier binden wir die zusammen, erst die Ländercodes an die Laenderliste und dann noch die Land_AlphaISO hinten dran
+Laender <- left_join(Laenderliste, Ländercodes, by = "Land") |> 
+  left_join(., Land_AlphaISO, by = "alpha2")
+
+# oh, und hier noch ein paar Handelsdaten, falls das jemanden interessiert
+WorldTrade <- economiccomplexity::world_gdp_avg_1998_to_2000
+
+# So, die kleben wir jetzt auch noch hinten an unsere Laendervariable
+Laender <- left_join(Laender, WorldTrade, by = c("alpha3" = "country"))
+
+# mit diesem Paket können Sie die Coronazahlen aller Länder als Datensatz laden, für jeden Tag
+Covid_JHU <- tidycovid19::download_jhu_csse_covid19_data() # das dauert bischen
+Covid_WBank <- tidycovid19::download_wbank_data()
+
+# jetzt nehme ich den Covid-Datensatz und ...
+Covid_Land <- Covid_JHU |> 
+  filter(date >= "2020-12-4" & date <= "2020-12-6") |> # filtere so, dass nur die Daten der Feldphase bleiben (auf die Tage der Feldphase achten)
+  group_by(iso3c) |> # hier gruppiere ich nach den Ländern, die im Code iso3c (dreistellig character) stehn
+  summarise(C19_Gesamt = max(confirmed), # hier summiert R die maximal bestätigten (also kummulierten) Fallzahlen
+            C19_Feldwoche_krank = sum(confirmed - recovered)) # hier noch die Summe der Kranken in der Feldphase
+
+# Hier kleben wir wieder die Covid-Daten an die Laender dran
+Laender <- left_join(Laender, Covid_Land, by = c("alpha3" = "iso3c")) 
+
+# Schreibe die Laender-Daten raus in die Exceldatei "Laender_codes.xlsx"
+writexl::write_xlsx(Laender, "Daten/Laender_codes.xlsx")
+
+# Hier die Laender-Daten wieder aus der (eventuell ergänzten Laender-Excel) in R laden:
+Laender <- readxl::read_xlsx("Daten/Laender_codes.xlsx")
+
+# Jetzt kommt die Magie. Wie matchen die Laendervariable an die Inhaltsanalysedaten:
+
+# Hier lade ich die Inhaltanalysedaten aus meiner Excel. Vermutlich heisst die Excel bei Ihnen anders und liegt vielleicht auch nicht im Unterordner "Daten".
+IA <- readxl::read.xlsx("Daten/IA_Gesamt.xlsx")
+
+# Hier werden alle Variablen aus der Laendertabelle hinten an die Inhaltsanalyse geklebt
+IA <- left_join(IA, Laender, by = c("LAND" = "Code"))
+
+```
+

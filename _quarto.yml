@@ -1,0 +1,52 @@
+project:
+  type: book
+  output-dir: Wissen_macht_R!
+
+book:
+  title: "Wissen macht R!"
+  author: Benjamin Fretwurst
+  date: "12/12/2022"
+
+  chapters:
+    - index.qmd
+    - 01-Basics.qmd
+    - 02-Installation.qmd
+    - 03-Fehlerbehandlung.qmd
+    - 04-Relitest.qmd
+    - 05-Daten-laden-Fusion.qmd
+    - 06-Datenaufbereitung.qmd
+ #   - 07-Ergebnisse.qmd
+    - 09-Quarto.qmd
+ #   - 90-Literatur.qmd
+
+  downloads: [pdf]
+  output-file: "Wissen macht R"
+
+# bibliography: files/references.bib
+
+format:
+  html:
+    page-navigation: true
+    theme: cosmo
+    toc-depth: 4
+    number-sections: true
+    favicon: files/favicon/RIKMZ.png
+    toc-title: "Auf dieser Seite"
+    toc: true
+    toc-location: right
+    max-width: 4500px
+    css:
+    - www/webex.css
+    include-after-body: www/webex.js
+    sidebar:
+      style: "docked"
+      search: true
+
+  pdf:
+    documentclass: scrreport
+    template: files/TeX_Vorlage.tex
+    number-sections: TRUE
+    keep-tex: true
+    csquotes: true
+
+prefer-html: true

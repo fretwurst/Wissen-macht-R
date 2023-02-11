@@ -1,0 +1,37 @@
+# Forschungsbericht mit Quarto/Word
+
+In der modernen quantitativen Forschung arbeiten die meisten Kollegen mit R (oder Python, aber die sind komisch). Mehr und mehr schreiben ihre Forschungsberichte in R-Markdown beziehungsweise neuerdings Quarto, was (fast) dasselbe ist. Wenn sie das tun, dann können sie Ihre Arbeit später als Word-Datei rauslassen, als HTML (um zum Beispiel eine Onlinedokumentation oder Onlineanhänge zu Ihren Arbeiten bereitzustellen) und als PDF um sie verteilen oder auch drucken zu können. Die PDF basiert auf einem der ausgereiftesten Drucksatzsystem, das auch noch kostenlos ist: LaTeX. Dieses Drucksatzsytem ist kompliziert, aber Markdown nicht. Markdown wurde entwickelt, damit man Webseiten einfach erstellen kann und die Texte auch im Rohzustand noch lesbar sind. Darum ist es viel einfacher Markdown zu verwenden als Word, HTML, LaTeX oder gleich PostScript. Quarto ist eine Weiterentwicklung von Markdown für wissenschaftliche Texte. Dieses System ermöglicht Open Source Science und Publishing. 
+
+Wissenschaftliches Arbeiten bedeutet auch immer zitieren. Die Zitationen können natürlich irgendwie händisch eingebaut und später in einem Literaturverzeichnis ausgeführt werden. Das ist allerdings 1. aufwendig, 2. fehleranfällig und 3. sehr unflexibel (weil man zum Beispiel alles ändern müsste, statt nur einen Zitationsstil anzupassen.) Für Zitationen in RMarkdown (und Quarto) kann das Format BibTeX verwendet werden. Das ist schon vor langer Zeit für TeX und LaTeX entwickelt worden und ist sehr verbreitet (sie Finden fast immer für Zitationen die sogenannten Bib-Tex-Schlüssel). Ein kostenloser Editor, für den es für alle Systeme und Online ein Frontend gibt ist Zotero (Citavi ist auch ok, aber nicht überall kostenlos und darum eigentlich nicht so verbreitet). Dort können Sie einfach ISBN-Nummern oder auch DOIs eingeben, um sämtliche Zitationsangaben abrufen zu können. Sie müssen die also nicht selbst eingeben (können aber auch das tun). Zotero lässt sich gut in RStudio integrieren (Tools -\> Project Options -\> R Markdown -\> Visual Mode Zotero). [Hier gibt es eine Einführung in Zotero, die zwar mehr auf Word gemünzt ist, aber gut.](https://www.youtube.com/watch?v=PqQp_oUUY5w) Im Youtube-Video unten von Ulrik Lyngs wiederum finden Sie eine komplette Zusammenfassung unseres ganzen Workflows mal von einem anderen Typen. Sie erkennen schnell, dass das Setup, das ich Ihnen ans Herz legen möchte, nicht nur eine absonderliche Marotte meinerseits ist, sondern State of the Art wissenschaftlichen Publizierens, das Sie ja im Studium lernen sollten. :-)
+
+```{r}
+vembedr::embed_youtube("aU0uetWJXis") |> 
+  vembedr::use_rounded()
+```
+
+
+## Quarto ist besser und einfacher
+
+Zu Quarto zwinge ich Sie nicht, aber die hier gezeigte Methode zur Erstellung von Hausarbeiten, Forschungsberichten und sonstigen Texten ist schon sehr leistungsstark, weil Sie nicht nur tolle Berichte in PDF produzieren können, sondern Ihren Bericht auch gleich in HTML rauslassen können oder auch als ebook oder auch als Word (mit Einschränkungen). Wenn Sie Ihren Bericht in Quarto verfassen, dann bekommen Sie am Ende des Semesters mit Ihren Task-Force-Zeugnissen eine Bestätigung, dass Sie auch dieses Tool beherrschen. Quarto-Markdown zu beherrschen ist eine Qualifikation, die Sie sich gut in Ihr CV schreiben können. Auf dieser Seite <https://quarto.org> finden Sie einige Bücher zu bookdown, die alle auch in bookdwon verfasst wurden. Hier <https://quarto.org>  finden Sie Lösungen zu den meisten Fragen zu Quarto.
+
+Diese R-Introduction ist übrigens auch in bookdown verfasst.
+
+```{r}
+vembedr::embed_youtube("7_WjjClQGUw") |> 
+  vembedr::use_rounded()
+```
+
+## Tabellen und Grafiken nach Word schaffen
+
+Es ist eine Herausforderung, Berichte in Markdown bzw. bookdown zu setzen und (wie alles in R) braucht es viel Zeit. Die Alternative besteht in vertrauteren Textverarbeitungsprogrammen wie zB Word, Page oder Open-Office. Berichte mit Titelblatt, Inhalts-, Abbildungs- sowie Tabellenverzeichnis, automatisch beschrifteten Grafiken und Tabellen sowie Querverweisen und einem ordentlichen Literaturverzeichnis hinzubekommen ist allerdings auch nicht einfach, wenn man diese Textverarbeitungsprogramme benutzt. Ganz zu schweigen von schwer kontrollierbaren Platzierungen von Grafiken und Tabellen. Die fliegen einem in solchen Programmen schnell um die Ohren.
+
+Alle Bedenken beiseite, gab es den Wunsch, dass auch gezeigt wird, wie man die Grafiken aus R in hinreichender Qualität nach Word rüberschafft (in anderen Programmen funktioniert es vergleichbar; Word nehme ich hier als das gängigste Beispiel). Screenshots weisen keine akzeptable Qualität auf und sind deshalb keine Lösung -- vor allem nicht für Tabellen.
+
+Tabellen können schlicht in Wordtabellen abgeschrieben werden, was allerdings zu Übertragungsfehlern führt. Die Tabellen können aber auch schlicht kopiert und nach Word übertragen werden. Dort müssen Sie allerdings noch in eine annehmbare Form gebracht werden, was mit Tabellenformatierung oder Tabellenvorlagen einigermassen funktioniert. Die Tabellenüberschriften werden mit "Beschriftung einfügen" gemacht.
+
+Noch komplizierter ist die Übertragung von Diagrammen und anderen Bildformaten aus R nach Word. Eine Möglichkeit bietet `ggplot2`, da bei ggplot-Grafiken mit `ggsave` die Grafiken im pdf-Format oder als png gespeichert werden können (wo möglich, ist pdf deutlich besser). Alternativ kann der "Visual" Mode im RStudio-Editor verwendet und dort Grafiken per drag-and-drop direkt nach Word rübergezogen werden. Die verschiedenen Methoden zeige ich hier im Video.
+
+```{r}
+vembedr::embed_youtube("0gy2bIfJpnk") |> 
+  vembedr::use_rounded()
+```

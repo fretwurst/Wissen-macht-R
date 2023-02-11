@@ -1,0 +1,273 @@
+```{r}
+set.seed(20190708)
+genes <- paste("gene",1:1000,sep="")
+x <- list(
+  A = sample(genes,300), 
+  B = sample(genes,525), 
+  C = sample(genes,440),
+  D = sample(genes,350)
+  )
+
+devtools::install_github("gaospecial/ggVennDiagram")
+
+ggVennDiagram::ggVennDiagram(x, label_alpha = 0, set_color = "black", label_color = "white")
+
+```
+
+
+```{r}
+# specify the model
+raq.model <- '
+   Computeravers  =~ raq_05 + raq_06 + raq_07 + raq_10
+   SozialeWertung =~ raq_02 + raq_09 + raq_19 + raq_22
+   Statistikangst =~ raq_01 + raq_03 + raq_04 + raq_05 
+              '
+
+# fit the model
+
+
+raq.fit <- lavaan::sem(raq.model, data = raq_tib)
+
+# display summary output
+  tidySEM::table_fit(raq.fit) %>% 
+    select(Modell = Name, Chi2 = chisq, 'p-Wert' = pvalue, CFI = cfi, RMSEA = rmsea, SRMR = srmr_mplus) %>% 
+    mutate(across(where(is.numeric), ~round(.x, 4)), 
+           Modell = "RAQ") %>% 
+    kable(booktab = TRUE, caption = "Modellgüte") %>%
+    kable_styling()
+```
+```{r}
+library(lavaan)
+   # Computeravers  =~ raq_05 + raq_06 + raq_07 + raq_10
+   # SozialeWertung =~ raq_02 + raq_09 + raq_19 + raq_22
+   # Statistikangst =~ raq_01 + raq_03 + raq_04 + raq_05 
+
+sem_layout <- tidySEM::get_layout("raq_05 ", "",
+                                  "raq_06", "",
+                                  "raq_07", "Computeravers",
+                                  "raq_10","",
+                                  "","",
+                                  "raq_02 ","",
+                                  "raq_09","",
+                                  "raq_19", "SozialeWertung",
+                                  "raq_22","",
+                                  "","",
+                                  "raq_01 ","",
+                                  "raq_03", "Statistikangst",
+                                  "raq_04","",
+                                  "raq_05","",
+                         rows = 14)
+
+graph <-  tidySEM::prepare_graph(model = raq.fit, layout = sem_layout, # fit aus dem Fit von lavaan, Layout in sem_layout definiert
+                        rect_width = 1.2, rect_hight = 1.2) # %>% # Breite und Höhe der manifesten
+  # tidySEM::edit_graph({label = paste(est_sig_std)}, element="edges") %>% # in den Label werden die geschätzten signifikanten std gezeigt
+  # tidySEM::edit_graph({label = paste(name)}, element = "nodes") %>% 
+  # tidySEM::edit_graph({label_color = "black" }) %>%  
+  # tidySEM::alpha_var(.2) %>% 
+  # tidySEM::label_color_var("darkseagreen") 
+  
+plot(graph) # + annotate("text", x = 1.6, y = 4,  label = "Fit Inidiec") 
+```
+
+```{r}
+
+# load the lavaan package (only needed once per session)
+library(lavaan)
+
+# specify the model
+HS.model <- ' visual  =~ x1 + x2 + x3      
+              textual =~ x4 + x5 + x6
+              speed   =~ x7 + x8 + x9 '
+
+# fit the model
+fit <- cfa(HS.model, data = HolzingerSwineford1939)
+
+# display summary output
+summary(fit, fit.measures = TRUE)
+```
+
+
+# Maschine Learning ML
+
+## Datensatz laden
+
+```{r Datenladen}
+
+# Lade die tmdb-Datenbank der letzten 5000 Filme in das Datenobjekt Filme
+Filme <- read.csv("data/tmdb_5000_movies.csv")
+
+# Bilde eine id, die die Zahlen 1 bis Anzahl (n) der Zeilen (rows) enthält mit dem R-base-Befehl nrow()
+Filme$id <- 1:nrow(Filme)
+
+# Zeige den Datensatz an (eventuell auskommentieren, wenn damit es nur bei Bedarf kommt)
+summary(Filme)
+```
+
+```{r}
+# Erstelle einen Scatterplot (Punktewolke)
+
+Filme |> 
+#  filter(budget_sc > 150) |> 
+  ggplot(aes(x = budget, y = revenue, label = title)) + 
+  geom_point() 
+```
+
+## Datenaufbereitung
+
+```{r Datenaufbereitung}
+# Erstelle eine neue Variable "comedy", wenn in der Variable "genres" der Text "Comedy" gefunden wird und mache daraus eine 0/1-Dummyvariable, statt TRUE/FALSE, indem mit 1 multipliziert wird
+Filme <- Filme |> 
+  mutate(comedy = str_detect(genres, "Comedy") * 1, 
+         adventure = str_detect(genres, "Adventure") * 1, # dasselbe für adnventure
+         drama = str_detect(genres, "Drama") * 1, ) # und für drama
+```
+
+```{r}
+# Erstelle Variablen für Revenue und Budget, die in hohen Einheiten zählen, damit die Kennwerte nicht so riesig werden
+Filme <- Filme |> 
+  mutate(revenue_sc = revenue/1000000,
+         budget_sc = budget/1000000)
+
+# Sortiere Filme nach Einspielergebnis
+Filme |> 
+  select(title, revenue_sc, budget_sc) |> 
+  arrange(desc(revenue_sc))
+```
+
+```{r}
+Filme <- Filme |> 
+  mutate(revenue_log = log(revenue + 1),
+         budget_log = log(budget + 1))
+```
+
+
+```{r}
+Filme <- Filme |> 
+  mutate(revenue_log = ifelse(revenue_log < 13, NA, revenue_log),
+         budget_log = ifelse(budget_log < 13, NA, budget_log))
+```
+
+
+```{r Häufi}
+# Mache Häufigkeitsauszählungen für comedy, adventure und drama
+Filme |> 
+  sjmisc::frq(revenue, revenue_sc, budget, budget_sc
+  )
+```
+
+
+## In Trainingsdaten und Testdaten auftrennen
+
+```{r}
+
+# Setze eine Zufallszahl, damit die Ergebnisse replizierbar sind, also nicht jedes Mal eine neue Zufallszahl gesetzt wird und die Ergebnisse (bisschen) abweichen
+set.seed(12345)
+
+# Ziehe eine Zufallsstichprobe aus dem Filmdatensatz und bezeichne ihn als "train", also Trainingsdatensatz, mit dem die "Maschine" trainiert wird
+train <- Filme %>% 
+  sample_frac(.75)
+
+# Bilde aus dem Rest der nicht für "train" gezogenen Fälle einen Test-Datensatz, indem nach 'id' die Fälle aus "Filme" das Gegenteil (anti) von zusammengetan (join) werden.
+test  <- anti_join(Filme, train, by = 'id')
+
+```
+
+```{r Regressionsmodell}
+
+# Baue ein Regressionsmodell für den Trainingsdatensatz 
+fit1 <- lm(revenue ~ budget, na.action = na.exclude, data = train)
+
+sjPlot::tab_model(fit1)
+
+```
+
+
+Das war einfach. Vielleicht zu einfach (vom Modell her). Also jetzt nochmal etwas geistreicher:
+
+```{r Regressionsmodell}
+xtabs(revenue_sc ~ budget_sc, data = train)
+
+# Baue eine neue Regressionsanalyse, wobei vote-average hinzugezogen wird und adventure als Dummy eingebaut wird und als Slope-Dummy mit budget_1M, dann noch popularity dazu
+fit2 <- train %>% 
+  lm(revenue_log ~ budget_log 
+                + vote_average
+                + comedy
+                + adventure + adventure * budget_log
+                + popularity
+     ,data = .)
+
+# Gib eine Regressionsanalyse mit den wichtigsten Kennwerten raus
+
+sjPlot::tab_model(fit2,
+                  show.std = TRUE, # zeige die standardisierten Koeffizienten
+                  show.est = TRUE, # zeige die unstandardisierten estimates
+                  show.r2 = TRUE, # zeige R^2
+                  show.fstat = TRUE, # zeige die F-Statistik
+                  string.est = "b", # beschrifte die Estimator mit b
+                  string.std = "std. b" # beschrifte die standardisierten b mit std. b
+                  )
+
+# Zeige die Toleranzwerte und VIF an (für die Analyse von Multikollinearität)
+olsrr::ols_vif_tol(fit2)
+```
+
+
+## Modellschecks
+
+```{r}
+# Plot der Residuen, um Strukturen in den Residuen festzustellen (Heteroskedastizität und Nichtlinearität)
+olsrr::ols_plot_resid_fit(fit2)
+
+# Führe einen Breusch-Pagan-Test aus
+olsrr::ols_test_breusch_pagan(fit2)
+```
+```{r N-Q-Q, echo = TRUE,fig.width=6, fig.height=4, out.width="80%", fig.cap="Normal-Q-Q-Plot"}
+
+# Führe einen Normal-Q-Q-Plot aus
+olsrr::ols_plot_resid_qq(fit2)
+```
+
+
+```{r Histogramm-der-Residuen, echo = TRUE, fig.width=6, fig.height=4, out.width="80%", fig.cap="Histogramm der Residuen"}
+
+# Mache mal ein Histogramm der Residuen. Die sollten annähernd normalverteilt sein. 
+olsrr::ols_plot_resid_hist(fit2)
+```
+
+```{r Residuen-Normalvereilt, echo = TRUE, fig.cap="Normalverteilung der Residuen"}
+# Führe Tests auf signifikante Verletzungen der Normalverteilungsannahme aus.
+
+olsrr::ols_test_normality(fit2)
+```
+
+### Vorhersagetest
+
+```{r}
+preds <- predict(fit2, test)
+```
+
+
+```{r}
+
+# Erstelle Datensatz mit der AV der test-Daten (revenue_1M aus test) und den Vorhersagewerten (preds)
+modelEval <- cbind(test$revenue_log, preds) |> 
+  as.tibble()
+
+# Beschrifte die Spalten
+colnames(modelEval) <- c('actual', 'predicted')
+
+ggplot(modelEval, aes(x = actual, y = predicted)) + 
+  # Create a diagonal line:
+  geom_abline(lty = 2) + 
+  geom_point(alpha = 0.5) + 
+  labs(y = "Vorhergesagte Werte", x = "Tatsächliche Werte") 
+```
+
+
+```{r}
+
+# der Root Mean Square Error (RMSE) ist ungefähr die durchschnittliche Abweichung der vorhergesagten Werte von den tatsächlichen Die Wurzel (Root) der durchschnittlichen (Mean), quadrierten (Squared) Fehler (Error)
+
+yardstick::rmse(modelEval, truth = actual, estimate = predicted)
+
+```

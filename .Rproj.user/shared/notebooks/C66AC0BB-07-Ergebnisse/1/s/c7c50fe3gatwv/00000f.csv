@@ -1,0 +1,9 @@
+"0","# mehr zu plot_models hier: https://strengejacke.github.io/sjPlot/articles/plot_model_estimates.html"
+"0","sjPlot::plot_models(Beacht_Rez_1, Beacht_Jour_1, "
+"0","            std.est = ""std"", # Für die (vergleichbaren) standardisierten Regressionskoeffizienten"
+"0","            title = ""NFs und Beachtung"","
+"0","            legend.title = ""Beachtung"","
+"0","            show.values = TRUE) +"
+"0","  ylim(-.25, .6)"
+"2","[38;5;232mScale for [32my[38;5;232m is already present.
+Adding another scale for [32my[38;5;232m, which will replace the existing scale.[39m"

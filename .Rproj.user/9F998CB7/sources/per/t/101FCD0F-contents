@@ -1,0 +1,103 @@
+---
+title: "Relitest"
+output-dir: "temp"
+---
+
+# Relitest für Inhaltsanalysen
+
+```{r}
+#| include: false
+#| echo: false
+#| warning: false
+#| message: false
+ source("_common.R")
+```
+
+Dazu gibt es auch ein Video:
+
+```{r Relitest-Video}
+library(tidyverse)
+vembedr::embed_youtube("bwjSkKUeQgA") |>
+  vembedr::use_rounded()
+```
+
+<a href="https://www.ikmz.uzh.ch/static/methoden/R_Introduction/Relitest_mit_R.zip" > Hier </a> finden Sie den im Video erwähnten gezippten Ordner mit der Relitest.Rmd. Den Ordner müssen Sie entpacken und an eine gute Stelle in ihrem System tun. In dem Ordner wo sich diese Datei "Relitest.Rmd" befindet, muss es einen Unterordner mit der Bezeichnung "Daten" geben, wo die Excel-Dateien "RelidatenCoder1.xlsx" usw. liegen. s \## Relidaten Zusammenbinden
+
+Sie werden die Inhaltsanalyse in Excel kodieren. Die Exceldateien müssen dann in R importiert werden. Das geht zB mit **read_xlsx** des Pakets **read.xl**. Wie Sie sehen werden die Exceldateien der Coder (im Beispiel 1 bis 3) jeweils in R-Dateien eingelesen (RelitestCoder1 \<- ...) und dann mit dem Befehl rbind (steht für Rows aneinander binden) zu einer Datei zusammengefügt, die dann angeschaut oder für Relitests weiterverarbeitet werden kann.
+
+```{r Relidaten zusammenbinden, echo=TRUE}
+# Lade alle Relitestdateien aus dem Ordner "Daten" (den es geben muss mit allen Relidateien):
+
+RelitestCoder1 <- readxl::read_excel("Daten/RelidatenCoder1.xlsx")
+RelitestCoder2 <- readxl::read_excel("Daten/RelidatenCoder2.xlsx")
+RelitestCoder3 <- readxl::read_excel("Daten/Klausis erster Relitest.xlsx")
+
+# Binde die Relidatensätze der Coder:innen zu einem Datenobjekt "RelitestGesamt zusammen:
+Relitest_Gesamt <- rbind(RelitestCoder1, RelitestCoder2, RelitestCoder3) 
+
+Relitest_Gesamt |> 
+  dplyr::select(CODER, CU) |> 
+  dplyr::mutate(Fehler = ifelse(is.na(CODER) | is.na(CU), "FEHLER! Muss in der RelitestGesamt.xlsx repariert und als Relitest_bearbeitet.xlsx gespeichert werden oder der:die Coder:in muss es überarbeiten", "alles gut")) |> 
+  dplyr::count(Fehler)
+
+# hier schreibe ich die Daten mal aus R raus in Excel, damit ich sie in Excel besser angucken kann und dort easy bereinige. Kann so gemacht werden oder alles in R, was schicker ist, aber nicht so praktisch.
+
+writexl::write_xlsx(Relitest_Gesamt, "Daten/Relitest_Gesamt.xlsx")
+```
+
+## Relitest
+
+Den Relitest selbst kann man mit test_icr des Pakets tidycomm machen. Dazu werden zunächst die Daten geladen (im Beispiel "RelitestDaten") und dann mit der Pipe (neu statt %\>% der Pipoperator \|\> ) der Befehl test_icr ausgeführt. An erster Stelle steht die Variable für die Coding Unit (CU), die im Datensatz RelitestBeispiele einfach "CU" heisst. Als nächstes folgt die Variable für den Coder (im Beispiel einfach "CODER"). In den Variablen CU und CODER dürfen nur Zahlen stehen! Also muss jeder Kodierer eine Nummer eingeben und auch die Artikel im Relimaterial nummeriert sein. Dann können Sie einzelne Variablennamen anfügen, für die die Reliwerte ausgewertet werden sollen oooooder Sie lassen das weg und es werden für alle Variablen Reliwerte berechnet. Wenn Sie fehlende Werte im Datensatz haben, dann sollten Sie am Ende "na.omit = TRUE" stehen haben, sonst meckert R, dass Fehlende Werte gefunden wurden.
+
+```{r Reliabilitätstest, echo=TRUE}
+# hier lade ich die Relidaten aus Excel wieder rein in R
+RelitestDaten <- readxl::read_xlsx("Daten/Relitest_bearbeitet.xlsx")
+
+# Sie können mit dem folgenden Befehl Variablen umkodieren und gleich in eckigen Klammern labeln 
+RelitestDaten <- RelitestDaten |> 
+  mutate(Worte_gr = sjmisc::rec(Worte, rec = 
+                       "min:100 = 1 [Kurzmeldung]; 
+                        101:150 = 2 [kurzer Artikel]; 
+                        151:300 = 3 [länger]; 
+                        301:500 = 4 [lang]; 
+                        501:max = 5 [Langtext]")) |> 
+    relocate(Worte_gr, .after = Worte) # hier sortiere ich die neue Variable direkt hinter die alte
+
+RelitestDaten |> 
+  sjmisc::frq(Worte_gr) # machen wir mal ne Häufigkeitsauszählung für "Worte_gr"
+
+RelitestDaten <- RelitestDaten |> 
+  dplyr::mutate(Voyer_r = sjmisc::rec(Voyeur, rec = "0 = 0 [kommt nicht vor]; 1:3 = 1 [kommt vor]; else = copy")) |> 
+  dplyr::relocate(Voyer_r, .after = Voyeur)
+
+RelitestDaten |> 
+  sjmisc::frq(Voyer_r)
+
+# hier kommt dann der eigentliche Relitest. in test_icr muss ganz vorne der Variblenname der Kodiereinheit (CU) stehen und danach für die CODER. 
+
+RelitestOutput <- RelitestDaten |> 
+  tidycomm::test_icr(unit_var = CU, coder_var = CODER, Medium:Kurios, kripp_alpha = TRUE, lotus = TRUE, s_lotus = TRUE, na.omit = TRUE)
+
+RelitestOutput # hier den Output des Relitest mal schnell in R angucken
+
+# Das ist im Prinzip das Gleiche wie oben, aber für Worte wird das Skalenniveau "interval" angegeben und für Artikellänge "ordinal"
+RelitestOutput <- RelitestDaten |> 
+tidycomm::test_icr(unit_var = CU, coder_var = CODER, Medium:Kurios, # 
+           levels = c(Worte = "interval", ArtLang = "ordinal"), # hier die Skalnenniveaus; nominal ist Standard
+           kripp_alpha = TRUE, lotus = TRUE, s_lotus = TRUE, agreement = FALSE, holsti = FALSE, na.omit = TRUE) |> 
+    dplyr::mutate_if(is.numeric, round, digits = 2) |>  # hiermit noch auf zwei Stellen runden - reicht jas
+    dplyr::mutate(S_Lotus = ifelse(is.na(S_Lotus), 1, S_Lotus)) # Wenn alle Coder:innen nur eine und dieselbe Kategorie gewählt haben, ist S_Lotus nicht definiert, aber 1
+
+
+RelitestOutput |> 
+  kableExtra::kbl() |> # und hier noch hübsch und dann bunt mit kbl
+  kableExtra::kable_material() |> 
+    kableExtra::column_spec(6, color = ifelse(RelitestOutput$Krippendorffs_Alpha > 0.3 & RelitestOutput$Krippendorffs_Alpha < 0.75, "black", "white"),
+              background = kableExtra::spec_color(RelitestOutput$Krippendorffs_Alpha[0:100], begin = 0, end = 1, option = "turbo", direction = -1)) |> 
+    kableExtra::column_spec(7, color = ifelse(RelitestOutput$Lotus > 0.6 & RelitestOutput$Lotus < 0.9, "black", "white"),
+              background = kableExtra::spec_color(RelitestOutput$Lotus[0:100], begin = 0, end = 1, option = "turbo", direction = -1)) |> 
+    kableExtra::column_spec(8, color = ifelse(RelitestOutput$S_Lotus > 0.6 & RelitestOutput$S_Lotus < 0.9, "black", "white"),
+              background = kableExtra::spec_color(RelitestOutput$S_Lotus[0:100], begin = 0, end = 1, option = "turbo", direction = -1))
+
+writexl::write_xlsx(RelitestOutput, "RelitestOutput.xlsx")
+```

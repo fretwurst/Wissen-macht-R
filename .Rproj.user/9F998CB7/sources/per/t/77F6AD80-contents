@@ -1,0 +1,22 @@
+# Basics
+
+```{r}
+#| include: false
+#| echo: false
+#| warning: false
+#| message: false
+ source("_common.R")
+```
+
+
+## Datenvisualisierung
+
+## Grundlagen Programmierung
+
+- Funktionen
+- Objekte
+- Datentypen
+- Variablen, Datensätze
+- Pakete
+
+### Funktionen

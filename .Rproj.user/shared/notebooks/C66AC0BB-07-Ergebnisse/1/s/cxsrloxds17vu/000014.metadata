@@ -1,0 +1,1 @@
+{"height":6.0,"width":9.708,"size_behavior":1,"conditions":[[1,"Warning: \u001B[38;5;232mComputation failed in `stat_summary()`\u001B[39m"],[1,"Warning: \u001B[38;5;232mPosition guide is perpendicular to the intended axis\n\u001B[36mℹ\u001B[38;5;232m Did you mean to specify a different guide `position`?\u001B[39m"]]}

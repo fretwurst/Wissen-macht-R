@@ -1,0 +1,1943 @@
+\documentclass[twoside, pagesize, fontsize=11pt, dvipsnames]{scrreport}
+
+\usepackage[ngerman]{babel}
+\usepackage{anyfontsize} % jede Schriftgrösse eben
+\usepackage[table]{xcolor}
+\usepackage{colortbl}
+\usepackage{tabu}
+\usepackage{svg}
+\usepackage{fontenc}
+\usepackage{eurosym}
+\usepackage{soul}           %% Sperren und Schafe stehlen
+
+ \usepackage{enumerate}      %% Nummerieren
+ \usepackage{ifthen}         %% Wenn-Dann eben
+ \usepackage{array}          %% besserer Mathesatz
+ \usepackage[fleqn,reqno]{amsmath}            %% für Mathematiksatz
+ \usepackage{amssymb}           %% für Symbole
+
+ \usepackage{marginnote}        %% Randnotizen (für Hypref)
+ \usepackage{booktabs}          %% bessere Linien in Tabellen
+ \usepackage{longtable}
+ \usepackage{makecell}
+\usepackage{graphicx}
+ \usepackage{float}             %% Gleitobjektumgebungen
+ \usepackage{flafter}           %% floats hinter ersten Verweis
+ \usepackage{rotfloat, rotating}      %% drehen
+ \usepackage{morefloats}    %% erweitert die Möglichkeiten
+
+\usepackage[most]{tcolorbox}
+
+ \usepackage{titletoc}
+ \usepackage{afterpage}
+
+ \usepackage{hanging}
+ \usepackage{natbib}
+%\bibliographystyle{apalike}
+% \usepackage{babelbib}
+% \usepackage{bibgerm}
+
+%% für huxtables
+\usepackage{calc}
+%\usepackage{tabularx}
+\usepackage{threeparttable}
+% ende für huxtables
+\usepackage{wrapfig}
+ \usepackage{fancybox}          %% Schöne Boxen
+ \usepackage{nameref}
+ \usepackage[ngerman]{varioref}
+
+ \usepackage{pdfpages}
+ \usepackage{setspace}
+ \usepackage{boxedminipage}     %% umrahmte Boxen
+ \usepackage{multicol}          %% mehrspaltige Zeilen
+ \usepackage{epsfig,lscape}     %% Graphiken auch Quer
+
+\usepackage[stable, norule, flushmargin]{footmisc} %% Fußgut
+
+ \usepackage[np]{numprint}  %%Zahlen an Komma ausrichten
+
+ \usepackage[mla]{ellipsis}       %% Auslassungspunkte
+% \usepackage[newcommands]{ragged2e} %Verbesserung der Seitenaufteilung
+ \usepackage[safe]{textcomp} %zusätzliche Zeichen, wie schwarze Punkte
+
+%%%% hyperref %%%%
+\usepackage[hyphens]{url} %% URLs sauber einfügen und umbrechen - muss vor hyperref
+\usepackage[pdfa=true, pdflang = de, colorlinks = true, allcolors = darkgray]{hyperref}
+%%%% muss alles hinter hyperref, weil es sonst package-clashes erzeugt:
+\usepackage{accsupp}    %% für Barrierefreiheit
+\usepackage{pdfcomment} %% für Barrierefreiheit
+%\PassOptionsToPackage{hyphens}{accsupp} %% übergibt hyphens für das url-Paket, das in accsupp ohne diese Option geladen wird.
+\PassOptionsToPackage{hyphens}{pdfcomment} %% übergibt hyphens für das url-Paket, das in pdfcomment ohne diese Option geladen wird.
+%%%%
+
+\usepackage{twoopt}
+
+\usepackage{paralist}
+\usepackage{siunitx}
+
+\usepackage{pdflscape}
+
+
+%\usepackage[style=authoryear,maxcitenames=2, backend=biber, isbn=false,doi=false, eprint = false]{biblatex}
+
+%___________________  Pakete Ende  ____________________________________________
+
+
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{241,243,245}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.40,0.45,0.13}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.28,0.35,0.67}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.46,0.62}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\NormalTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.07,0.07,0.07}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+
+%\def\tightlist{}
+
+%%%%%%%%%%%%%%%%%%%%%  Größen ändern gegen LaTeXs Hysterie %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\widowpenalty=10000 % erschwert Hurenkindern das Leben
+\clubpenalty=3000 % erschwert Schusterjungen das Leben
+\tolerance=300  %Wortabstände dehnbarer; fürs Final auf 300!!
+\hbadness= 300
+  \emergencystretch= 1.5em
+ \hfuzz = 0.3pt
+ \vfuzz \hfuzz
+ \raggedbottom
+
+%% erste Zeile einrücken
+\setlength{\parindent}{1em}
+\newcommand{\Absatz}{\vspace{4ex} \noindent}
+
+%% Einzug für Formeln
+\setlength\mathindent{1pc}
+%% Fußnoten
+%\counterwithout{footnote}{chapter} % über Kapitel hinweg zählen
+\addtolength{\skip\footins}{1ex plus 2mm} % Abstand zum Text
+\renewcommand{\footnotesep}{1ex} % da nummeriert, Abstand ok
+% rechtsbündig aus likem Rand
+
+\let\Umathcode\XeTeXmathcode \let\Umathchardef\XeTeXmathchardef
+
+%____________ Größen Ende ______________________________
+
+%%%%% Farbboxen für Hinweise ------
+\tcbset{textmarker/.style={%
+        enhanced,
+        parbox=false,boxrule=0mm,boxsep=0mm,arc=0mm,
+        outer arc=0mm,left=6mm,right=3mm,top=7pt,bottom=7pt,
+        toptitle=1mm,bottomtitle=1mm,oversize}}
+
+\newtcolorbox{hintBox}{textmarker,
+    borderline west={6pt}{0pt}{yellow},
+    colback=yellow!10!white}
+
+\newtcolorbox{importantBox}{textmarker,
+    borderline west={6pt}{0pt}{red},
+    colback=red!10!white}
+
+\newtcolorbox{noteBox}{textmarker,
+    borderline west={6pt}{0pt}{green},
+    colback=green!10!white}
+
+\newcommand{\Anmerkung}[1]
+{\begin{hintBox}
+#1
+\end{hintBox}}
+
+\newcommand{\Alarm}[1]
+{\begin{importantBox}
+#1
+\end{importantBox}}
+
+\newcommand{\Allesgut}[1]
+{\begin{noteBox}
+#1
+\end{noteBox}}
+
+
+\newcommand{\on}[1]{{#1}} %deaktiviertes oldstylenums
+\newcommand{\p}{{\npnoaddmissingzero \npdecimalsign{.}}} %p-Wert
+                                %kompakt in zB Kovarianztabellen
+
+%%%%%%%%%      Umgebungen und Kommandos   %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%  Boxen
+
+\newtcolorbox{IYI_C}{
+  colback=white,
+  colframe=MidnightBlue,
+  coltext=black,
+  boxsep=5pt,
+  arc=4pt}
+
+\newenvironment{IYI}[1]
+  {
+  \begin{itemize}
+  \renewcommand{\labelitemi}{
+    \raisebox{-.9\height}[0pt][0pt]{
+      {\setkeys{Gin}{width= 3em,keepaspectratio}
+        \hspace*{-3cm}\includegraphics{images/IYI.pdf}}
+    }
+  }
+  \setlength{\fboxsep}{1em}
+  \begin{IYI_C}
+  \item
+  }
+  {
+  \end{IYI_C}
+  \end{itemize}
+  }
+
+\newtcolorbox{QA_C}{
+  colback=white,
+  colframe=orange,
+  coltext=black,
+  boxsep=5pt,
+  arc=4pt}
+
+  \newenvironment{QA}[1]
+  {
+  \begin{itemize}
+  \renewcommand{\labelitemi}{
+    \raisebox{-.9\height}[0pt][0pt]{
+      {\setkeys{Gin}{width=3em,keepaspectratio}
+        \hspace{-2cm}\includegraphics{images/QA.pdf}}
+    }
+  }
+  \setlength{\fboxsep}{1em}
+  \begin{QA_C}
+  \item
+  }
+  {
+  \end{QA_C}
+  \end{itemize}
+  }
+
+%%% ENDE Boxen
+
+%% \PBS für geschützten Backslash
+\newcommand{\PreserveBackslash}[1]{\let\temp=\\#1\let\\=\temp}
+\let\PBS=\PreserveBackslash
+
+\renewcommand{\labelitemi}{--}
+
+%%% Bilder einbauen (breitbild = Seitenbreite skalieren; bild zentriert
+\newcommandtwoopt{\Bild}[3][1][0 0 0
+0]{ \begin{center}
+    \includegraphics[width=#1\linewidth,trim = #2, clip]{images/#3}
+  \end{center}}
+%%%% Aufzählungen
+
+\renewcommand{\labelitemi}{\small\textbullet}
+
+\newcommand{\Beschrieb}[1]{\ifthenelse{\isundefined{#1}}{}{
+\begin{minipage}[H]{1.0\linewidth}
+  \begin{multicols}{3}
+ #1
+ \end{multicols}
+\end{minipage}\vspace{5mm}}}
+
+%% für Barrierefreiheit
+\newcommand{\AccTool}[2]{\BeginAccSupp{method=pdfstringdef,unicode,Alt={{#1}}}\pdftooltip{{#2}}{{#1}}\EndAccSupp{}}
+
+%__________________ Umgebungen Ende _____________________________________________
+
+%--------  Tabellenbefehle  ----------------------
+%LaTeX interpretiert Tabulatoren und Zeilenenden für Tabellen
+% & und \\ können eingesetzt werden, wenn nötig
+% bei zB \\\midrule%! muss das Zeilenende auskommentiert sein
+
+\renewcommand{\floatpagefraction}{.7}
+\renewcommand{\textfraction}{.12}
+\renewcommand{\topfraction}{.8}     % vorher: .7
+\renewcommand{\bottomfraction}{.5}  % vorher: .3
+\makeatletter
+\renewcommand{\fps@figure}{htbp}
+\renewcommand{\fps@table}{htbp}
+\makeatother
+
+\setbox0=\hbox{%
+  \begin{tabular}{c}
+ \global\let\CsvNewline\\%
+ \end{tabular}}
+ {\catcode`\^^M=\active%
+  \gdef\CsvObeylines{\catcode`\^^M=\active \let^^M=\CsvNewline}}%
+
+\setcapindent{1em}
+
+\newcommand{\TBZeilenabstand}{\aboverulesep = 0pt \belowrulesep = 0pt}
+
+\newcommand{\NormalZeilenabstand}{\aboverulesep = 0.605mm \belowrulesep = 0.984mm}
+
+
+% \newcommand{\corcmidrule}[1][2pt]{% \corcmidrule[<len>]
+%   \\[\dimexpr-\normalbaselineskip-\belowrulesep-\aboverulesep-#1\relax]%
+% }
+
+% Correct for \cmidrule colour adjustment/vertical skip
+\newcommand{\corcmidrule}[1][2pt]{% \corcmidrule[<len>]
+  \\[\dimexpr-\arraystretch\normalbaselineskip-\belowrulesep-\aboverulesep-#1\relax]%
+}
+
+ \newcommand{\cgrauDurch}{\arrayrulecolor{black!30}\specialrule{.2pt}{0pt}{0pt}\arrayrulecolor{black}}
+ \newcommand{\cgrau}[1]{\arrayrulecolor{black!30} \cmidrule[.8pt](l{3pt}r{2pt}){#1} \corcmidrule[1pt] \arrayrulecolor{black}}
+
+%% variable Verweise
+\renewcommand\reftextfaceafter{gegen\"uberliegend}
+\renewcommand\reftextfacebefore{gegen\"uberliegend}
+\renewcommand\reftextbefore{vorherige Seite}
+\renewcommand\reftextafter{n\"achste Seite}
+\renewcommand\reftextcurrent{}
+\renewcommand\reftextfaraway[1]{Seite~\pageref{#1}}
+
+\makeatletter
+\@addtoreset{figure}{section}
+\@addtoreset{table}{section}
+\makeatother
+
+\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+\renewcommand{\thetable}{\thesection.\arabic{table}}
+
+%\renewcommand{\bminipage}{\begin{minipage}[t]{.9\textwidth}}
+%\renewcommand{\eminipage}{\end{minipage}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    aus Bookdown
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\definecolor{shadecolor}{RGB}{248,248,248}
+% \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+%\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+% \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+% \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+% \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+% \newcommand{\BuiltInTok}[1]{#1}
+% \newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+% \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+% \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+% \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+% \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+% \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+% \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+% \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+% \newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+% \newcommand{\ExtensionTok}[1]{#1}
+% \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+% \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+% \newcommand{\ImportTok}[1]{#1}
+% \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+% \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+% \newcommand{\NormalTok}[1]{#1}
+% \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+% \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+% \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+% \newcommand{\RegionMarkerTok}[1]{#1}
+% \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+% \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+% \newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+% \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+% \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+% \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% aus bookdown Ende %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\hypersetup { pdfa=true, pdflang = de,colorlinks = true, linkcolor =
+  black, urlcolor = black, pdfauthor={Dr. Fretwurst, Benjamin},
+  pdfsubject={Statistik Aufbau}, pdftitle={Wissen macht R!},
+  pdfkeywords={Statistik, lineares Modell, Regression, Varianzanalyse, Clusteranalyse} lang = {DE} }
+\urlstyle{same}
+
+%\addbibresource{../PeM.bib}
+%\ExecuteBibliographyOptions{url=true, doi = false}
+
+\usepackage[a4paper, left=30mm, asymmetric, top=30mm,textwidth=15cm,
+textheight=22.5cm]{geometry}
+
+% Headers and footers
+\usepackage{scrlayer-scrpage}
+\pagestyle{scrheadings}
+
+  \clearscrheadfoot
+ \automark[section]{section}
+  \ihead[]{\headmark} %oben links
+  \chead[]{} %oben Mitte
+  \ohead{\pagemark} %oben rechts Logo über AddToShipoutPicture unten
+  \ifoot[]{\footnotesize{}} %unten links
+  \cfoot[]{} %unten Mitte
+  \ofoot[]{\footnotesize{}} % unten rechts
+  \setheadsepline{.2pt}
+  \setfootsepline{.2pt}
+\addtokomafont{disposition}{\sffamily}
+
+\addtokomafont{disposition}{\sffamily}
+%\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage[labelsep=colon]{caption}
+% \captionsetup[table]{textfont = {sf}, labelfont = {sf}} %bf
+%\renewcaptionname{ngerman}{\tablename}{Tabelle}
+
+%\usepackage{baskervald} % auch nicht schlecht
+\usepackage[]{CrimsonPro} % gut
+%\setmainfont{Century Gothic} %schlimm, aber IaKom und darum schön
+
+\usepackage[german=swiss]{csquotes}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+              %Dokumentstart
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{files/Silbentrennung}
+
+\begin{document}
+
+\begin{titlepage}
+\sffamily
+\setlength\parindent{0pt}
+
+\hfill \includegraphics[width = 6cm]{images/uzh_logo_d_pos.pdf}\par
+
+\vspace{5cm}
+
+
+{\bfseries \fontsize{20}{26} \selectfont Wissen macht R!} \\[1ex]
+
+
+\vfill
+
+Dr. Benjamin Fretwurst\\
+
+\vfill
+{\large }
+\raggedright
+
+
+
+12/12/22 \\[.5cm]
+%\textbf{[\today] \\[1.5cm]}
+\pagenumbering{Roman}
+\clearpage
+
+\vspace*{4cm}
+
+Quellenangabe\\[.5cm]
+
+
+
+%\end{tabbing}
+\end{titlepage}
+
+
+\makeatletter
+\AddToShipoutPicture{\setlength{\unitlength}{1cm}\put(24.32,18.65){{\includegraphics[height=.6cm]{images/uzh_logo_d_pos.pdf}}}}
+\makeatletter
+
+%Überschriften unterdrücken durch IV und TV (wegen multicolumn)
+\renewcommand{\listoftables}{\@starttoc{lot}}
+\renewcommand{\tableofcontents}{\@starttoc{toc}}
+\renewcommand{\listoffigures}{\@starttoc{lof}}
+
+%Mehr Platz für breite Tabellennummern
+\renewcommand{\l@table}{\@dottedtocline{1}{1em}{3em}}
+\makeatother
+
+\clearpage
+\section*{Inhalt}
+\label{sec:inhalt}
+\pdfbookmark[1]{\contentsname}{toc}
+%  \begin{multicols}{2}
+
+\tableofcontents
+%  \end{multicols}
+
+\clearpage
+
+\section*{Tabellen- und Abbildungsverzeichnis}
+
+\pdfbookmark[1]{Tabellen/Abbildungen}{lot}
+
+\section*{Abbildungsverzeichnis}
+\label{sec:Abbildungsverzeichnis}
+
+%\begin{multicols}{2}
+\listoffigures
+%\end{multicols}
+
+\section*{Tabellenverzeichnis}
+\label{sec:tabellenverzeichnis}
+
+%\begin{multicols}{2}
+\listoftables
+%\end{multicols}
+
+\cleardoublepage
+
+\pagenumbering{arabic}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+             %Body
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bookmarksetup{startatroot}
+
+\hypertarget{intro}{%
+\chapter{Intro}\label{intro}}
+
+R ist ein kostenloses, erweiterbares, modernes und freundliches
+Statistiksystem (programmierbar mit Lösungen in stapelweise Paketen).
+Mit R-Studio können Sie Ihre Datenverarbeitung und -analysen in R für
+sich und andere sehr gut dokumentieren. Mit den Einführungen auf dieser
+Seite sollen Sie in die Lage versetzt werden, so schnell und einfach wie
+möglich so viel wie möglich aus dem System herauszuholen. Es wird eine
+Herausforderung, die Sie schaffen werden. Gehen Sie gut gelaunt an R
+heran, üben Sie Frustrationstoleranz, machen Sie Ihre Tastatut nicht
+kaputt und sagen Sie sich immer wieder: Ich muss, ich will, ich kann.
+:-)
+
+Schauen Sie am Anfang mal Ihre Installation an. Wenn Sie R und R-Studio
+das erste Mal installieren, dann können Sie das nach der Anleitung tu,
+die Sie unter {[}Installation{]} finden. Dort erfahren Sie auch, wie Sie
+\enquote{tinytex} mit R-Studio installieren und damit die Möglichkeit
+haben, sehr schöne Berichte direkt in R-Studio setzen zu lassen
+(\href{./files/Forschungsbericht_UE_3_AG_B.pdf}{zum Beispiel}). Damit
+Sie gleich noch Literaturverweise und Literaturverzeichnis automatisiert
+mitproduzieren können, finden Sie in der Installationsanleitung auch
+gleich noch Zotero.
+
+\hypertarget{programmieren-heisst-kopieren}{%
+\section*{Programmieren heisst
+kopieren}\label{programmieren-heisst-kopieren}}
+
+\markright{Programmieren heisst kopieren}
+
+Sie lernen mit der Zeit wie Sie Aufgaben in R lösen, indem Sie sich
+Codeschnipsel suchen, diese kopieren und an Ihre Daten und Variablen
+anpassen. Mit R zu arbeiten verlangt von Ihnen keine aktiven
+Programmierkenntnisse. Sie müssen nur den richtigen Code (z.B. auf
+\enquote{Stack Overflow}) finden und für sich anpassen. So arbeiten
+übrigens die meisten Programmierer:innen in ihrem Alltag.
+
+\bookmarksetup{startatroot}
+
+\hypertarget{basics}{%
+\chapter{Basics}\label{basics}}
+
+\hypertarget{datenvisualisierung}{%
+\section{Datenvisualisierung}\label{datenvisualisierung}}
+
+\hypertarget{grundlagen-programmierung}{%
+\section{Grundlagen Programmierung}\label{grundlagen-programmierung}}
+
+\begin{itemize}
+\tightlist
+\item
+  Funktionen
+\item
+  Objekte
+\item
+  Datentypen
+\item
+  Variablen, Datensätze
+\item
+  Pakete
+\end{itemize}
+
+\hypertarget{funktionen}{%
+\subsection{Funktionen}\label{funktionen}}
+
+\bookmarksetup{startatroot}
+
+\hypertarget{Installation}{%
+\chapter{Installation}\label{Installation}}
+
+R ist ein sehr leistungsstarkes System für statistische Analysen. Sie
+können R alleine herunterladen und den integrierten Editor nutzen, um
+mit R zu arbeiten. Viel komfortabler ist es aber, die R-Umgebung
+R-Studio zu nutzen, das Ihnen hilft, Ihre Daten und Variablen leichter
+zu finden und in den R-Code zu integrieren, Sie finden Ihre Daten
+leichter und die Dateien, mit denen Sie arbeiten. Zusätzlich hilft Ihnen
+R-Studio dabei, Ihre Arbeit mit R verständlich zu dokumentieren. Dafür
+nutzen Sie sehr komfortabel Markdown, eine ganz einfache
+Kennzeichnungssprache, um Texte zu schreiben und zu formatieren. In
+R-Studio haben Sie dafür sogar einen Formatierungseditor, der Ihnen auch
+dafür Formatierungsschaltflächen zur Verfügung stellt, wie Sie sie von
+Word und ähnlichen Programmen kennen. Sie können mit dem System sogar so
+weit gehen, dass Sie Ihre Berichte komplett in R-Studio schreiben und am
+Ende als schönen PDF-Bericht rauslassen können und sogar einfach als
+Internetseite rauslassen können. Dabei werden Ihre Auswertungen in R als
+Tabellen und Grafiken direkt integriert und sie müssen es nicht in ein
+Word kopieren; UND, wenn Sie etwas an einer Variablen ändern oder etwas
+am Datensatz korrigieren, würde das automatisch für den ganzen Bericht
+geändert; UND mit einer für Sie erstellten Vorlage, haben Sie eine
+schöne Formatierungsvorlage und brauchen sich auch um solche Dinge nicht
+mehr gross zu kümmern. Dafür können/müssten Sie noch tinytex
+installieren, müssen sich dann später aber nicht mehr drum kümmern. Eine
+besondere Herausforderung wissenschaftlicher Arbeiten ist immer wieder
+die Erstellung von korrekten Literaturnachweisen und eines
+Quellenverzeichnisses. Auch da arbeitet das System für Sie. Für diese
+Aufgabe empfehle ich Ihnen Citavi zu nutzen oder Zotero. Ich zeige Ihnen
+daher noch, wie Sie Zotero installieren und nutzen können.
+
+Hier können Sie sich die Installation des gesamten Systems im Video
+anschauen.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{vembedr}\SpecialCharTok{::}\FunctionTok{embed\_youtube}\NormalTok{(}\StringTok{"BVBvx99JMU0"}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
+\NormalTok{  vembedr}\SpecialCharTok{::}\FunctionTok{use\_rounded}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{downloadquellen}{%
+\section{Downloadquellen}\label{downloadquellen}}
+
+\hypertarget{r}{%
+\subsection{R}\label{r}}
+
+Laden Sie die neuste Version von R herunter:
+
+\begin{itemize}
+\item
+  für Windows R base und am besten gleich noch R-tools R tools.
+\item
+  für Macs hier R-{[}\ldots{]}.pkg für ältere Macs mit Intel-Chips oder
+  R-{[}\ldots{]}arm64.pkg für Macs mit M1 oder M2 (bei den Macs braucht
+  es keine R-tools) .
+\item
+  für Linux R für Ihre Linuxversion .
+\end{itemize}
+
+\hypertarget{r-studio}{%
+\subsection{R Studio}\label{r-studio}}
+
+R-Studio finden Sie hier. Ihnen wird da ganz oben die Version angeboten,
+die für Ihr System die Richtige ist!
+
+\hypertarget{zotero}{%
+\subsection{Zotero}\label{zotero}}
+
+Mit Zotero können Sie Literatur verwalten, Verweise leicht automatisch
+finden und einfach in RMarkdown-Dokumente integrieren oder auch
+Verzeichnisse für Word erstellen. Zotero kann kostenlos genutzt werden.
+Daher gehe ich hier eher darauf ein. Citavi ist auch gut und inzwischen
+zum Glück auch für den Mac verfügbar. Der Nachteil ist nur, dass Sie
+Citavi nicht mehr kostenlos nutzen, können, wenn Sie die UZH mal
+verlassen und an eine andere Uni gehen, wo das Programm vielleicht nicht
+kostenlos zur Verfügung gestellt wird. Daher gehe ich hier eher auf
+Zotero ein.
+
+Hier finden Sie Zotero. Installieren Sie dann gleich noch die
+Erweiterung Dort finden Sie auch gleich die Anleitung für die
+Installation der Erweiterung.
+
+\hypertarget{reihenfolge-der-installation}{%
+\section{Reihenfolge der
+Installation}\label{reihenfolge-der-installation}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Installieren Sie erst R base
+\item
+  dann Rtools (nur auf Windows)
+\item
+  dann R-Studio
+\item
+  dann tinytex
+\item
+  dann Zotero
+\item
+  dann Zotero-better-bibtex
+\item
+  dann legen Sie den Ordner mit den ganzen Vorlagen bei sich ab.
+\end{enumerate}
+
+\hypertarget{installationsanleitung}{%
+\section{Installationsanleitung}\label{installationsanleitung}}
+
+R und R-Studio sind wie ganz normale Programe. Wie Sie die installieren,
+zeige ich im Video, aber eigentlich brauchen Sie das nicht unbedingt.
+Ein bischen anders ist die Installation von tinytex in R. Und dann zeige
+ich Ihnen noch, wie Sie Pakete in R-Studio installieren.
+
+\hypertarget{installation-von-tinytex}{%
+\subsection{Installation von tinytex}\label{installation-von-tinytex}}
+
+Gehen Sie in R-Studio oben im Menü auf den Menüpunkt \enquote{Tools} und
+dort ganz oben auf \enquote{Install Packages \ldots{}}. Dann geben Sie
+im leeren Eingabefeld \enquote{Packages} ein: \enquote{tinytex}. Wenn
+Sie es richtig geschrieben haben, steht es auch gleich fett zur Auswahl.
+Starten Sie die Installaion, indem Sie auf den Schalter
+\enquote{Install} klicken.
+
+Jetzt ist das Paket tinytex installiert, dass Ihnen die Arbeit abnimmt,
+ein TeX-System zu installieren. Das machen Sie automatisch indem Sie in
+der R-Studio-Console eingeben: \enquote{tinytex::install\_tinytex}. Dann
+machen Sie etwas Schönes. Sie haben selbst bei schnelleren Rechnern Zeit
+um sich einen Kaffee zu machen. Sie können aber auch in 20 Minuten etwas
+stöbern, um die 20 Minuten Installation vorbeiziehen zu lassen. Lassen
+Sie derweil Ihr System in Ruhe die Arbeit machen.
+
+ODER, einfach diesen Code hier kopieren, in die R-(Studio)-Konsole
+einfügen und mit Enter abschicken:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# installiere das R{-}Paket tinytex}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"tinytex"}\NormalTok{) }
+
+\CommentTok{\# installiere ein winziges LaTeX{-}System}
+\NormalTok{tinytex}\SpecialCharTok{::}\FunctionTok{install\_tinytex}\NormalTok{() }
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{installation-von-paketen}{%
+\subsection{Installation von Paketen}\label{installation-von-paketen}}
+
+Die meisten Pakete können direkt von CRAN installiert werden. Das geht
+in RStudio recht einfach über das Menü \enquote{Tools} -\textgreater{}
+\enquote{Install Packages} und dann muss nur bei \enquote{Packages}
+eingegeben werden, welche Pakete installiert werden sollen. Manchmal
+gibt es die neusten Versionen eines Paketes nicht im Repository CRAN.
+Dann müssen sie direkt von den Entwicklern installiert werden. Die
+meisten Pakete werden dann über das sogenannte GitHub istalliert. Das
+geht am einfachsten über Befehle nach dem Muster:
+remotes::install\_github(\enquote{Entwicklername/Paket}). Häufig wird
+dann von R noch gefragt, ob die Pakete und alle abhängigen Pakete
+installiert werden sollen. Oder R fragt \enquote{Möchten Sie versuchen,
+das Paket, welches eine Kompilierung erfordert, aus den Quelltexten zu
+installieren?}. In der Regel ist es gut und richtig, wenn man das
+bestätigt (Sie geben unten in der \enquote{Console} ein: \enquote{Yes}
+und lassen R dann mal machen.). Manchmal gibt es aber einen Fehler weil
+ein Paket nicht kompiliert werden kann oder so (häufiger auf Macs der
+Fall). Dann ist es sinnvoll, dass man mal \enquote{n} für No eingibt.
+Dann wählt R die letzte verfügbare binäre, also vorkompilierte Version.
+Zum Beispiel ist das oft beim Paket \enquote{systemfonts} der Fall. Da
+also besser mal beim zweiten Versuch das Kompilieren ablehnen, also auf
+\enquote{no}.
+
+Auch dieses Anleitung veraltet in der Regel schon nach einem Tag, weil
+die Entwickler für R ständig an ihren Paketen basteln. Wenn also eine
+Installation nicht funktioniert, ist es sinnvoll nach dem Paketnamen zu
+googlen, also \enquote{r Paketname} googlen. In der Regel bekommen Sie
+dann einen CRAN-Eintrag als einen der ersten Treffer. Wenn Sie da
+draufgehen, sehen sie recht technische Einträge. Dort suchen Sie dann
+\enquote{Vignette}. In den Vignetten steht eigentlich immer als erstes,
+wie diese Pakete installiert werden sollen. Das kopieren Sie sich nach R
+und schicken die Zeile einmal ab. Achten Sie darauf, ob vielleicht mal
+ein Paket umbenannt wurde und es also Nachfolgepakete gibt oder so. Dann
+nehmen Sie natürlich am besten die neue eventuell umbenannte Version.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# installiere tidyverse:}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"tidyverse"}\NormalTok{) }
+
+\DocumentationTok{\#\# installiere die neuste Version von tidycomm}
+
+\CommentTok{\# Hier werden Sie gefragt, ob Sie versuchen möchten zu kompilieren und sagen "Yes" oder "no", wenn ersteres nicht klappt}
+
+\CommentTok{\# jetzt installiere tidycomm}
+\NormalTok{remotes}\SpecialCharTok{::}\FunctionTok{install\_github}\NormalTok{(}\StringTok{"joon{-}e/tidycomm"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{die-vorlagen}{%
+\section{Die Vorlagen}\label{die-vorlagen}}
+
+Laden Sie diesen Zip-Ornder runter und speichern Sie ihn irgendwo (am
+besten in einem SWITCH-Drive-Ordner). Entpacken Sie den Ordner (meistens
+reicht der Doppelklick). In dem Ordner finden sie einige Dateien. Eine
+Datei heisst \enquote{Bericht.Rproj}. Öffnen Sie die mal. Dann finden
+Sie im Panel rechts unten einige Dateien. Öffnen Sie
+\enquote{index.Rmd}. Da ist das Setup drin und die Einleitung. Wenn Sie
+die öffnen und noch nicht alle Pakete installiert haben, die dafür
+benötigt werden, dann zeigt Ihnen R-Studio oben im Hauptfenster ein
+schmales gelbes Band an, in dem Sie darauf hingewiesen werden, dass
+nicht alle Pakete installiert sind. Dort können Sie die Installation
+direkt und automatisch starten lassen. Das dauert dann eine Weile, aber
+irgendwann ist es fertig. :-) Wenn die schrittweise Intallation
+glattgelaufen ist, sollten Sie rechts oben einen Reiter sehen, der
+\enquote{Build} heisst. Wenn Sie darauf gehen, sehen Sie einen neuen
+Schalter mit einem Hammer darauf. Klicken Sie da den Pfeil nach unten
+und dann auf \enquote{bookdown::pdf\_book} (Wenn hier nur Website steht,
+dann starten Sie R nach der Installation nochmal neu). Dann warten Sie
+(beim ersten Mal mit viel Geduld über 15-30 Minuten!). Am Ende sollte
+Ihnen ein PDF angezeight werden.
+
+\bookmarksetup{startatroot}
+
+\hypertarget{fehler-erkennen-und-luxf6sen}{%
+\chapter{Fehler erkennen und lösen}\label{fehler-erkennen-und-luxf6sen}}
+
+\hypertarget{vorgehen-bei-fehlern}{%
+\section{Vorgehen bei Fehlern}\label{vorgehen-bei-fehlern}}
+
+\emph{Problemlösungsworkflow (je Schritt 15 Minuten)}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Fragen Sie erst sich, was wohl die Fehlermeldung heissen könnte und
+  was anders ist zu Vorlagen und Beispielen (und google bzw. auf Stack
+  Overflow suchen),
+\item
+  dann Ihre AG-Kollegen,
+\item
+  bei Task-Force-Aufgaben Ihre Task-Force-Kolleg:innen (zB TF D auf
+  MS-Teams)
+\item
+  dann Ihre AG E,
+\item
+  dann im Forum auf OLAT,
+\item
+  dann direkt an
+  \href{mailto:b.fretwurst@ikmz.uzh.ch}{\nolinkurl{b.fretwurst@ikmz.uzh.ch}}
+  oder auf Teams \enquote{Fretwurst} oder \enquote{Nadia},
+\item
+  Stack Overflow mit \enquote{reprex} bzw. \enquote{mwe},
+\item
+  Externe direkt (keine Mails an Martin Wettstein). Eher fragt Fretwurst
+  bei Paketautoren.
+\end{enumerate}
+
+\hypertarget{bei-fragen-zu-fehlern-mitzugeben}{%
+\section{Bei Fragen zu Fehlern
+mitzugeben}\label{bei-fragen-zu-fehlern-mitzugeben}}
+
+Wenn Sie Fehlermeldungen bekommen, senden Sie nicht einfach nur
+Screenshots. Damit kann niemand etwas anfangen. Wenn Ihnen geholfen
+werden soll, müssen Sie die R-Zeilen (bzw. die R-Script-Datei) sowie den
+zugrundeliegenden Datensatz mitliefern und mitteilen, wo der Fehler
+auftritt.
+
+Zu Ihren Fragen liefern Sie also bitte immer:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  die Datendatei (als .RDS, .RData oder Excel-Datei),
+\item
+  Betroffener Befehl muss mitgeliefert werden als Text. Im Idealfall die
+  .Rmd mit Zeilenhinweis (lokalisieren Sie den Fehler innerhalb einer
+  Pipe).
+\item
+  Den Fehleroutput als Text und zusätzlich gerne als Screenshot.
+\item
+  Was schon probiert wurde.
+\end{enumerate}
+
+\hypertarget{typische-fehler-erkennen-und-beheben}{%
+\section{Typische Fehler erkennen und
+beheben}\label{typische-fehler-erkennen-und-beheben}}
+
+Die häufigsten Fehler und Lösungen sind:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Pakete sind nicht installiert: Tools -\textgreater{} \enquote{Install
+  Packages} Paket installieren
+\item
+  Pakete sind nicht geladen: Paket laden library(Paketname) und
+  index.Rmd nutzen, um alle nötigen Pakete in der richtigen Reihenfolge
+  zu laden
+\item
+  Datensätze können nicht gefunden werden: Den richtigen Pfad einstellen
+  mit Unterordner zB DATEN\_BF \textless-
+  readRDS(\enquote{Daten/DATEN\_BF.RDS})
+\item
+  Datenobjekt wird nicht gefunden, weil es noch nicht geladen wurde:
+  Daten laden zB DATEN\_BF \textless-
+  readRDS(\enquote{Daten/DATEN\_BF.RDS})
+\item
+  Datenobjekt wird nicht gefunden, weil es falsch geschrieben ist:
+  Kontrollieren Sie auch Gross-Klein-Schreibung
+\item
+  Variable wird nicht gefunden, weil sie falsch geschrieben ist:
+  Schreiben Sie den Variablennamen neu und schauen Sie ob sie ihn in der
+  Hilfsliste sehen.
+\item
+  Kommata oder Klammern fehlen oder sind zu viel: Es wird links in R ein
+  roter Kreis mit weissem x angezeigt. Wenn Sie da drauf gehen, sagt
+  Ihnen R-Studio in der Regel was fehlt oder zu viel ist.
+\item
+  Es werden mehrere Zeilen grün ausgeführt, aber es passiert nichts
+  weiter: Schauen Sie ob am Ende ein Magritter (\%\textgreater\%) zu
+  viel ist.
+\item
+  Es kann \enquote{eine Funktion nicht gefunden} werden, weil ein Paket
+  fehlt oder die Funktion ist falsch geschrieben ist: Googlen Sie die
+  Funktion und schauen, aus welchem Paket die ist. Sie können dann
+  probieren, ob¬ es mit Paketname::Funktion geht zB janitor::percent.
+\item
+  Variablen sind vom falschen Typ: Wandeln Sie den Typ um. ZB: DATEN\_BF
+  \%\textgreater\% mutate(Nachricht = as.numeric(Nachricht)).
+\end{enumerate}
+
+Googlen Sie Ihre Fehlermeldungen oder Funktionen, die Fehler erzeugen
+und schauen sich den Syntax an, wie die Funktionen geschrieben sein
+sollten. Üben Sie sich in Frustrationstolleranz. Haben Sie geduld und
+suchen Sie den Fehler im Detail.
+
+\href{https://www.uni-muenster.de/imperia/md/content/psyifp/ae_holling/r-fehlermeldungen.pdf}{Ein
+Kollege gibt hier ein paar Hinweise wie Fehler in R lesbar sind in einer
+PDF-Datei.} Hier habe ich noch ein Video mit typischen Fehlern und
+Lösungen:
+
+\bookmarksetup{startatroot}
+
+\hypertarget{relitest}{%
+\chapter{Relitest}\label{relitest}}
+
+Dazu gibt es auch ein Video:
+
+\begin{verbatim}
+## -- Attaching packages ------------------------------------------------- tidyverse 1.3.2 --
+## v ggplot2 3.4.0      v purrr   1.0.1 
+## v tibble  3.1.8      v dplyr   1.0.10
+## v tidyr   1.2.1      v stringr 1.5.0 
+## v readr   2.1.3      v forcats 0.5.2 
+## -- Conflicts ---------------------------------------------------- tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+\end{verbatim}
+
+Hier finden Sie den im Video erwähnten gezippten Ordner mit der
+Relitest.Rmd. Den Ordner müssen Sie entpacken und an eine gute Stelle in
+ihrem System tun. In dem Ordner wo sich diese Datei
+\enquote{Relitest.Rmd} befindet, muss es einen Unterordner mit der
+Bezeichnung \enquote{Daten} geben, wo die Excel-Dateien
+\enquote{RelidatenCoder1.xlsx} usw. liegen. s \#\# Relidaten
+Zusammenbinden
+
+Sie werden die Inhaltsanalyse in Excel kodieren. Die Exceldateien müssen
+dann in R importiert werden. Das geht zB mit \textbf{read\_xlsx} des
+Pakets \textbf{read.xl}. Wie Sie sehen werden die Exceldateien der Coder
+(im Beispiel 1 bis 3) jeweils in R-Dateien eingelesen (RelitestCoder1
+\textless- \ldots) und dann mit dem Befehl rbind (steht für Rows
+aneinander binden) zu einer Datei zusammengefügt, die dann angeschaut
+oder für Relitests weiterverarbeitet werden kann.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Lade alle Relitestdateien aus dem Ordner "Daten" (den es geben muss mit allen Relidateien):}
+
+\NormalTok{RelitestCoder1 }\OtherTok{\textless{}{-}}\NormalTok{ readxl}\SpecialCharTok{::}\FunctionTok{read\_excel}\NormalTok{(}\StringTok{"Daten/RelidatenCoder1.xlsx"}\NormalTok{)}
+\NormalTok{RelitestCoder2 }\OtherTok{\textless{}{-}}\NormalTok{ readxl}\SpecialCharTok{::}\FunctionTok{read\_excel}\NormalTok{(}\StringTok{"Daten/RelidatenCoder2.xlsx"}\NormalTok{)}
+\NormalTok{RelitestCoder3 }\OtherTok{\textless{}{-}}\NormalTok{ readxl}\SpecialCharTok{::}\FunctionTok{read\_excel}\NormalTok{(}\StringTok{"Daten/Klausis erster Relitest.xlsx"}\NormalTok{)}
+
+\CommentTok{\# Binde die Relidatensätze der Coder:innen zu einem Datenobjekt "RelitestGesamt zusammen:}
+\NormalTok{Relitest\_Gesamt }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(RelitestCoder1, RelitestCoder2, RelitestCoder3) }
+
+\NormalTok{Relitest\_Gesamt }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(CODER, CU) }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{mutate}\NormalTok{(}\AttributeTok{Fehler =} \FunctionTok{ifelse}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(CODER) }\SpecialCharTok{|} \FunctionTok{is.na}\NormalTok{(CU), }\StringTok{"FEHLER! Muss in der RelitestGesamt.xlsx repariert und als Relitest\_bearbeitet.xlsx gespeichert werden oder der:die Coder:in muss es überarbeiten"}\NormalTok{, }\StringTok{"alles gut"}\NormalTok{)) }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{count}\NormalTok{(Fehler)}
+\DocumentationTok{\#\# \# A tibble: 2 x 2}
+\DocumentationTok{\#\#   Fehler                                                                                 n}
+\DocumentationTok{\#\#   \textless{}chr\textgreater{}                                                                              \textless{}int\textgreater{}}
+\DocumentationTok{\#\# 1 alles gut                                                                             15}
+\DocumentationTok{\#\# 2 FEHLER! Muss in der RelitestGesamt.xlsx repariert und als Relitest\_bearbeitet.xls\textasciitilde{}     7}
+
+\CommentTok{\# hier schreibe ich die Daten mal aus R raus in Excel, damit ich sie in Excel besser angucken kann und dort easy bereinige. Kann so gemacht werden oder alles in R, was schicker ist, aber nicht so praktisch.}
+
+\NormalTok{writexl}\SpecialCharTok{::}\FunctionTok{write\_xlsx}\NormalTok{(Relitest\_Gesamt, }\StringTok{"Daten/Relitest\_Gesamt.xlsx"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{relitest-1}{%
+\section{Relitest}\label{relitest-1}}
+
+Den Relitest selbst kann man mit test\_icr des Pakets tidycomm machen.
+Dazu werden zunächst die Daten geladen (im Beispiel
+\enquote{RelitestDaten}) und dann mit der Pipe (neu statt
+\%\textgreater\% der Pipoperator \textbar\textgreater{} ) der Befehl
+test\_icr ausgeführt. An erster Stelle steht die Variable für die Coding
+Unit (CU), die im Datensatz RelitestBeispiele einfach \enquote{CU}
+heisst. Als nächstes folgt die Variable für den Coder (im Beispiel
+einfach \enquote{CODER}). In den Variablen CU und CODER dürfen nur
+Zahlen stehen! Also muss jeder Kodierer eine Nummer eingeben und auch
+die Artikel im Relimaterial nummeriert sein. Dann können Sie einzelne
+Variablennamen anfügen, für die die Reliwerte ausgewertet werden sollen
+oooooder Sie lassen das weg und es werden für alle Variablen Reliwerte
+berechnet. Wenn Sie fehlende Werte im Datensatz haben, dann sollten Sie
+am Ende \enquote{na.omit = TRUE} stehen haben, sonst meckert R, dass
+Fehlende Werte gefunden wurden.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# hier lade ich die Relidaten aus Excel wieder rein in R}
+\NormalTok{RelitestDaten }\OtherTok{\textless{}{-}}\NormalTok{ readxl}\SpecialCharTok{::}\FunctionTok{read\_xlsx}\NormalTok{(}\StringTok{"Daten/Relitest\_bearbeitet.xlsx"}\NormalTok{)}
+
+\CommentTok{\# Sie können mit dem folgenden Befehl Variablen umkodieren und gleich in eckigen Klammern labeln }
+\NormalTok{RelitestDaten }\OtherTok{\textless{}{-}}\NormalTok{ RelitestDaten }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Worte\_gr =}\NormalTok{ sjmisc}\SpecialCharTok{::}\FunctionTok{rec}\NormalTok{(Worte, }\AttributeTok{rec =} 
+                       \StringTok{"min:100 = 1 [Kurzmeldung]; }
+\StringTok{                        101:150 = 2 [kurzer Artikel]; }
+\StringTok{                        151:300 = 3 [länger]; }
+\StringTok{                        301:500 = 4 [lang]; }
+\StringTok{                        501:max = 5 [Langtext]"}\NormalTok{)) }\SpecialCharTok{|\textgreater{}} 
+    \FunctionTok{relocate}\NormalTok{(Worte\_gr, }\AttributeTok{.after =}\NormalTok{ Worte) }\CommentTok{\# hier sortiere ich die neue Variable direkt hinter die alte}
+
+\NormalTok{RelitestDaten }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  sjmisc}\SpecialCharTok{::}\FunctionTok{frq}\NormalTok{(Worte\_gr) }\CommentTok{\# machen wir mal ne Häufigkeitsauszählung für "Worte\_gr"}
+\DocumentationTok{\#\# Worte\_gr \textless{}numeric\textgreater{} }
+\DocumentationTok{\#\# \# total N=190 valid N=190 mean=3.61 sd=1.20}
+\DocumentationTok{\#\# }
+\DocumentationTok{\#\# Value |          Label |  N | Raw \% | Valid \% | Cum. \%}
+\DocumentationTok{\#\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\DocumentationTok{\#\#     1 |    Kurzmeldung | 19 | 10.00 |   10.00 |  10.00}
+\DocumentationTok{\#\#     2 | kurzer Artikel | 19 | 10.00 |   10.00 |  20.00}
+\DocumentationTok{\#\#     3 |         länger | 18 |  9.47 |    9.47 |  29.47}
+\DocumentationTok{\#\#     4 |           lang | 96 | 50.53 |   50.53 |  80.00}
+\DocumentationTok{\#\#     5 |       Langtext | 38 | 20.00 |   20.00 | 100.00}
+\DocumentationTok{\#\#  \textless{}NA\textgreater{} |           \textless{}NA\textgreater{} |  0 |  0.00 |    \textless{}NA\textgreater{} |   \textless{}NA\textgreater{}}
+
+\NormalTok{RelitestDaten }\OtherTok{\textless{}{-}}\NormalTok{ RelitestDaten }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{mutate}\NormalTok{(}\AttributeTok{Voyer\_r =}\NormalTok{ sjmisc}\SpecialCharTok{::}\FunctionTok{rec}\NormalTok{(Voyeur, }\AttributeTok{rec =} \StringTok{"0 = 0 [kommt nicht vor]; 1:3 = 1 [kommt vor]; else = copy"}\NormalTok{)) }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{relocate}\NormalTok{(Voyer\_r, }\AttributeTok{.after =}\NormalTok{ Voyeur)}
+
+\NormalTok{RelitestDaten }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  sjmisc}\SpecialCharTok{::}\FunctionTok{frq}\NormalTok{(Voyer\_r)}
+\DocumentationTok{\#\# Voyer\_r \textless{}numeric\textgreater{} }
+\DocumentationTok{\#\# \# total N=190 valid N=190 mean=0.44 sd=0.50}
+\DocumentationTok{\#\# }
+\DocumentationTok{\#\# Value |           Label |   N | Raw \% | Valid \% | Cum. \%}
+\DocumentationTok{\#\# {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\DocumentationTok{\#\#     0 | kommt nicht vor | 106 | 55.79 |   55.79 |  55.79}
+\DocumentationTok{\#\#     1 |       kommt vor |  84 | 44.21 |   44.21 | 100.00}
+\DocumentationTok{\#\#  \textless{}NA\textgreater{} |            \textless{}NA\textgreater{} |   0 |  0.00 |    \textless{}NA\textgreater{} |   \textless{}NA\textgreater{}}
+
+\CommentTok{\# hier kommt dann der eigentliche Relitest. in test\_icr muss ganz vorne der Variblenname der Kodiereinheit (CU) stehen und danach für die CODER. }
+
+\NormalTok{RelitestOutput }\OtherTok{\textless{}{-}}\NormalTok{ RelitestDaten }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  tidycomm}\SpecialCharTok{::}\FunctionTok{test\_icr}\NormalTok{(}\AttributeTok{unit\_var =}\NormalTok{ CU, }\AttributeTok{coder\_var =}\NormalTok{ CODER, Medium}\SpecialCharTok{:}\NormalTok{Kurios, }\AttributeTok{kripp\_alpha =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{lotus =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{s\_lotus =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{na.omit =} \ConstantTok{TRUE}\NormalTok{)}
+
+\NormalTok{RelitestOutput }\CommentTok{\# hier den Output des Relitest mal schnell in R angucken}
+\DocumentationTok{\#\# \# A tibble: 39 x 10}
+\DocumentationTok{\#\#   Variable   n\_Units n\_Coders n\_Categories Level   Agreement Holst\textasciitilde{}1 Kripp\textasciitilde{}2 Lotus S\_Lotus}
+\DocumentationTok{\#\#   \textless{}chr\textgreater{}        \textless{}int\textgreater{}    \textless{}int\textgreater{}        \textless{}int\textgreater{} \textless{}chr\textgreater{}       \textless{}dbl\textgreater{}   \textless{}dbl\textgreater{}   \textless{}dbl\textgreater{} \textless{}dbl\textgreater{}   \textless{}dbl\textgreater{}}
+\DocumentationTok{\#\# 1 Medium          10       19            5 nominal       1     1       1     1       1    }
+\DocumentationTok{\#\# 2 ThemSchwer      10       19            6 nominal       0.5   0.860   0.794 0.911   0.893}
+\DocumentationTok{\#\# 3 Titel           10       19           36 nominal       0.1   0.665   0.643 0.795   0.789}
+\DocumentationTok{\#\# 4 Worte           10       19           42 nominal       0     0.378   0.343 0.589   0.579}
+\DocumentationTok{\#\# 5 Worte\_gr        10       19            5 nominal       0.2   0.850   0.780 0.921   0.901}
+\DocumentationTok{\#\# 6 ArtLang         10       19            2 nominal       0.7   0.959   0.915 0.979   0.958}
+\DocumentationTok{\#\# \# ... with 33 more rows, and abbreviated variable names 1: Holstis\_CR,}
+\DocumentationTok{\#\# \#   2: Krippendorffs\_Alpha}
+
+\CommentTok{\# Das ist im Prinzip das Gleiche wie oben, aber für Worte wird das Skalenniveau "interval" angegeben und für Artikellänge "ordinal"}
+\NormalTok{RelitestOutput }\OtherTok{\textless{}{-}}\NormalTok{ RelitestDaten }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{tidycomm}\SpecialCharTok{::}\FunctionTok{test\_icr}\NormalTok{(}\AttributeTok{unit\_var =}\NormalTok{ CU, }\AttributeTok{coder\_var =}\NormalTok{ CODER, Medium}\SpecialCharTok{:}\NormalTok{Kurios, }\CommentTok{\# }
+           \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\AttributeTok{Worte =} \StringTok{"interval"}\NormalTok{, }\AttributeTok{ArtLang =} \StringTok{"ordinal"}\NormalTok{), }\CommentTok{\# hier die Skalnenniveaus; nominal ist Standard}
+           \AttributeTok{kripp\_alpha =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{lotus =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{s\_lotus =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{agreement =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{holsti =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{na.omit =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{    dplyr}\SpecialCharTok{::}\FunctionTok{mutate\_if}\NormalTok{(is.numeric, round, }\AttributeTok{digits =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{|\textgreater{}}  \CommentTok{\# hiermit noch auf zwei Stellen runden {-} reicht jas}
+\NormalTok{    dplyr}\SpecialCharTok{::}\FunctionTok{mutate}\NormalTok{(}\AttributeTok{S\_Lotus =} \FunctionTok{ifelse}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(S\_Lotus), }\DecValTok{1}\NormalTok{, S\_Lotus)) }\CommentTok{\# Wenn alle Coder:innen nur eine und dieselbe Kategorie gewählt haben, ist S\_Lotus nicht definiert, aber 1}
+
+
+\NormalTok{RelitestOutput }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  kableExtra}\SpecialCharTok{::}\FunctionTok{kbl}\NormalTok{() }\SpecialCharTok{|\textgreater{}} \CommentTok{\# und hier noch hübsch und dann bunt mit kbl}
+\NormalTok{  kableExtra}\SpecialCharTok{::}\FunctionTok{kable\_material}\NormalTok{() }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{    kableExtra}\SpecialCharTok{::}\FunctionTok{column\_spec}\NormalTok{(}\DecValTok{6}\NormalTok{, }\AttributeTok{color =} \FunctionTok{ifelse}\NormalTok{(RelitestOutput}\SpecialCharTok{$}\NormalTok{Krippendorffs\_Alpha }\SpecialCharTok{\textgreater{}} \FloatTok{0.3} \SpecialCharTok{\&}\NormalTok{ RelitestOutput}\SpecialCharTok{$}\NormalTok{Krippendorffs\_Alpha }\SpecialCharTok{\textless{}} \FloatTok{0.75}\NormalTok{, }\StringTok{"black"}\NormalTok{, }\StringTok{"white"}\NormalTok{),}
+              \AttributeTok{background =}\NormalTok{ kableExtra}\SpecialCharTok{::}\FunctionTok{spec\_color}\NormalTok{(RelitestOutput}\SpecialCharTok{$}\NormalTok{Krippendorffs\_Alpha[}\DecValTok{0}\SpecialCharTok{:}\DecValTok{100}\NormalTok{], }\AttributeTok{begin =} \DecValTok{0}\NormalTok{, }\AttributeTok{end =} \DecValTok{1}\NormalTok{, }\AttributeTok{option =} \StringTok{"turbo"}\NormalTok{, }\AttributeTok{direction =} \SpecialCharTok{{-}}\DecValTok{1}\NormalTok{)) }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{    kableExtra}\SpecialCharTok{::}\FunctionTok{column\_spec}\NormalTok{(}\DecValTok{7}\NormalTok{, }\AttributeTok{color =} \FunctionTok{ifelse}\NormalTok{(RelitestOutput}\SpecialCharTok{$}\NormalTok{Lotus }\SpecialCharTok{\textgreater{}} \FloatTok{0.6} \SpecialCharTok{\&}\NormalTok{ RelitestOutput}\SpecialCharTok{$}\NormalTok{Lotus }\SpecialCharTok{\textless{}} \FloatTok{0.9}\NormalTok{, }\StringTok{"black"}\NormalTok{, }\StringTok{"white"}\NormalTok{),}
+              \AttributeTok{background =}\NormalTok{ kableExtra}\SpecialCharTok{::}\FunctionTok{spec\_color}\NormalTok{(RelitestOutput}\SpecialCharTok{$}\NormalTok{Lotus[}\DecValTok{0}\SpecialCharTok{:}\DecValTok{100}\NormalTok{], }\AttributeTok{begin =} \DecValTok{0}\NormalTok{, }\AttributeTok{end =} \DecValTok{1}\NormalTok{, }\AttributeTok{option =} \StringTok{"turbo"}\NormalTok{, }\AttributeTok{direction =} \SpecialCharTok{{-}}\DecValTok{1}\NormalTok{)) }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{    kableExtra}\SpecialCharTok{::}\FunctionTok{column\_spec}\NormalTok{(}\DecValTok{8}\NormalTok{, }\AttributeTok{color =} \FunctionTok{ifelse}\NormalTok{(RelitestOutput}\SpecialCharTok{$}\NormalTok{S\_Lotus }\SpecialCharTok{\textgreater{}} \FloatTok{0.6} \SpecialCharTok{\&}\NormalTok{ RelitestOutput}\SpecialCharTok{$}\NormalTok{S\_Lotus }\SpecialCharTok{\textless{}} \FloatTok{0.9}\NormalTok{, }\StringTok{"black"}\NormalTok{, }\StringTok{"white"}\NormalTok{),}
+              \AttributeTok{background =}\NormalTok{ kableExtra}\SpecialCharTok{::}\FunctionTok{spec\_color}\NormalTok{(RelitestOutput}\SpecialCharTok{$}\NormalTok{S\_Lotus[}\DecValTok{0}\SpecialCharTok{:}\DecValTok{100}\NormalTok{], }\AttributeTok{begin =} \DecValTok{0}\NormalTok{, }\AttributeTok{end =} \DecValTok{1}\NormalTok{, }\AttributeTok{option =} \StringTok{"turbo"}\NormalTok{, }\AttributeTok{direction =} \SpecialCharTok{{-}}\DecValTok{1}\NormalTok{))}
+\DocumentationTok{\#\# Warning in ensure\_len\_latex(background, nrows, off, include\_thead, "white", : The number}
+\DocumentationTok{\#\# of provided values in background does not equal to the number of rows.}
+
+\DocumentationTok{\#\# Warning in ensure\_len\_latex(background, nrows, off, include\_thead, "white", : The number}
+\DocumentationTok{\#\# of provided values in background does not equal to the number of rows.}
+
+\DocumentationTok{\#\# Warning in ensure\_len\_latex(background, nrows, off, include\_thead, "white", : The number}
+\DocumentationTok{\#\# of provided values in background does not equal to the number of rows.}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|r|r|r|l|>{}r|>{}r|>{}r}
+\hline
+Variable & n\_Units & n\_Coders & n\_Categories & Level & Krippendorffs\_Alpha & Lotus & S\_Lotus\\
+\hline
+Medium & 10 & 19 & 5 & nominal & \cellcolor[HTML]{30123B}{\textcolor{white}{1.00}} & \cellcolor[HTML]{30123B}{\textcolor{white}{1.00}} & \cellcolor[HTML]{30123B}{\textcolor{white}{1.00}}\\
+\hline
+ThemSchwer & 10 & 19 & 6 & nominal & \cellcolor[HTML]{3AA3FC}{\textcolor{white}{0.79}} & \cellcolor[HTML]{3D9EFE}{\textcolor{white}{0.91}} & \cellcolor[HTML]{4294FF}{\textcolor{black}{0.89}}\\
+\hline
+Titel & 10 & 19 & 36 & nominal & \cellcolor[HTML]{2AEFA1}{\textcolor{black}{0.64}} & \cellcolor[HTML]{92FF47}{\textcolor{black}{0.79}} & \cellcolor[HTML]{27EEA4}{\textcolor{black}{0.79}}\\
+\hline
+Worte & 10 & 19 & 42 & interval & \cellcolor[HTML]{1CCDD8}{\textcolor{black}{0.72}} & \cellcolor[HTML]{AF1801}{\textcolor{white}{0.59}} & \cellcolor[HTML]{FE932A}{\textcolor{white}{0.58}}\\
+\hline
+Worte\_gr & 10 & 19 & 5 & nominal & \cellcolor[HTML]{35ABF8}{\textcolor{white}{0.78}} & \cellcolor[HTML]{448FFE}{\textcolor{white}{0.92}} & \cellcolor[HTML]{458AFC}{\textcolor{white}{0.90}}\\
+\hline
+ArtLang & 10 & 19 & 2 & ordinal & \cellcolor[HTML]{434EBA}{\textcolor{white}{0.92}} & \cellcolor[HTML]{3D358B}{\textcolor{white}{0.98}} & \cellcolor[HTML]{4146AC}{\textcolor{white}{0.96}}\\
+\hline
+Datum & 10 & 19 & 4 & nominal & \cellcolor[HTML]{1AE4B6}{\textcolor{black}{0.67}} & \cellcolor[HTML]{448FFE}{\textcolor{white}{0.92}} & \cellcolor[HTML]{4294FF}{\textcolor{black}{0.89}}\\
+\hline
+Format & 10 & 19 & 4 & nominal & \cellcolor[HTML]{467DF4}{\textcolor{white}{0.85}} & \cellcolor[HTML]{4454C3}{\textcolor{white}{0.96}} & \cellcolor[HTML]{4451BF}{\textcolor{white}{0.95}}\\
+\hline
+Bilder & 10 & 19 & 13 & nominal & \cellcolor[HTML]{28BCEB}{\textcolor{white}{0.75}} & \cellcolor[HTML]{1DE7B2}{\textcolor{black}{0.85}} & \cellcolor[HTML]{1FC9DD}{\textcolor{black}{0.84}}\\
+\hline
+Nutzen\_ig & 10 & 19 & 4 & nominal & \cellcolor[HTML]{F1CB3A}{\textcolor{black}{0.37}} & \cellcolor[HTML]{3CF58E}{\textcolor{black}{0.83}} & \cellcolor[HTML]{35F394}{\textcolor{black}{0.78}}\\
+\hline
+Alltagswelt & 10 & 19 & 3 & nominal & \cellcolor[HTML]{9B0F01}{\textcolor{white}{0.05}} & \cellcolor[HTML]{92FF47}{\textcolor{black}{0.79}} & \cellcolor[HTML]{B9F635}{\textcolor{black}{0.69}}\\
+\hline
+Nah\_Welt & 10 & 19 & 2 & nominal & \cellcolor[HTML]{E5D938}{\textcolor{black}{0.40}} & \cellcolor[HTML]{1FC9DD}{\textcolor{black}{0.88}} & \cellcolor[HTML]{43F787}{\textcolor{black}{0.77}}\\
+\hline
+Nah\_EU & 10 & 19 & 2 & nominal & \cellcolor[HTML]{22EBAA}{\textcolor{black}{0.65}} & \cellcolor[HTML]{4682F8}{\textcolor{white}{0.93}} & \cellcolor[HTML]{2CB7F0}{\textcolor{black}{0.86}}\\
+\hline
+Nah\_CH & 10 & 19 & 2 & nominal & \cellcolor[HTML]{D9E436}{\textcolor{black}{0.42}} & \cellcolor[HTML]{2AEFA1}{\textcolor{black}{0.84}} & \cellcolor[HTML]{C6F034}{\textcolor{black}{0.68}}\\
+\hline
+Nah\_Kant & 10 & 19 & 2 & nominal & \cellcolor[HTML]{EECF3A}{\textcolor{black}{0.38}} & \cellcolor[HTML]{1FC9DD}{\textcolor{black}{0.88}} & \cellcolor[HTML]{55FA76}{\textcolor{black}{0.76}}\\
+\hline
+Nah\_Stadt & 10 & 19 & 2 & nominal & \cellcolor[HTML]{CDEC34}{\textcolor{black}{0.44}} & \cellcolor[HTML]{18DEC0}{\textcolor{black}{0.86}} & \cellcolor[HTML]{88FF4E}{\textcolor{black}{0.73}}\\
+\hline
+Nah\_Gem & 10 & 19 & 2 & nominal & \cellcolor[HTML]{FDAE35}{\textcolor{black}{0.32}} & \cellcolor[HTML]{4682F8}{\textcolor{white}{0.93}} & \cellcolor[HTML]{25C0E7}{\textcolor{black}{0.85}}\\
+\hline
+Nah\_nix & 10 & 19 & 2 & nominal & \cellcolor[HTML]{A91601}{\textcolor{white}{0.07}} & \cellcolor[HTML]{4143A7}{\textcolor{white}{0.97}} & \cellcolor[HTML]{4451BF}{\textcolor{white}{0.95}}\\
+\hline
+Naehe & 10 & 19 & 16 & nominal & \cellcolor[HTML]{E5D938}{\textcolor{black}{0.40}} & \cellcolor[HTML]{F76F1A}{\textcolor{black}{0.66}} & \cellcolor[HTML]{EBD339}{\textcolor{black}{0.64}}\\
+\hline
+Voyeur & 10 & 19 & 4 & nominal & \cellcolor[HTML]{FEA130}{\textcolor{white}{0.30}} & \cellcolor[HTML]{FEA130}{\textcolor{black}{0.69}} & \cellcolor[HTML]{FEA130}{\textcolor{white}{0.59}}\\
+\hline
+Voyer\_r & 10 & 19 & 2 & nominal & \cellcolor[HTML]{FEA732}{\textcolor{black}{0.31}} & \cellcolor[HTML]{A4FC3C}{\textcolor{black}{0.78}} & \cellcolor[HTML]{FA7B1F}{\textcolor{white}{0.56}}\\
+\hline
+Sex & 10 & 19 & 1 & nominal & \cellcolor[HTML]{30123B}{\textcolor{white}{1.00}} & \cellcolor[HTML]{30123B}{\textcolor{white}{1.00}} & \cellcolor[HTML]{30123B}{\textcolor{white}{1.00}}\\
+\hline
+Schicksal & 10 & 19 & 2 & nominal & \cellcolor[HTML]{F5C53A}{\textcolor{black}{0.36}} & \cellcolor[HTML]{3CF58E}{\textcolor{black}{0.83}} & \cellcolor[HTML]{D9E436}{\textcolor{black}{0.66}}\\
+\hline
+Risiko & 10 & 19 & 4 & nominal & \cellcolor[HTML]{ED5510}{\textcolor{white}{0.20}} & \cellcolor[HTML]{AF1801}{\textcolor{white}{0.59}} & \cellcolor[HTML]{B21A01}{\textcolor{white}{0.46}}\\
+\hline
+Serviceinfos & 9 & 19 & 2 & nominal & \cellcolor[HTML]{DA3907}{\textcolor{white}{0.15}} & \cellcolor[HTML]{3CF58E}{\textcolor{black}{0.83}} & \cellcolor[HTML]{D9E436}{\textcolor{black}{0.66}}\\
+\hline
+Person & 10 & 19 & 5 & nominal & \cellcolor[HTML]{FE932A}{\textcolor{white}{0.28}} & \cellcolor[HTML]{E2430A}{\textcolor{black}{0.63}} & \cellcolor[HTML]{EC530F}{\textcolor{white}{0.53}}\\
+\hline
+Promis & 10 & 19 & 4 & nominal & \cellcolor[HTML]{D4E735}{\textcolor{black}{0.43}} & \cellcolor[HTML]{E7D739}{\textcolor{black}{0.73}} & \cellcolor[HTML]{EBD339}{\textcolor{black}{0.64}}\\
+\hline
+Emo & 10 & 19 & 4 & nominal & \cellcolor[HTML]{DA3907}{\textcolor{white}{0.15}} & \cellcolor[HTML]{FE932A}{\textcolor{black}{0.68}} & \cellcolor[HTML]{FC8725}{\textcolor{white}{0.57}}\\
+\hline
+Einfluss & 10 & 19 & 4 & nominal & \cellcolor[HTML]{84FF51}{\textcolor{black}{0.54}} & \cellcolor[HTML]{65FD69}{\textcolor{black}{0.81}} & \cellcolor[HTML]{65FD69}{\textcolor{black}{0.75}}\\
+\hline
+Kontroverse & 10 & 19 & 4 & nominal & \cellcolor[HTML]{E5D938}{\textcolor{black}{0.40}} & \cellcolor[HTML]{92FF47}{\textcolor{black}{0.79}} & \cellcolor[HTML]{96FE44}{\textcolor{black}{0.72}}\\
+\hline
+Konflikt & 10 & 19 & 2 & nominal & \cellcolor[HTML]{BE2102}{\textcolor{white}{0.10}} & \cellcolor[HTML]{3D9EFE}{\textcolor{white}{0.91}} & \cellcolor[HTML]{18DBC5}{\textcolor{black}{0.82}}\\
+\hline
+Normbruch & 10 & 19 & 4 & nominal & \cellcolor[HTML]{18E0BD}{\textcolor{black}{0.68}} & \cellcolor[HTML]{1AD4D0}{\textcolor{black}{0.87}} & \cellcolor[HTML]{18DBC5}{\textcolor{black}{0.82}}\\
+\hline
+Katastrophe & 10 & 19 & 4 & nominal & \cellcolor[HTML]{E9D539}{\textcolor{black}{0.39}} & \cellcolor[HTML]{65FD69}{\textcolor{black}{0.81}} & \cellcolor[HTML]{75FE5C}{\textcolor{black}{0.74}}\\
+\hline
+Aktual & 10 & 19 & 4 & nominal & \cellcolor[HTML]{A91601}{\textcolor{white}{0.07}} & \cellcolor[HTML]{7A0403}{\textcolor{white}{0.56}} & \cellcolor[HTML]{7A0403}{\textcolor{white}{0.42}}\\
+\hline
+Kontinuität & 10 & 19 & 2 & nominal & \cellcolor[HTML]{ACFB38}{\textcolor{black}{0.49}} & \cellcolor[HTML]{4EF97D}{\textcolor{black}{0.82}} & \cellcolor[HTML]{EBD339}{\textcolor{black}{0.64}}\\
+\hline
+Ueberrasch & 10 & 19 & 3 & nominal & \cellcolor[HTML]{7A0403}{\textcolor{white}{0.01}} & \cellcolor[HTML]{DDE037}{\textcolor{black}{0.74}} & \cellcolor[HTML]{FBB838}{\textcolor{black}{0.61}}\\
+\hline
+Sensation & 9 & 19 & 2 & nominal & \cellcolor[HTML]{F8721C}{\textcolor{white}{0.24}} & \cellcolor[HTML]{DDE037}{\textcolor{black}{0.74}} & \cellcolor[HTML]{BC2002}{\textcolor{white}{0.47}}\\
+\hline
+Superlative & 10 & 19 & 2 & nominal & \cellcolor[HTML]{7A0403}{\textcolor{white}{0.01}} & \cellcolor[HTML]{4664DA}{\textcolor{white}{0.95}} & \cellcolor[HTML]{4680F6}{\textcolor{white}{0.91}}\\
+\hline
+Kurios & 10 & 19 & 2 & nominal & \cellcolor[HTML]{F15D13}{\textcolor{white}{0.21}} & \cellcolor[HTML]{92FF47}{\textcolor{black}{0.79}} & \cellcolor[HTML]{FEA130}{\textcolor{white}{0.59}}\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\NormalTok{writexl}\SpecialCharTok{::}\FunctionTok{write\_xlsx}\NormalTok{(RelitestOutput, }\StringTok{"RelitestOutput.xlsx"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\bookmarksetup{startatroot}
+
+\hypertarget{daten-laden-und-fusionieren}{%
+\chapter{Daten laden und
+fusionieren}\label{daten-laden-und-fusionieren}}
+
+\hypertarget{daten-aus-soscisurvey-tf-b}{%
+\section{Daten aus SosciSurvey (TF
+B)}\label{daten-aus-soscisurvey-tf-b}}
+
+Gehen Sie in SosciSurvey unter \enquote{Steuerung} auf \enquote{Erhobene
+Daten} und dann auf \enquote{Auswahlkritierien für gültige Fälle} und
+haken Sie \enquote{Interview (Aufruf der Fragenbogen-URL)} an und den
+Rest wieder ab, falls das noch an ist. Dann gehen Sie unter
+\enquote{Erhobene Daten} auf \enquote{Daten herunterladen}. Dort finden
+Sie mehrere Reiter für verschiedene Datentypen. Sie können Excel nehmen
+und sich so die Daten bequemer ansehen. Nehmen Sie dann für den
+R-Datensatz besser den Reiter \enquote{GNU R} und benennen Sie dort
+unter \enquote{Name d.~Daten-Frame in R:} ihren Datensatz so wie Sie ihn
+gerne hätten (meine Empfehlung DATEN\_BF). Bei \enquote{Variablen-Typen}
+nehmen Sie \enquote{Nummerische Codes für Skalen \ldots{}} und bei
+\enquote{Residualoptionen:} nehmen Sie \enquote{Werte behalten,
+\ldots{}}. Etwas weiter unten sehen Sie dann noch den Reiter
+\enquote{Variablen}. Dort nehmen Sie \enquote{Variablen, die im
+heruntergeladenen Datensatz min. zwei unterschiedliche Ausprägungen
+haben} (alles andere sind langweilige Konstanten). Darunter können Sie
+noch die \enquote{Verweildauer \ldots{}} anhakeln und \enquote{Kennwerte
+zur Datenqualität \ldots{}}. In der R-Onlineanleitung zu Methoden-Aufbau
+haben Sie das auch im Video erklärt.
+
+Einige Variablen kommen aus SosciSurvey als logische Variablen
+(True/Fals), die wollen wir alle gleich mal in Dummys (0/1-Variablen)
+umwandeln, weil wir wissen, dass 0 immer \enquote{FALSE} bedeutet und 1
+\enquote{TRUE} und wir mit 0/1-Variablen (den Dummys) viel besser
+arbeiten und rechnen können.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# mutiere die Variablen für die gilt: is.logical als numerisch}
+\NormalTok{DATEN\_BF }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{mutate}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\FunctionTok{where}\NormalTok{(is.logical), as.numeric))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{datenfusionen-tf-e}{%
+\section{Datenfusionen (TF E)}\label{datenfusionen-tf-e}}
+
+Da wir Kommunikationswissenschaftler sind und Medieneigenschaften mit
+Befragungsergebnissen verbinden wollen, fusionieren wir hier die
+Datensätze der Inhaltsanalyse mit denen der Befragung.
+
+\hypertarget{die-befragungsdaten-an-die-inhaltsanalyse-matchen}{%
+\subsection{Die Befragungsdaten an die Inhaltsanalyse
+matchen}\label{die-befragungsdaten-an-die-inhaltsanalyse-matchen}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\CommentTok{\# Erstmal die beiden Datensätze laden:}
+
+\NormalTok{IA }\OtherTok{\textless{}{-}}\NormalTok{ readxl}\SpecialCharTok{::}\FunctionTok{read\_excel}\NormalTok{(}\StringTok{"Daten/IA\_Gesamt.xlsx"}\NormalTok{)}
+\NormalTok{BEF }\OtherTok{\textless{}{-}}\NormalTok{ readxl}\SpecialCharTok{::}\FunctionTok{read\_excel}\NormalTok{(}\StringTok{"Daten/Befragung ÜX.xlsx"}\NormalTok{)}
+
+\CommentTok{\# Hier mal eine einfache Häufigkeitsauszählung}
+\NormalTok{BEF }\SpecialCharTok{|\textgreater{}}\NormalTok{ sjmisc}\SpecialCharTok{::}\FunctionTok{frq}\NormalTok{(Nenn\_Code1, Nenn\_Code2, NennCode3)}
+  
+\CommentTok{\# Und hier wird gezählt, wie oft in BEF die verschiedenen Themen in der ersten Nennung vorkamen:}
+\NormalTok{Nenn1\_DT }\OtherTok{\textless{}{-}}\NormalTok{ BEF }\SpecialCharTok{|\textgreater{}} \CommentTok{\# Erstelle eine neue Datentabelle (DT) "Nenn1" die aus BEF verarbeitet wurde und zwar wie folgt nach |\textgreater{} }
+  \FunctionTok{count}\NormalTok{(Nenn\_Code1, }\AttributeTok{name =} \StringTok{"Nenn1"}\NormalTok{) }\SpecialCharTok{|\textgreater{}} \CommentTok{\# gruppiere nach der Variablen "Nenn\_Code1" im Datensatz und zähle die Häufigkeit und schreibe die in "Nenn1"}
+  \FunctionTok{rename}\NormalTok{(}\StringTok{"Thema"} \OtherTok{=} \StringTok{"Nenn\_Code1"}\NormalTok{) }\CommentTok{\# Nenne jetzt noch die Bezeichnung "Nenn\_Code1" in "Thema" um, damit es nachher einfach mit "Thema" gematcht werden kann}
+
+\CommentTok{\# ... und hier für die zweite}
+\NormalTok{Nenn2\_DT }\OtherTok{\textless{}{-}}\NormalTok{ BEF }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{count}\NormalTok{(Nenn\_Code2, }\AttributeTok{name =} \StringTok{"Nenn2"}\NormalTok{) }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{rename}\NormalTok{(}\StringTok{"Thema"} \OtherTok{=} \StringTok{"Nenn\_Code2"}\NormalTok{)}
+
+\CommentTok{\# ... Sie ahnen es:}
+\NormalTok{Nenn3\_DT }\OtherTok{\textless{}{-}}\NormalTok{ BEF }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{count}\NormalTok{(NennCode3, }\AttributeTok{name =} \StringTok{"Nenn3"}\NormalTok{) }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{rename}\NormalTok{(}\StringTok{"Thema"} \OtherTok{=} \StringTok{"NennCode3"}\NormalTok{)}
+
+\CommentTok{\# Jetzt bauen wir einen Datensatz für die Themen, die Zählungen hat, wenn sie in "Nenn1\_DT" bis "Nenn3\_DT" genannt wurden:}
+\NormalTok{Nennungen }\OtherTok{\textless{}{-}} \FunctionTok{full\_join}\NormalTok{(Nenn1\_DT, Nenn2\_DT, }\AttributeTok{by =} \StringTok{"Thema"}\NormalTok{) }\SpecialCharTok{|\textgreater{}} \CommentTok{\# erstmal die Nenn2{-}Daten an die Nenn2{-}Daten}
+  \FunctionTok{full\_join}\NormalTok{(., Nenn3\_DT, }\AttributeTok{by =} \StringTok{"Thema"}\NormalTok{) }\SpecialCharTok{|\textgreater{}} \CommentTok{\# dann noch die Nenn3\_DT an die beiden von oben}
+  \FunctionTok{rowwise}\NormalTok{() }\SpecialCharTok{|\textgreater{}} \CommentTok{\# mache einen Summenindex, der Zeilenweise (rowwise) ...}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Nenn\_Gesamt =} \FunctionTok{sum}\NormalTok{(}\FunctionTok{c}\NormalTok{(Nenn1, Nenn2, Nenn3))) }\CommentTok{\# ... die Anzahl der Nennungen aus Nenn1 bis Nenn3 aufsummiert = Anzahl der Themanennungen}
+
+\CommentTok{\# Diese Anzahl der Nennungen kleben wir jetzt hinten an den IA{-}Datensatz und nennen den fusionierten Datensatz "IAuBEF"}
+\NormalTok{IAuBEF }\OtherTok{\textless{}{-}} \FunctionTok{left\_join}\NormalTok{(IA, Nennungen, }\AttributeTok{by =} \FunctionTok{c}\NormalTok{(}\StringTok{"Thema"} \OtherTok{=} \StringTok{"Thema"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{IAanBefragung}{%
+\subsection{Die Inhaltsanylsedaten an die Befragung
+machten}\label{IAanBefragung}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\CommentTok{\# Hier mache ich eine Tabelle "IA{-}Thema", }
+\NormalTok{IA\_Thema }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_IA }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(TC)) }\SpecialCharTok{|\textgreater{}} \CommentTok{\# die keine NAs enthält und ...}
+  \FunctionTok{group\_by}\NormalTok{(TC) }\SpecialCharTok{|\textgreater{}} \CommentTok{\#... und nach "Thema" gruppiert ist, also Infos pro Thema enthält und zwar ...}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{MedienVorkomm =} \FunctionTok{n}\NormalTok{(), }\CommentTok{\# Die Anzahl der Artikel, wo das Thema vorkam}
+            \AttributeTok{KURIO =} \FunctionTok{mean}\NormalTok{(KURIO),   }\CommentTok{\# Die durchschnittliche Reichweite, die für die Artikel zu diesem Thema kodiert wurden}
+            \AttributeTok{KNTR =} \FunctionTok{mean}\NormalTok{(KNTR),   }\CommentTok{\# das Gleiche für das Risiko}
+            \AttributeTok{SCHICK =} \FunctionTok{mean}\NormalTok{(SCHICK), }
+\NormalTok{            )   }\CommentTok{\# und Personalisierung }
+
+\CommentTok{\# Hier werden jetzt, ähnlich wie oben, die Datensätze der IA an die BEF geklebt und zu BEFuIA fusioniert}
+\NormalTok{BEFuIA }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\FunctionTok{any\_of}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"MedienVorkommen1"}\NormalTok{, }\StringTok{"KURIO1"}\NormalTok{, }\StringTok{"KNTR1"}\NormalTok{, }\StringTok{"SCHICK1"}\NormalTok{, }
+                 \StringTok{"MedienVorkommen2"}\NormalTok{, }\StringTok{"KURIO2"}\NormalTok{, }\StringTok{"KNTR2"}\NormalTok{, }\StringTok{"SCHICK2"}\NormalTok{, }
+                 \StringTok{"MedienVorkommen3"}\NormalTok{, }\StringTok{"KURIO3"}\NormalTok{, }\StringTok{"KNTR3"}\NormalTok{, }\StringTok{"SCHICK3"}\NormalTok{))) }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{left\_join}\NormalTok{(., IA\_Thema, }\AttributeTok{by =} \FunctionTok{c}\NormalTok{(}\StringTok{"TCW1"} \OtherTok{=} \StringTok{"TC"}\NormalTok{)) }\SpecialCharTok{|\textgreater{}} \CommentTok{\# zu jeder Nennung (TCW) wir das "Thema" und die Mittelwerte der Variablen gehängt}
+  \FunctionTok{rename}\NormalTok{(}\AttributeTok{MedienVorkommen1 =} \StringTok{"MedienVorkomm"}\NormalTok{, }\AttributeTok{KURIO1 =} \StringTok{"KURIO"}\NormalTok{, }\AttributeTok{KNTR1 =} \StringTok{"KNTR"}\NormalTok{, }\AttributeTok{SCHICK1 =} \StringTok{"SCHICK"}\NormalTok{) }\SpecialCharTok{|\textgreater{}} \CommentTok{\# hier umbenennen, damit es die Variablen nicht doppelt gibt}
+  \FunctionTok{left\_join}\NormalTok{(., IA\_Thema, }\AttributeTok{by =} \FunctionTok{c}\NormalTok{(}\StringTok{"TCW2"} \OtherTok{=} \StringTok{"TC"}\NormalTok{)) }\SpecialCharTok{|\textgreater{}} \CommentTok{\# jetzt die Themenvariablen nach Nenn2}
+  \FunctionTok{rename}\NormalTok{(}\AttributeTok{MedienVorkommen2 =} \StringTok{"MedienVorkomm"}\NormalTok{, }\AttributeTok{KURIO2 =} \StringTok{"KURIO"}\NormalTok{, }\AttributeTok{KNTR2 =} \StringTok{"KNTR"}\NormalTok{, }\AttributeTok{SCHICK2 =} \StringTok{"SCHICK"}\NormalTok{) }\SpecialCharTok{|\textgreater{}}  \CommentTok{\# wieder umbenennen}
+  \FunctionTok{left\_join}\NormalTok{(., IA\_Thema, }\AttributeTok{by =} \FunctionTok{c}\NormalTok{(}\StringTok{"TCW3"} \OtherTok{=} \StringTok{"TC"}\NormalTok{)) }\SpecialCharTok{|\textgreater{}} \CommentTok{\# und, is klar, gell}
+  \FunctionTok{rename}\NormalTok{(}\AttributeTok{MedienVorkommen3 =} \StringTok{"MedienVorkomm"}\NormalTok{, }\AttributeTok{KURIO3 =} \StringTok{"KURIO"}\NormalTok{, }\AttributeTok{KNTR3 =} \StringTok{"KNTR"}\NormalTok{, }\AttributeTok{SCHICK3 =} \StringTok{"SCHICK"}\NormalTok{) }\CommentTok{\# und umbennenen, damit wir auch hier wissen, dass es zur Nenn3 gehört}
+
+\NormalTok{DATEN\_BF }\OtherTok{\textless{}{-}}\NormalTok{ BEFuIA }\SpecialCharTok{|\textgreater{}} \CommentTok{\# Jetzt machte ich aus den Variablen Themen noch jeweils einen Mittelwert als Interesse an den NFs}
+  \FunctionTok{rowwise}\NormalTok{() }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{KURIO\_m =} \FunctionTok{mean}\NormalTok{(}\FunctionTok{c}\NormalTok{(KURIO1, KURIO2, KURIO3), }\AttributeTok{na.rm =}\NormalTok{ T)) }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{KNTR\_m =} \FunctionTok{mean}\NormalTok{(}\FunctionTok{c}\NormalTok{(KNTR1, KNTR2, KNTR3), }\AttributeTok{na.rm =}\NormalTok{ T)) }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{SCHICK\_m =} \FunctionTok{mean}\NormalTok{(}\FunctionTok{c}\NormalTok{(SCHICK1, SCHICK2, SCHICK3), }\AttributeTok{na.rm =}\NormalTok{ T)) }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{KURIO\_m =} \FunctionTok{replace}\NormalTok{(KURIO\_m, }\FunctionTok{is.na}\NormalTok{(KURIO\_m), }\DecValTok{0}\NormalTok{)) }\SpecialCharTok{|\textgreater{}} \CommentTok{\# für eine Variable die NA durch 0 ersetzen (kopieren)}
+  \FunctionTok{mutate}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\FunctionTok{c}\NormalTok{(KNTR\_m, KURIO\_m, SCHICK\_m), }\SpecialCharTok{\textasciitilde{}}\FunctionTok{replace}\NormalTok{(.x, }\FunctionTok{is.na}\NormalTok{(.x), }\DecValTok{0}\NormalTok{) )) }\CommentTok{\# across mehrere Varialblen gleichzeitig NA durch 0}
+
+\FunctionTok{saveRDS}\NormalTok{(DATEN\_BF, }\AttributeTok{file =} \StringTok{"Daten/DATEN\_BF.RDS"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{daten-speichern-und-laden-tf-e}{%
+\section{Daten speichern und laden (TF
+E)}\label{daten-speichern-und-laden-tf-e}}
+
+Wenn Sie durch den Import der Daten aus SosciSurvey ein Objekt mit dem
+Namen DATEN\_BF haben, dann können Sie dieses Objekt als R-Daten
+speichern. Später können Sie diese Daten immer wieder mit readRDS
+aufrufen. Sie können so auch zwischendurch mal ihre Daten als Datensatz
+speichern. Ich selbst packe mir diese Zeilen immer ganz an den Anfang in
+den r-Chung \enquote{Setup} wo auch die Pakete geladen werden. Die Daten
+liegen und werden abgespeichert im Unterordner \enquote{Daten}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{DATEN\_BF }\OtherTok{\textless{}{-}} \FunctionTok{readRDS}\NormalTok{(}\StringTok{"Daten/DATEN\_BF.RDS"}\NormalTok{)}
+\FunctionTok{saveRDS}\NormalTok{(DATEN\_BF, }\AttributeTok{file =} \StringTok{"Daten/DATEN\_BF.RDS"}\NormalTok{)}
+
+\CommentTok{\# Das erste Mal oder wenn Sie nochmal was in der Excel editiert haben:}
+\CommentTok{\#DATEN\_IA \textless{}{-} read\_xlsx("Daten/DATEN\_IA.xlsx")}
+
+\NormalTok{DATEN\_IA }\OtherTok{\textless{}{-}} \FunctionTok{readRDS}\NormalTok{(}\StringTok{"Daten/DATEN\_IA.RDS"}\NormalTok{)}
+\FunctionTok{saveRDS}\NormalTok{(DATEN\_IA, }\AttributeTok{file =} \StringTok{"Daten/DATEN\_IA.RDS"}\NormalTok{)}
+
+\NormalTok{DATEN\_BF }\OtherTok{\textless{}{-}} \FunctionTok{readRDS}\NormalTok{(}\StringTok{"Daten/BEFuIA.RDS"}\NormalTok{)}
+
+\NormalTok{DATEN\_IA }\OtherTok{\textless{}{-}} \FunctionTok{readRDS}\NormalTok{(}\StringTok{"Daten/IAuBEF.RDS"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\bookmarksetup{startatroot}
+
+\hypertarget{datenaufbereitung}{%
+\chapter{Datenaufbereitung}\label{datenaufbereitung}}
+
+Laden Sie sich als erstes die Datei Auswertung.Rmd herunter. Darin
+finden Sie Codebeispiele, die Sie kopieren können und so ändern, dass
+Sie auf Ihre Datensätze und zu Ihren Variablen passen.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ vembedr}\SpecialCharTok{::}\FunctionTok{embed\_youtube}\NormalTok{(}\StringTok{"huBJnXr70SE"}\NormalTok{) }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  vembedr}\SpecialCharTok{::}\FunctionTok{use\_rounded}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{leere-fuxe4lle-luxf6schen-tf-e}{%
+\section{Leere Fälle löschen (TF
+E)}\label{leere-fuxe4lle-luxf6schen-tf-e}}
+
+Hier gehe ich davon aus, dass ein Interview erfolgreich beendet wurde,
+wenn der:die Interviewer:in am Ende etwas zum Verständnis des Interviews
+eingegeben hat.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{DATEN\_BF }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(PLZ))}
+
+\DocumentationTok{\#\# Das geht nur einmal, weil R dann die Variablen nicht mehr findet, die wir gerade gelöscht haben, logisch}
+\NormalTok{DATEN\_BF }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\FunctionTok{c}\NormalTok{(SERIAL}\SpecialCharTok{:}\NormalTok{MODE)) }
+
+\NormalTok{DATEN\_BF }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{relocate}\NormalTok{(INTERVIEWER, }\AttributeTok{.after =}\NormalTok{ STARTED)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{variablen-umbenennen-und-luxf6schen}{%
+\section{Variablen umbenennen und
+löschen}\label{variablen-umbenennen-und-luxf6schen}}
+
+Wenn Sie den einfachen Befehl \enquote{select} nehmen, dann werden die
+Variablen behalten, die Sie aufführen. Wenn Sie ein Minus davor
+schreiben, werden die Variablen gelöscht, die Sie aufführen. Häufig
+führt das später zu Fehlermeldungen, weil bei mehrfacher Ausführung
+gelöschte Variablen natürlich nicht mehr im Datensatz gefunden werden.
+Um diesen Fehlermeldungen aus dem Weg zu gehen, können Sie
+\enquote{any\_of} verwenden. Dann prüft R, ob eine der aufgeführten
+Variablen im Datensatz sind und löscht diese. Wenn die Variablen nicht
+im Datensatz sind, dann macht R nichts weiter (meldet auch keinen Fehler
+und stoppt Ihren Durchlauf nicht.). Seien Sie damit also mir Vorsicht.
+Beim Befehl \enquote{rename} können Sie das auch machen. Mit
+\enquote{any\_of} werden nur die Variablen umbenannt, die auch wirklich
+da sind. Manchmal kommt das bei jedem Durchlauf vor, weil zB bei
+join-Befehlen immer nochmal ein Datensatz gematcht wird und wie im
+Beispiel vorhandene Variablen wie \enquote{Nenn1} umbenannt werden in
+\enquote{Nenn1.x} und Nenn1.y'' Wenn Sie jetzt die mit \enquote{.y}
+löschen und die mit \enquote{.x} umbenennen, dann haben Sie das Problem
+auch glöst, wenn Ihnen nicht ganz klar ist, warum die immerwieder
+auftauchen. Für's Erste ist das also auch eine Lösung eines Problems.
+;-)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Manchmal macht es Sinn, von einer Variable eine Kopie mit besser lesbarem Namen anzulegen, wie hier:}
+
+\NormalTok{DATEN\_BF }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Alter =}\NormalTok{ SD01,}
+         \AttributeTok{Geschlecht =}\NormalTok{ SD02)}
+
+\CommentTok{\# So können Sie Variablen löschen. Durch das {-}any\_of gibt es keine Fehler, wenn R die Variablen nicht findet}
+\NormalTok{DATEN\_BF }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\FunctionTok{any\_of}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"Nenn1.y"}\NormalTok{, }\StringTok{"Nenn2.y"}\NormalTok{, }\StringTok{"Nann3.y"}\NormalTok{)))}
+\CommentTok{\# So nenne Sie Variablen um (vorne wie es bisher hiess).}
+
+\NormalTok{DATEN\_BF }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{rename}\NormalTok{(}\FunctionTok{any\_of}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"Nenn1.x"} \OtherTok{=} \StringTok{"Nenn1"}\NormalTok{, }\StringTok{"Nenn2.x"} \OtherTok{=} \StringTok{"Nenn2"}\NormalTok{, }\StringTok{"Nenn3.x"} \OtherTok{=} \StringTok{"Nenn3"}\NormalTok{))) }
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{label-fuxfcr-variablen-und-auspruxe4gungen-teils-tf-e}{%
+\section{Label für Variablen und Ausprägungen (teils TF
+E)}\label{label-fuxfcr-variablen-und-auspruxe4gungen-teils-tf-e}}
+
+Wenn Sie messen, dann stehen am Ende Zahlen für das was Sie gemessen,
+also zB erfragt haben. Zum Beispiel steht dann eine 1 für
+\enquote{trifft nicht zu} und 5 für \enquote{trifft vollkommen zu}. In
+Ihren Auswertungen müssen Sie aber wieder die verbalen Entsprechungen
+nutze, statt nur Tabellen oder Grafiken zu haben, wo nur Zahlen
+ausgewiesen werden (Sie können das noch verbinden, aber Ihre Leser:innen
+nicht). In anderen Programmen (wie SPSS) ist es daher üblich, dass die
+gemessenen Zahlen mit verbalen Labeln versehen werden. In Base-R geht
+das nicht so toll. Da müssen Sie mit \enquote{factors} arbeiten, wo also
+statt der Zahlen die verbalen Entsprechungen verwendet werden. Mühsam an
+den Faktoren ist, dass man mit ihnen wieder nicht mehr rechnen kann,
+also z.B. weder einen Mittelwert ausgeben noch eine Korrelation. Da
+hilft das Paket sjmisc weiter. Mit dem können Sie den Zahlenwerten Ihrer
+Variablen ihre Merkmalsausprägungen als Label zuordnen. Das geht mit
+set\_label(labels = c(\enquote{tzrifft nicht zu} = 1, \enquote{trifft
+voll zu} = 5)):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# So können Label vergeben werden}
+
+\NormalTok{DATEN\_BF }\SpecialCharTok{|\textgreater{}}\NormalTok{ sjmisc}\SpecialCharTok{::}\FunctionTok{frq}\NormalTok{(GESCHL)}
+
+\CommentTok{\# Hier wird das Variablenlabel vergeben}
+
+\NormalTok{DATEN\_BF }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  sjlabelled}\SpecialCharTok{::}\FunctionTok{var\_labels}\NormalTok{(}\AttributeTok{GESCHL =} \StringTok{"Geschlecht"}\NormalTok{) }
+
+\CommentTok{\# Hier werden für die einzelnen Ausprägungen die Label vergeben}
+\NormalTok{DATEN\_BF }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  sjlabelled}\SpecialCharTok{::}\FunctionTok{set\_labels}\NormalTok{(GESCHL, }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"mänlich"} \OtherTok{=} \DecValTok{1}\NormalTok{, }\StringTok{"weiblich"} \OtherTok{=} \DecValTok{2}\NormalTok{, }\StringTok{"divers"} \OtherTok{=} \DecValTok{3}\NormalTok{, }\StringTok{"k.A."} \OtherTok{=} \ConstantTok{NA}\NormalTok{))}
+
+\CommentTok{\# Mit dem Befehl für Häufigkeitstabellen (frq für frequencies) kann die Labelei schnell angesehen werden:}
+
+\NormalTok{DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  sjmisc}\SpecialCharTok{::}\FunctionTok{frq}\NormalTok{(GESCHL)}
+
+\DocumentationTok{\#\# Hier werden für einige Variablen Label vergeben, die zusammengehören und später als Auswertung für Mehrfrachantworten verarbeitet werden}
+
+\CommentTok{\# Ersteinmal die Variablen angucken. Die Variablen gehen von NACHRICHT\_TITEL1 in einer Reihe bis M112\_23 (wurde nicht umbenannt in SosciSurvey)}
+\NormalTok{DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{select}\NormalTok{(NACHRICHT\_TITEL1}\SpecialCharTok{:}\NormalTok{M112\_23) }\SpecialCharTok{|\textgreater{}} \CommentTok{\# Nur die interessierenden Variablen selektieren}
+  \FunctionTok{multiResponse}\NormalTok{() }\SpecialCharTok{|\textgreater{}} \CommentTok{\# Mehrfachantworten ansehen}
+  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(Frequency)) }\SpecialCharTok{|\textgreater{}} \CommentTok{\# Sortieren nach Häufigkeit}
+\NormalTok{  kableExtra}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{() }\SpecialCharTok{|\textgreater{}} \CommentTok{\# besser lesbare Tabelle daraus machen}
+\NormalTok{  kableExtra}\SpecialCharTok{::}\FunctionTok{kable\_styling}\NormalTok{() }\CommentTok{\# Styling}
+
+
+\CommentTok{\# Mit set\_variable\_labels werden hier die Variablenlabel vergeben}
+\NormalTok{DATEN\_BF }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_BF }\SpecialCharTok{|\textgreater{}}
+\NormalTok{  sjlabelled}\SpecialCharTok{::}\FunctionTok{var\_labels}\NormalTok{(}\AttributeTok{NACHRICHT\_TITEL1 =} \StringTok{"NZZ"}\NormalTok{, }
+                      \AttributeTok{NACHRICHT\_TITEL2 =} \StringTok{"TA"}\NormalTok{, }
+                      \AttributeTok{NACHRICHT\_TITEL3 =} \StringTok{"20 Minuten"}\NormalTok{,}
+                      \AttributeTok{NACHRICHT\_TITEL4 =} \StringTok{"Blick"}\NormalTok{, }
+                      \AttributeTok{NACHRICHT\_TITEL5 =} \StringTok{"Watson"}\NormalTok{,}
+                      \AttributeTok{NACHRICHT\_TITEL6 =} \StringTok{"SRF News"}\NormalTok{, }
+                      \AttributeTok{M112\_20 =} \StringTok{"Social Media"}\NormalTok{,}
+                      \AttributeTok{M112\_21 =} \StringTok{"Google News"}\NormalTok{,}
+                      \AttributeTok{M112\_23 =} \StringTok{"anderes"}
+\NormalTok{                      )}
+
+\CommentTok{\# Hier mal für den Nachrichtenfaktor "Kontroverse" aus der Inhaltsanalyse}
+
+\NormalTok{DATEN\_IA }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_IA }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{ sjlabelled}\SpecialCharTok{::}\FunctionTok{var\_labels}\NormalTok{(KNTR, }\AttributeTok{label =} \StringTok{"Kontroverse"}\NormalTok{) }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{ sjlabelled}\SpecialCharTok{::}\FunctionTok{set\_labels}\NormalTok{(KNTR, }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"keine"} \OtherTok{=} \DecValTok{0}\NormalTok{, }\StringTok{"gering"} \OtherTok{=} \DecValTok{1}\NormalTok{, }\StringTok{"stark"} \OtherTok{=} \DecValTok{2}\NormalTok{, }\StringTok{"k.A."} \OtherTok{=} \ConstantTok{NA}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{befragungstag-aus-dem-datum}{%
+\section{Befragungstag aus dem
+Datum}\label{befragungstag-aus-dem-datum}}
+
+Mit diesem Befehl kann der Befragungstag aus der Datumsvariable erzeugt
+werden, die von SosciSurvey automatisch erzeugt wird.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{DATEN\_BF }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Befrag\_Tag =} \FunctionTok{day}\NormalTok{(STARTED)) }\SpecialCharTok{|\textgreater{}} \CommentTok{\# mit day wird aus der Datumsvariable der Tag rausgezogen}
+  \FunctionTok{relocate}\NormalTok{(Befrag\_Tag, }\AttributeTok{.after =}\NormalTok{ STARTED) }\CommentTok{\# Hiermit wird die Variable für den Befragungsstart an den Anfang gepackt}
+
+\NormalTok{DATEN\_BF }\SpecialCharTok{|\textgreater{}}\NormalTok{ sjmisc}\SpecialCharTok{::}\FunctionTok{frq}\NormalTok{(Befrag\_Tag)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{umkodieren}{%
+\section{Umkodieren}\label{umkodieren}}
+
+\hypertarget{werte-wechseln}{%
+\subsection{Werte wechseln}\label{werte-wechseln}}
+
+Umkodieren bedeutet, dass Ausprägungen (also Werte) in einer Variablen
+verändert werden oder zu anderen Werten in einer neuen Variable werden.
+Typische Umkodierungen sind Veränderungen der Codes (also zB wenn man
+eine Skala umdrehen möchte von 1 bis 5 auf 5 bis 1) und
+Zusammenfassungen von Codes, also zB 1 und 2 werden neu in 1
+zusammengefasst 3 wird die neue 2 und 4 sowie 5 werden als neue 3
+kodiert. Dann hat man jeweils zwei Abstufungen in den Ausprägungen zu
+jeweils einer zusammengefasst.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# Hier machen wir aus den beiden tieferen Bildungsgruppen eine einzelne Gruppe. In den Klammern kann man die Value Label gleich mit vergeben:}
+
+\NormalTok{DATEN\_BF }\SpecialCharTok{|\textgreater{}}\NormalTok{ sjmisc}\SpecialCharTok{::}\FunctionTok{frq}\NormalTok{(BILDUNG) }\CommentTok{\# erstmal angucken}
+
+\CommentTok{\# Erstelle mit mutate eine neue Variable BILDUNG\_gr, die eine Rekodierung (rec) der Variable BILDUNG (zB 1 und 2 werden 1 mit dem Label "tief")}
+\NormalTok{DATEN\_BF }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+ \FunctionTok{mutate}\NormalTok{(}\AttributeTok{BILDUNG\_gr =} \FunctionTok{rec}\NormalTok{(BILDUNG, }\AttributeTok{rec =} \StringTok{"1:2 = 1; 3 = 2; 4 = 3; 5 = 4"}\NormalTok{))  }\CommentTok{\# die offenen müssen noch kodiert werden}
+
+\NormalTok{DATEN\_BF }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  sjlabelled}\SpecialCharTok{::}\FunctionTok{set\_labels}\NormalTok{(BILDUNG\_gr, }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"tief"} \OtherTok{=} \DecValTok{1}\NormalTok{, }\StringTok{"mittel"} \OtherTok{=} \DecValTok{2}\NormalTok{, }\StringTok{"hoch"} \OtherTok{=} \DecValTok{3}\NormalTok{, }\StringTok{"noch kodieren"} \OtherTok{=} \DecValTok{4}\NormalTok{), }\AttributeTok{force.labels =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  sjlabelled}\SpecialCharTok{::}\FunctionTok{var\_labels}\NormalTok{(BILDUNG\_gr, }\AttributeTok{label =} \StringTok{"Bildung (gruppiert)"}\NormalTok{)  }\CommentTok{\# hier das Variablenlabel}
+
+\NormalTok{DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{    sjmisc}\SpecialCharTok{::}\FunctionTok{frq}\NormalTok{(BILDUNG\_gr)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{mehrere-auf-einmal-umkodieren}{%
+\subsection{Mehrere auf einmal
+umkodieren}\label{mehrere-auf-einmal-umkodieren}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{frq}\NormalTok{(HAUFIGKEIT\_01}\SpecialCharTok{:}\NormalTok{HAUFIGKEIT\_05)}
+
+\CommentTok{\# mutiere across die ganze Liste der Variablen von:bis, als Funktion (\textasciitilde{}) rec(.x) wobei .x für die Liste steht}
+\NormalTok{DATEN\_BF }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{mutate}\NormalTok{(}\FunctionTok{across}\NormalTok{(HAUFIGKEIT\_01}\SpecialCharTok{:}\NormalTok{HAUFIGKEIT\_05, }
+                \SpecialCharTok{\textasciitilde{}} \FunctionTok{rec}\NormalTok{(.x, }\AttributeTok{rec =} \StringTok{"1 = {-}2 [viel zu wenig]; 2 = {-}1 [zu wenig]; 3 = 0 [richtig]; 4 = 1  [zu viel]; 5 = 2 [viel zu viel]; else = NA"}\NormalTok{), }
+                       \AttributeTok{.names =} \StringTok{"\{.col\}\_um0"}\NormalTok{)) }\SpecialCharTok{|\textgreater{}} \CommentTok{\# HIer werden an die Variablennamen Suffixe "\_um0" angehängt}
+\NormalTok{  sjlabelled}\SpecialCharTok{::}\FunctionTok{var\_labels}\NormalTok{(}\AttributeTok{HAUFIGKEIT\_01\_um0 =} \StringTok{"Corona"}\NormalTok{, }\CommentTok{\# Hier noch Label für die Variablen}
+             \AttributeTok{HAUFIGKEIT\_02\_um0 =} \StringTok{"Abstimmungen"}\NormalTok{, }
+             \AttributeTok{HAUFIGKEIT\_03\_um0 =} \StringTok{"Finanz"}\NormalTok{, }
+             \AttributeTok{HAUFIGKEIT\_04\_um0 =} \StringTok{"Klima"}\NormalTok{, }
+             \AttributeTok{HAUFIGKEIT\_05\_um0 =} \StringTok{"Geflüchtete"}\NormalTok{)}
+
+\NormalTok{DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  sjmisc}\SpecialCharTok{::}\FunctionTok{frq}\NormalTok{(HAUFIGKEIT\_01\_um0}\SpecialCharTok{:}\NormalTok{HAUFIGKEIT\_05\_um0)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{na-durch-0-ersetzen}{%
+\subsection{NA durch 0 ersetzen}\label{na-durch-0-ersetzen}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{DATEN\_IA }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{mutate}\NormalTok{(}\FunctionTok{across}\NormalTok{(Nenn1}\SpecialCharTok{:}\NormalTok{Nenn5), }\FunctionTok{ifelse}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(.x) }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{, }\DecValTok{0}\NormalTok{, .x))}\ErrorTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{auspruxe4gungen-zusammenfassen}{%
+\subsection{Ausprägungen
+zusammenfassen}\label{auspruxe4gungen-zusammenfassen}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Das Alter in Gruppen zusammenfassen}
+\NormalTok{DATEN\_BF }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{ALTER\_gr =} \FunctionTok{case\_when}\NormalTok{(}
+\NormalTok{    ALTER }\SpecialCharTok{\textless{}} \DecValTok{0} \SpecialCharTok{\textasciitilde{}} \ConstantTok{NA\_real\_}\NormalTok{,}
+\NormalTok{    ALTER }\SpecialCharTok{\textless{}=} \DecValTok{25} \SpecialCharTok{\textasciitilde{}} \DecValTok{1}\NormalTok{,}
+\NormalTok{    ALTER }\SpecialCharTok{\textless{}=} \DecValTok{45} \SpecialCharTok{\textasciitilde{}} \DecValTok{2}\NormalTok{,}
+\NormalTok{    ALTER }\SpecialCharTok{\textless{}=} \DecValTok{65} \SpecialCharTok{\textasciitilde{}} \DecValTok{3}\NormalTok{,}
+\NormalTok{    ALTER }\SpecialCharTok{\textless{}=} \DecValTok{85} \SpecialCharTok{\textasciitilde{}} \DecValTok{4}\NormalTok{,}
+\NormalTok{    ALTER }\SpecialCharTok{\textgreater{}} \DecValTok{85} \SpecialCharTok{\textasciitilde{}} \DecValTok{5}
+\NormalTok{  ))  }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  sjlabelled}\SpecialCharTok{::}\FunctionTok{set\_labels}\NormalTok{(ALTER\_gr, }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"bis 25"}  \OtherTok{=} \DecValTok{1}\NormalTok{, }\StringTok{"26{-}45"} \OtherTok{=} \DecValTok{2}\NormalTok{, }\StringTok{"46{-}65"} \OtherTok{=} \DecValTok{3}\NormalTok{, }\StringTok{"66{-}85"} \OtherTok{=} \DecValTok{4}\NormalTok{, }\StringTok{"85+"} \OtherTok{=} \DecValTok{5}\NormalTok{)) }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  sjlabelled}\SpecialCharTok{::}\FunctionTok{var\_labels}\NormalTok{(}\AttributeTok{ALTER\_gr =} \StringTok{"Alter gruppiert"}\NormalTok{)}
+
+\NormalTok{DATEN\_BF }\SpecialCharTok{|\textgreater{}} \FunctionTok{frq}\NormalTok{(ALTER\_gr)}
+
+\CommentTok{\# Hier werden für die Inhaltsanalyse die Anzahl Worte in Gruppen zusammengefasst.}
+\NormalTok{DATEN\_IA }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_IA }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{WORTE\_gr =} \FunctionTok{rec}\NormalTok{(WORT\_AZ, }
+                        \AttributeTok{rec =} \StringTok{"0:100 = 1 [Kurzmeldung];}
+\StringTok{                        101:150 = 2 [kurzer Artikel]; }
+\StringTok{                        151:300 = 3 [länger]; }
+\StringTok{                        301:500 = 4 [lang]; }
+\StringTok{                        501:max = 5 [Langtext]"}\NormalTok{)) }\SpecialCharTok{|\textgreater{}} 
+    \FunctionTok{relocate}\NormalTok{(WORTE\_gr, }\AttributeTok{.after =}\NormalTok{ WORT\_AZ) }
+
+
+\DocumentationTok{\#\#\# Rekodierung der Anzahl Nennungen in wenige Gruppen}
+\NormalTok{DATEN\_IA }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_IA }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Nenn\_Gr =} \FunctionTok{rec}\NormalTok{(Nenn\_Gesamt, }\AttributeTok{rec =} \StringTok{"1:3 = 1; 4:16 = 2; 17:100 = 3"}\NormalTok{)) }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  sjlabelled}\SpecialCharTok{::}\FunctionTok{set\_labels}\NormalTok{(Nenn\_Gr, }\AttributeTok{labels =}\NormalTok{ (}\FunctionTok{c}\NormalTok{(}\StringTok{"selten"} \OtherTok{=} \DecValTok{1}\NormalTok{, }\StringTok{"mittel"} \OtherTok{=} \DecValTok{2}\NormalTok{, }\StringTok{"häufig"} \OtherTok{=} \DecValTok{3}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+Medium umkodieren
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 1 SRF}
+\CommentTok{\# 2 20min}
+\CommentTok{\# 3 Watson}
+\CommentTok{\# 4 NZZ}
+\CommentTok{\# 5 Tagesanzeiger}
+\CommentTok{\# 6 Blick}
+
+\NormalTok{DATEN\_IA }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_IA }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Medium\_Q =} \FunctionTok{rec}\NormalTok{(MEDIUM, }
+                    \AttributeTok{rec =} \StringTok{"1,4,5 = 1 [Qualität]; 2,3,6 = 2 [Boulevard]"}\NormalTok{)) }
+
+\NormalTok{DATEN\_IA }\SpecialCharTok{|\textgreater{}}\NormalTok{ sjmisc}\SpecialCharTok{::}\FunctionTok{frq}\NormalTok{(Medium\_Q)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{bedingt-umkodieren}{%
+\subsection{Bedingt umkodieren}\label{bedingt-umkodieren}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  sjmisc}\SpecialCharTok{::}\FunctionTok{frq}\NormalTok{(ALTER, BILDUNG\_gr)}
+
+\NormalTok{DATEN\_BF }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Alt\_Bild1 =} \FunctionTok{if\_else}\NormalTok{(ALTER }\SpecialCharTok{\textless{}} \DecValTok{35} \SpecialCharTok{\&}\NormalTok{ BILDUNG\_gr }\SpecialCharTok{==} \DecValTok{3}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{)) }
+
+\NormalTok{DATEN\_BF }\SpecialCharTok{|\textgreater{}}  \FunctionTok{frq}\NormalTok{(Alt\_Bild1)}
+
+\CommentTok{\# Hier erstmal umkodieren uns anschauen}
+
+\NormalTok{DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Alt\_Bild2 =} \FunctionTok{case\_when}\NormalTok{(}
+\NormalTok{    ALTER }\SpecialCharTok{\textless{}} \DecValTok{35} \SpecialCharTok{\&}\NormalTok{ BILDUNG\_gr }\SpecialCharTok{==} \DecValTok{3} \SpecialCharTok{\textasciitilde{}} \DecValTok{1}\NormalTok{, }
+\NormalTok{    ALTER }\SpecialCharTok{\textgreater{}} \DecValTok{75} \SpecialCharTok{\&}\NormalTok{ BILDUNG\_gr }\SpecialCharTok{==} \DecValTok{3} \SpecialCharTok{\textasciitilde{}} \DecValTok{2}\NormalTok{,}
+\NormalTok{  )) }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{var\_labels}\NormalTok{(}\AttributeTok{Alt\_Bild2 =} \StringTok{"Alter und Bildung"}\NormalTok{) }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{set\_labels}\NormalTok{(Alt\_Bild2, }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Junggebildet"} \OtherTok{=} \DecValTok{1}\NormalTok{, }\StringTok{"Altgebildet"} \OtherTok{=} \DecValTok{2}\NormalTok{)) }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{frq}\NormalTok{(Alt\_Bild2) }\CommentTok{\# erstmal nur eine Frequencies als Ergebnis und nicht gleich den Daten hinzufügen}
+
+\CommentTok{\# Dann dem Datensatz hinzufügen}
+\NormalTok{DATEN\_BF }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Alt\_Bild2 =} \FunctionTok{case\_when}\NormalTok{(}
+\NormalTok{    ALTER }\SpecialCharTok{\textless{}} \DecValTok{35} \SpecialCharTok{\&}\NormalTok{ BILDUNG\_gr }\SpecialCharTok{==} \DecValTok{3} \SpecialCharTok{\textasciitilde{}} \DecValTok{1}\NormalTok{, }
+\NormalTok{    ALTER }\SpecialCharTok{\textgreater{}} \DecValTok{75} \SpecialCharTok{\&}\NormalTok{ BILDUNG\_gr }\SpecialCharTok{==} \DecValTok{3} \SpecialCharTok{\textasciitilde{}} \DecValTok{2}\NormalTok{,}
+\NormalTok{  )) }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  sjlabelled}\SpecialCharTok{::}\FunctionTok{var\_labels}\NormalTok{(}\AttributeTok{Alt\_Bild2 =} \StringTok{"Alter und Bildung"}\NormalTok{) }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  sjlabelled}\SpecialCharTok{::}\FunctionTok{set\_labels}\NormalTok{(Alt\_Bild2, }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Junggebildet"} \OtherTok{=} \DecValTok{1}\NormalTok{, }\StringTok{"Altgebildet"} \OtherTok{=} \DecValTok{2}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{variablen-zu-indizes-zusammenfassen}{%
+\subsection{Variablen zu Indizes
+zusammenfassen}\label{variablen-zu-indizes-zusammenfassen}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Ein Summenindex für 10 Variablen zur Nachrichtennutzung Es wird zeilenweise die Summe für die Dummys (0/1{-}Variablen) berechnet}
+
+\NormalTok{DATEN\_BF }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{MEDIEN\_sum =} \FunctionTok{rowSums}\NormalTok{(}\FunctionTok{across}\NormalTok{(NACHRICHT\_TITEL1}\SpecialCharTok{:}\NormalTok{NACHRICHT\_TITEL10), }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{))}
+
+\NormalTok{DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  sjmisc}\SpecialCharTok{::}\FunctionTok{frq}\NormalTok{(MEDIEN\_sum)}
+
+\CommentTok{\# Hier noch der Durchschnittswert als Index, was bei Dummys der Anteil der 1{-}er ist, also wenn 68 von knapp 200 Leuten 2 Medien nannten, dann gibt es 68 mal die 0.2 }
+
+\NormalTok{DATEN\_BF }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{MEDIEN\_mean =} \FunctionTok{rowMeans}\NormalTok{(}\FunctionTok{across}\NormalTok{(NACHRICHT\_TITEL1}\SpecialCharTok{:}\NormalTok{NACHRICHT\_TITEL10), }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{))}
+
+\NormalTok{DATEN\_BF }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  sjmisc}\SpecialCharTok{::}\FunctionTok{frq}\NormalTok{(MEDIEN\_mean)}
+
+\NormalTok{mutate}
+
+\NormalTok{DATEN\_IA }\OtherTok{\textless{}{-}}\NormalTok{ DATEN\_IA }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{mutate}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\FunctionTok{c}\NormalTok{(PERS}\SpecialCharTok{:}\NormalTok{KNTR, KAT}\SpecialCharTok{:}\NormalTok{NAEHE), }\SpecialCharTok{\textasciitilde{}}\FunctionTok{replace}\NormalTok{(.x, }\FunctionTok{is.na}\NormalTok{(.x),}\DecValTok{0}\NormalTok{))) }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{mutate}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\FunctionTok{c}\NormalTok{(PERS}\SpecialCharTok{:}\NormalTok{KNTR, KAT}\SpecialCharTok{:}\NormalTok{NAEHE), }\SpecialCharTok{\textasciitilde{}}\FunctionTok{replace}\NormalTok{(.x, .x }\SpecialCharTok{==} \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{,}\DecValTok{0}\NormalTok{))) }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{rowwise}\NormalTok{() }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Jour\_Beacht =} \FunctionTok{sum}\NormalTok{(}\FunctionTok{c}\NormalTok{(PERS}\SpecialCharTok{:}\NormalTok{KNTR, KAT}\SpecialCharTok{:}\NormalTok{NAEHE)))}
+
+\NormalTok{DATEN\_IA }\SpecialCharTok{|\textgreater{}}\NormalTok{ sjmisc}\SpecialCharTok{::}\FunctionTok{frq}\NormalTok{(Jour\_Beacht)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{umfangreiche-umkodierungstabellen-tf-e}{%
+\subsection{Umfangreiche Umkodierungstabellen (TF
+E)}\label{umfangreiche-umkodierungstabellen-tf-e}}
+
+Zum Beispiel für Ländereigenschaften über die Ländercodes
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{vembedr}\SpecialCharTok{::}\FunctionTok{embed\_youtube}\NormalTok{(}\StringTok{"5BR3m7E6E{-}s"}\NormalTok{) }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  vembedr}\SpecialCharTok{::}\FunctionTok{use\_rounded}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Aus der Länderliste mit den Kodierungen kommen die Variablen für eine Laenderliste:}
+\NormalTok{Laenderliste }\OtherTok{\textless{}{-}}\NormalTok{ readxl}\SpecialCharTok{::}\FunctionTok{read\_xlsx}\NormalTok{(}\StringTok{"Daten/Laender\_Liste\_Kodierung.xlsx"}\NormalTok{, }\AttributeTok{sheet =} \StringTok{"Länderliste"}\NormalTok{)}
+
+\CommentTok{\# Die Codes für die Länder kommen aus einer anderen Untertabelle der Excel, darum steht hinten bei sheets etwas anderes:}
+\NormalTok{Ländercodes }\OtherTok{\textless{}{-}}\NormalTok{ readxl}\SpecialCharTok{::}\FunctionTok{read\_xlsx}\NormalTok{(}\StringTok{"Daten/Laender\_Liste\_Kodierung.xlsx"}\NormalTok{, }\AttributeTok{sheet =} \StringTok{"Ländercodes"}\NormalTok{)}
+
+\CommentTok{\# Dann gibt es noch lauter weitere Codes, die wir jetzt anmatchen können, die können wir später gut gebrauchen, weil verschiedene Datensätze aus dem Internetz verschiedene Ländercodes verwenden}
+
+\NormalTok{Land\_AlphaISO }\OtherTok{\textless{}{-}}\NormalTok{ readxl}\SpecialCharTok{::}\FunctionTok{read\_xlsx}\NormalTok{(}\StringTok{"Daten/Laender\_Liste\_Kodierung.xlsx"}\NormalTok{, }\AttributeTok{sheet =} \StringTok{"AlphaISO"}\NormalTok{) }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{select}\NormalTok{(name, }\StringTok{"alpha2"}\NormalTok{, }\StringTok{"alpha3"}\NormalTok{, }\StringTok{"CountryCode"}\NormalTok{)}
+
+\CommentTok{\# Hier binden wir die zusammen, erst die Ländercodes an die Laenderliste und dann noch die Land\_AlphaISO hinten dran}
+\NormalTok{Laender }\OtherTok{\textless{}{-}} \FunctionTok{left\_join}\NormalTok{(Laenderliste, Ländercodes, }\AttributeTok{by =} \StringTok{"Land"}\NormalTok{) }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{left\_join}\NormalTok{(., Land\_AlphaISO, }\AttributeTok{by =} \StringTok{"alpha2"}\NormalTok{)}
+
+\CommentTok{\# oh, und hier noch ein paar Handelsdaten, falls das jemanden interessiert}
+\NormalTok{WorldTrade }\OtherTok{\textless{}{-}}\NormalTok{ economiccomplexity}\SpecialCharTok{::}\NormalTok{world\_gdp\_avg\_1998\_to\_2000}
+
+\CommentTok{\# So, die kleben wir jetzt auch noch hinten an unsere Laendervariable}
+\NormalTok{Laender }\OtherTok{\textless{}{-}} \FunctionTok{left\_join}\NormalTok{(Laender, WorldTrade, }\AttributeTok{by =} \FunctionTok{c}\NormalTok{(}\StringTok{"alpha3"} \OtherTok{=} \StringTok{"country"}\NormalTok{))}
+
+\CommentTok{\# mit diesem Paket können Sie die Coronazahlen aller Länder als Datensatz laden, für jeden Tag}
+\NormalTok{Covid\_JHU }\OtherTok{\textless{}{-}}\NormalTok{ tidycovid19}\SpecialCharTok{::}\FunctionTok{download\_jhu\_csse\_covid19\_data}\NormalTok{() }\CommentTok{\# das dauert bischen}
+\NormalTok{Covid\_WBank }\OtherTok{\textless{}{-}}\NormalTok{ tidycovid19}\SpecialCharTok{::}\FunctionTok{download\_wbank\_data}\NormalTok{()}
+
+\CommentTok{\# jetzt nehme ich den Covid{-}Datensatz und ...}
+\NormalTok{Covid\_Land }\OtherTok{\textless{}{-}}\NormalTok{ Covid\_JHU }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{filter}\NormalTok{(date }\SpecialCharTok{\textgreater{}=} \StringTok{"2020{-}12{-}4"} \SpecialCharTok{\&}\NormalTok{ date }\SpecialCharTok{\textless{}=} \StringTok{"2020{-}12{-}6"}\NormalTok{) }\SpecialCharTok{|\textgreater{}} \CommentTok{\# filtere so, dass nur die Daten der Feldphase bleiben (auf die Tage der Feldphase achten)}
+  \FunctionTok{group\_by}\NormalTok{(iso3c) }\SpecialCharTok{|\textgreater{}} \CommentTok{\# hier gruppiere ich nach den Ländern, die im Code iso3c (dreistellig character) stehn}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{C19\_Gesamt =} \FunctionTok{max}\NormalTok{(confirmed), }\CommentTok{\# hier summiert R die maximal bestätigten (also kummulierten) Fallzahlen}
+            \AttributeTok{C19\_Feldwoche\_krank =} \FunctionTok{sum}\NormalTok{(confirmed }\SpecialCharTok{{-}}\NormalTok{ recovered)) }\CommentTok{\# hier noch die Summe der Kranken in der Feldphase}
+
+\CommentTok{\# Hier kleben wir wieder die Covid{-}Daten an die Laender dran}
+\NormalTok{Laender }\OtherTok{\textless{}{-}} \FunctionTok{left\_join}\NormalTok{(Laender, Covid\_Land, }\AttributeTok{by =} \FunctionTok{c}\NormalTok{(}\StringTok{"alpha3"} \OtherTok{=} \StringTok{"iso3c"}\NormalTok{)) }
+
+\CommentTok{\# Schreibe die Laender{-}Daten raus in die Exceldatei "Laender\_codes.xlsx"}
+\NormalTok{writexl}\SpecialCharTok{::}\FunctionTok{write\_xlsx}\NormalTok{(Laender, }\StringTok{"Daten/Laender\_codes.xlsx"}\NormalTok{)}
+
+\CommentTok{\# Hier die Laender{-}Daten wieder aus der (eventuell ergänzten Laender{-}Excel) in R laden:}
+\NormalTok{Laender }\OtherTok{\textless{}{-}}\NormalTok{ readxl}\SpecialCharTok{::}\FunctionTok{read\_xlsx}\NormalTok{(}\StringTok{"Daten/Laender\_codes.xlsx"}\NormalTok{)}
+
+\CommentTok{\# Jetzt kommt die Magie. Wie matchen die Laendervariable an die Inhaltsanalysedaten:}
+
+\CommentTok{\# Hier lade ich die Inhaltanalysedaten aus meiner Excel. Vermutlich heisst die Excel bei Ihnen anders und liegt vielleicht auch nicht im Unterordner "Daten".}
+\NormalTok{IA }\OtherTok{\textless{}{-}}\NormalTok{ readxl}\SpecialCharTok{::}\FunctionTok{read.xlsx}\NormalTok{(}\StringTok{"Daten/IA\_Gesamt.xlsx"}\NormalTok{)}
+
+\CommentTok{\# Hier werden alle Variablen aus der Laendertabelle hinten an die Inhaltsanalyse geklebt}
+\NormalTok{IA }\OtherTok{\textless{}{-}} \FunctionTok{left\_join}\NormalTok{(IA, Laender, }\AttributeTok{by =} \FunctionTok{c}\NormalTok{(}\StringTok{"LAND"} \OtherTok{=} \StringTok{"Code"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\bookmarksetup{startatroot}
+
+\hypertarget{forschungsbericht-mit-quartoword}{%
+\chapter{Forschungsbericht mit
+Quarto/Word}\label{forschungsbericht-mit-quartoword}}
+
+In der modernen quantitativen Forschung arbeiten die meisten Kollegen
+mit R (oder Python, aber die sind komisch). Mehr und mehr schreiben ihre
+Forschungsberichte in R-Markdown beziehungsweise neuerdings Quarto, was
+(fast) dasselbe ist. Wenn sie das tun, dann können sie Ihre Arbeit
+später als Word-Datei rauslassen, als HTML (um zum Beispiel eine
+Onlinedokumentation oder Onlineanhänge zu Ihren Arbeiten
+bereitzustellen) und als PDF um sie verteilen oder auch drucken zu
+können. Die PDF basiert auf einem der ausgereiftesten Drucksatzsystem,
+das auch noch kostenlos ist: LaTeX. Dieses Drucksatzsytem ist
+kompliziert, aber Markdown nicht. Markdown wurde entwickelt, damit man
+Webseiten einfach erstellen kann und die Texte auch im Rohzustand noch
+lesbar sind. Darum ist es viel einfacher Markdown zu verwenden als Word,
+HTML, LaTeX oder gleich PostScript. Quarto ist eine Weiterentwicklung
+von Markdown für wissenschaftliche Texte. Dieses System ermöglicht Open
+Source Science und Publishing.
+
+Wissenschaftliches Arbeiten bedeutet auch immer zitieren. Die Zitationen
+können natürlich irgendwie händisch eingebaut und später in einem
+Literaturverzeichnis ausgeführt werden. Das ist allerdings 1. aufwendig,
+2. fehleranfällig und 3. sehr unflexibel (weil man zum Beispiel alles
+ändern müsste, statt nur einen Zitationsstil anzupassen.) Für Zitationen
+in RMarkdown (und Quarto) kann das Format BibTeX verwendet werden. Das
+ist schon vor langer Zeit für TeX und LaTeX entwickelt worden und ist
+sehr verbreitet (sie Finden fast immer für Zitationen die sogenannten
+Bib-Tex-Schlüssel). Ein kostenloser Editor, für den es für alle Systeme
+und Online ein Frontend gibt ist Zotero (Citavi ist auch ok, aber nicht
+überall kostenlos und darum eigentlich nicht so verbreitet). Dort können
+Sie einfach ISBN-Nummern oder auch DOIs eingeben, um sämtliche
+Zitationsangaben abrufen zu können. Sie müssen die also nicht selbst
+eingeben (können aber auch das tun). Zotero lässt sich gut in RStudio
+integrieren (Tools -\textgreater{} Project Options -\textgreater{} R
+Markdown -\textgreater{} Visual Mode Zotero).
+\href{https://www.youtube.com/watch?v=PqQp_oUUY5w}{Hier gibt es eine
+Einführung in Zotero, die zwar mehr auf Word gemünzt ist, aber gut.} Im
+Youtube-Video unten von Ulrik Lyngs wiederum finden Sie eine komplette
+Zusammenfassung unseres ganzen Workflows mal von einem anderen Typen.
+Sie erkennen schnell, dass das Setup, das ich Ihnen ans Herz legen
+möchte, nicht nur eine absonderliche Marotte meinerseits ist, sondern
+State of the Art wissenschaftlichen Publizierens, das Sie ja im Studium
+lernen sollten. :-)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{vembedr}\SpecialCharTok{::}\FunctionTok{embed\_youtube}\NormalTok{(}\StringTok{"aU0uetWJXis"}\NormalTok{) }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  vembedr}\SpecialCharTok{::}\FunctionTok{use\_rounded}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{quarto-ist-besser-und-einfacher}{%
+\section{Quarto ist besser und
+einfacher}\label{quarto-ist-besser-und-einfacher}}
+
+Zu Quarto zwinge ich Sie nicht, aber die hier gezeigte Methode zur
+Erstellung von Hausarbeiten, Forschungsberichten und sonstigen Texten
+ist schon sehr leistungsstark, weil Sie nicht nur tolle Berichte in PDF
+produzieren können, sondern Ihren Bericht auch gleich in HTML rauslassen
+können oder auch als ebook oder auch als Word (mit Einschränkungen).
+Wenn Sie Ihren Bericht in Quarto verfassen, dann bekommen Sie am Ende
+des Semesters mit Ihren Task-Force-Zeugnissen eine Bestätigung, dass Sie
+auch dieses Tool beherrschen. Quarto-Markdown zu beherrschen ist eine
+Qualifikation, die Sie sich gut in Ihr CV schreiben können. Auf dieser
+Seite \url{https://quarto.org} finden Sie einige Bücher zu bookdown, die
+alle auch in bookdwon verfasst wurden. Hier \url{https://quarto.org}
+finden Sie Lösungen zu den meisten Fragen zu Quarto.
+
+Diese R-Introduction ist übrigens auch in bookdown verfasst.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{vembedr}\SpecialCharTok{::}\FunctionTok{embed\_youtube}\NormalTok{(}\StringTok{"7\_WjjClQGUw"}\NormalTok{) }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  vembedr}\SpecialCharTok{::}\FunctionTok{use\_rounded}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{tabellen-und-grafiken-nach-word-schaffen}{%
+\section{Tabellen und Grafiken nach Word
+schaffen}\label{tabellen-und-grafiken-nach-word-schaffen}}
+
+Es ist eine Herausforderung, Berichte in Markdown bzw. bookdown zu
+setzen und (wie alles in R) braucht es viel Zeit. Die Alternative
+besteht in vertrauteren Textverarbeitungsprogrammen wie zB Word, Page
+oder Open-Office. Berichte mit Titelblatt, Inhalts-, Abbildungs- sowie
+Tabellenverzeichnis, automatisch beschrifteten Grafiken und Tabellen
+sowie Querverweisen und einem ordentlichen Literaturverzeichnis
+hinzubekommen ist allerdings auch nicht einfach, wenn man diese
+Textverarbeitungsprogramme benutzt. Ganz zu schweigen von schwer
+kontrollierbaren Platzierungen von Grafiken und Tabellen. Die fliegen
+einem in solchen Programmen schnell um die Ohren.
+
+Alle Bedenken beiseite, gab es den Wunsch, dass auch gezeigt wird, wie
+man die Grafiken aus R in hinreichender Qualität nach Word rüberschafft
+(in anderen Programmen funktioniert es vergleichbar; Word nehme ich hier
+als das gängigste Beispiel). Screenshots weisen keine akzeptable
+Qualität auf und sind deshalb keine Lösung -- vor allem nicht für
+Tabellen.
+
+Tabellen können schlicht in Wordtabellen abgeschrieben werden, was
+allerdings zu Übertragungsfehlern führt. Die Tabellen können aber auch
+schlicht kopiert und nach Word übertragen werden. Dort müssen Sie
+allerdings noch in eine annehmbare Form gebracht werden, was mit
+Tabellenformatierung oder Tabellenvorlagen einigermassen funktioniert.
+Die Tabellenüberschriften werden mit \enquote{Beschriftung einfügen}
+gemacht.
+
+Noch komplizierter ist die Übertragung von Diagrammen und anderen
+Bildformaten aus R nach Word. Eine Möglichkeit bietet \texttt{ggplot2},
+da bei ggplot-Grafiken mit \texttt{ggsave} die Grafiken im pdf-Format
+oder als png gespeichert werden können (wo möglich, ist pdf deutlich
+besser). Alternativ kann der \enquote{Visual} Mode im RStudio-Editor
+verwendet und dort Grafiken per drag-and-drop direkt nach Word
+rübergezogen werden. Die verschiedenen Methoden zeige ich hier im Video.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{vembedr}\SpecialCharTok{::}\FunctionTok{embed\_youtube}\NormalTok{(}\StringTok{"0gy2bIfJpnk"}\NormalTok{) }\SpecialCharTok{|\textgreater{}} 
+\NormalTok{  vembedr}\SpecialCharTok{::}\FunctionTok{use\_rounded}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+             %Anhang
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\end{document}

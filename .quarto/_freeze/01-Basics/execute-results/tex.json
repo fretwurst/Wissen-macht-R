@@ -1,0 +1,18 @@
+{
+  "hash": "63737dff4213d6079c1c9a77760402e8",
+  "result": {
+    "markdown": "# Basics\n\n\n\n\n\n\n\n\n## Datenvisualisierung\n\n## Grundlagen Programmierung\n\n- Funktionen\n- Objekte\n- Datentypen\n- Variablen, Datensätze\n- Pakete\n\n### Funktionen\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {
+      "knitr": [
+        "{\"type\":\"list\",\"attributes\":{},\"value\":[]}"
+      ]
+    },
+    "preserve": null,
+    "postProcess": false
+  }
+}

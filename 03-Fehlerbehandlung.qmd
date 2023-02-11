@@ -1,0 +1,81 @@
+# Fehler erkennen und lösen
+
+```{r}
+#| include: false
+#| echo: false
+#| warning: false
+#| message: false
+ source("_common.R")
+```
+
+```{r}
+vembedr::embed_youtube("CtEsANupzRY") |> 
+  vembedr::use_rounded() 
+```
+
+## Vorgehen bei Fehlern
+
+*Problemlösungsworkflow (je Schritt 15 Minuten)*
+
+1.  Fragen Sie erst sich, was wohl die Fehlermeldung heissen könnte und was anders ist zu Vorlagen und Beispielen (und google bzw. auf Stack Overflow suchen),
+
+2.  dann Ihre AG-Kollegen,
+
+3.  bei Task-Force-Aufgaben Ihre Task-Force-Kolleg:innen (zB TF D auf MS-Teams)
+
+4.  dann Ihre AG E,
+
+5.  dann im Forum auf OLAT,
+
+6.  dann direkt an [b.fretwurst\@ikmz.uzh.ch](mailto:b.fretwurst@ikmz.uzh.ch){.email} oder auf Teams "Fretwurst" oder "Nadia",
+
+7.  Stack Overflow mit "reprex" bzw. "mwe",
+
+8.  Externe direkt (keine Mails an Martin Wettstein). Eher fragt Fretwurst bei Paketautoren.
+
+## Bei Fragen zu Fehlern mitzugeben
+
+Wenn Sie Fehlermeldungen bekommen, senden Sie nicht einfach nur Screenshots. Damit kann niemand etwas anfangen. Wenn Ihnen geholfen werden soll, müssen Sie die R-Zeilen (bzw. die R-Script-Datei) sowie den zugrundeliegenden Datensatz mitliefern und mitteilen, wo der Fehler auftritt.
+
+Zu Ihren Fragen liefern Sie also bitte immer:
+
+1.  die Datendatei (als .RDS, .RData oder Excel-Datei),
+
+2.  Betroffener Befehl muss mitgeliefert werden als Text. Im Idealfall die .Rmd mit Zeilenhinweis (lokalisieren Sie den Fehler innerhalb einer Pipe).
+
+3.  Den Fehleroutput als Text und zusätzlich gerne als Screenshot.
+
+4.  Was schon probiert wurde.
+
+## Typische Fehler erkennen und beheben
+
+Die häufigsten Fehler und Lösungen sind:
+
+1.  Pakete sind nicht installiert: Tools -\> "Install Packages" Paket installieren
+
+2.  Pakete sind nicht geladen: Paket laden library(Paketname) und index.Rmd nutzen, um alle nötigen Pakete in der richtigen Reihenfolge zu laden
+
+3.  Datensätze können nicht gefunden werden: Den richtigen Pfad einstellen mit Unterordner zB DATEN_BF \<- readRDS("Daten/DATEN_BF.RDS")
+
+4.  Datenobjekt wird nicht gefunden, weil es noch nicht geladen wurde: Daten laden zB DATEN_BF \<- readRDS("Daten/DATEN_BF.RDS")
+
+5.  Datenobjekt wird nicht gefunden, weil es falsch geschrieben ist: Kontrollieren Sie auch Gross-Klein-Schreibung
+
+6.  Variable wird nicht gefunden, weil sie falsch geschrieben ist: Schreiben Sie den Variablennamen neu und schauen Sie ob sie ihn in der Hilfsliste sehen.
+
+7.  Kommata oder Klammern fehlen oder sind zu viel: Es wird links in R ein roter Kreis mit weissem x angezeigt. Wenn Sie da drauf gehen, sagt Ihnen R-Studio in der Regel was fehlt oder zu viel ist.
+
+8.  Es werden mehrere Zeilen grün ausgeführt, aber es passiert nichts weiter: Schauen Sie ob am Ende ein Magritter (%\>%) zu viel ist.
+
+9.  Es kann "eine Funktion nicht gefunden" werden, weil ein Paket fehlt oder die Funktion ist falsch geschrieben ist: Googlen Sie die Funktion und schauen, aus welchem Paket die ist. Sie können dann probieren, ob¬ es mit Paketname::Funktion geht zB janitor::percent.
+
+10. Variablen sind vom falschen Typ: Wandeln Sie den Typ um. ZB: DATEN_BF %\>% mutate(Nachricht = as.numeric(Nachricht)).
+
+Googlen Sie Ihre Fehlermeldungen oder Funktionen, die Fehler erzeugen und schauen sich den Syntax an, wie die Funktionen geschrieben sein sollten. Üben Sie sich in Frustrationstolleranz. Haben Sie geduld und suchen Sie den Fehler im Detail.
+
+[Ein Kollege gibt hier ein paar Hinweise wie Fehler in R lesbar sind in einer PDF-Datei.](https://www.uni-muenster.de/imperia/md/content/psyifp/ae_holling/r-fehlermeldungen.pdf) Hier habe ich noch ein Video mit typischen Fehlern und Lösungen:
+
+```{r}
+vembedr::embed_youtube("BnfsSBYahhc") |> 
+  vembedr::use_rounded()
+```

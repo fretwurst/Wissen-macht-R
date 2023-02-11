@@ -1,0 +1,8 @@
+"0","Corr_NF <- DATEN_IA |> "
+"0","  select(RELE_GESELL, RELE_PERS, PRO, PERS, KNTR, KONF, GESELL_SCHAD, GWLT, SCHAD) |> "
+"0","  corrr::correlate(diagonal = NA) # oder 1, wenn Sie lieber die 1er in der Diagonalen haben "
+"2","Correlation computed with
+[36m•[39m Method: 'pearson'
+[36m•[39m Missing treated using: 'pairwise.complete.obs'"
+"0","Corr_NF |> "
+"0","  corrr::network_plot() # mehr zur Formatierung der network-plots erfahren Sie hier: https://corrr.tidymodels.org/reference/network_plot.html"

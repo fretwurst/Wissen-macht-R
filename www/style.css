@@ -1,0 +1,49 @@
+p.caption {
+  color: #777;
+  margin-top: 10px;
+}
+p code {
+  white-space: inherit;
+}
+pre {
+  word-break: normal;
+  word-wrap: normal;
+}
+pre code {
+  white-space: inherit;
+}
+
+.table{
+  width:auto;
+  font-size: 12px;
+}
+
+.verysmall .table{
+  font-size:10px;
+}
+
+.book .book-body .page-wrapper .page-inner {
+  max-width: 1500px;
+}
+
+.Tabellen .book .book-body .page-wrapper .page-inner {
+  max-width: 1500px;
+}
+
+.IYI {
+  padding: 1em 1em 1em 4em;
+  margin-bottom: 10px;
+  border: 2px solid #0B4B7D;
+  border-radius: 10px;
+  background: #DCEFFE 5px center/3em no-repeat;
+  background-image: url("../images/IYI.png");
+}
+
+.QA {
+  padding: 1em 1em 1em 4em;
+  margin-bottom: 10px;
+  border: 2px solid #FC7019;
+  border-radius: 10px;
+  background: #FEF3EC 5px center/3em no-repeat;
+  background-image: url("../images/QA.png");
+}

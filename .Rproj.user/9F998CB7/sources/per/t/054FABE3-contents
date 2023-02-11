@@ -1,0 +1,125 @@
+# Daten laden und fusionieren
+
+```{r}
+#| include: false
+#| echo: false
+#| warning: false
+#| message: false
+ source("_common.R")
+```
+
+
+## Daten aus SosciSurvey (TF B)
+
+Gehen Sie in SosciSurvey unter "Steuerung" auf "Erhobene Daten" und dann auf "Auswahlkritierien für gültige Fälle" und haken Sie "Interview (Aufruf der Fragenbogen-URL)" an und den Rest wieder ab, falls das noch an ist. Dann gehen Sie unter "Erhobene Daten" auf "Daten herunterladen". Dort finden Sie mehrere Reiter für verschiedene Datentypen. Sie können Excel nehmen und sich so die Daten bequemer ansehen. Nehmen Sie dann für den R-Datensatz besser den Reiter "GNU R" und benennen Sie dort unter "Name d. Daten-Frame in R:" ihren Datensatz so wie Sie ihn gerne hätten (meine Empfehlung DATEN_BF). Bei "Variablen-Typen" nehmen Sie "Nummerische Codes für Skalen ..." und bei "Residualoptionen:" nehmen Sie "Werte behalten, ...". Etwas weiter unten sehen Sie dann noch den Reiter "Variablen". Dort nehmen Sie "Variablen, die im heruntergeladenen Datensatz min. zwei unterschiedliche Ausprägungen haben" (alles andere sind langweilige Konstanten). Darunter können Sie noch die "Verweildauer ..." anhakeln und "Kennwerte zur Datenqualität ...". In der R-Onlineanleitung zu Methoden-Aufbau haben Sie das auch im Video erklärt.
+
+```{r}
+vembedr::embed_youtube("ByAdLoT6Yx8") |> 
+  vembedr::use_rounded()
+```
+
+Einige Variablen kommen aus SosciSurvey als logische Variablen (True/Fals), die wollen wir alle gleich mal in Dummys (0/1-Variablen) umwandeln, weil wir wissen, dass 0 immer "FALSE" bedeutet und 1 "TRUE" und wir mit 0/1-Variablen (den Dummys) viel besser arbeiten und rechnen können.
+
+```{r Logische_in_Dummys, eval=FALSE, echo=TRUE}
+# mutiere die Variablen für die gilt: is.logical als numerisch
+DATEN_BF <- DATEN_BF |> 
+  mutate(across(where(is.logical), as.numeric))
+```
+
+## Datenfusionen (TF E)
+
+Da wir Kommunikationswissenschaftler sind und Medieneigenschaften mit Befragungsergebnissen verbinden wollen, fusionieren wir hier die Datensätze der Inhaltsanalyse mit denen der Befragung.
+
+### Die Befragungsdaten an die Inhaltsanalyse matchen
+
+```{r Befragung an Inhaltsanalyse matchen, eval=FALSE, echo=TRUE}
+
+# Erstmal die beiden Datensätze laden:
+
+IA <- readxl::read_excel("Daten/IA_Gesamt.xlsx")
+BEF <- readxl::read_excel("Daten/Befragung ÜX.xlsx")
+
+# Hier mal eine einfache Häufigkeitsauszählung
+BEF |> sjmisc::frq(Nenn_Code1, Nenn_Code2, NennCode3)
+  
+# Und hier wird gezählt, wie oft in BEF die verschiedenen Themen in der ersten Nennung vorkamen:
+Nenn1_DT <- BEF |> # Erstelle eine neue Datentabelle (DT) "Nenn1" die aus BEF verarbeitet wurde und zwar wie folgt nach |> 
+  count(Nenn_Code1, name = "Nenn1") |> # gruppiere nach der Variablen "Nenn_Code1" im Datensatz und zähle die Häufigkeit und schreibe die in "Nenn1"
+  rename("Thema" = "Nenn_Code1") # Nenne jetzt noch die Bezeichnung "Nenn_Code1" in "Thema" um, damit es nachher einfach mit "Thema" gematcht werden kann
+
+# ... und hier für die zweite
+Nenn2_DT <- BEF |> 
+  count(Nenn_Code2, name = "Nenn2") |> 
+  rename("Thema" = "Nenn_Code2")
+
+# ... Sie ahnen es:
+Nenn3_DT <- BEF |> 
+  count(NennCode3, name = "Nenn3") |> 
+  rename("Thema" = "NennCode3")
+
+# Jetzt bauen wir einen Datensatz für die Themen, die Zählungen hat, wenn sie in "Nenn1_DT" bis "Nenn3_DT" genannt wurden:
+Nennungen <- full_join(Nenn1_DT, Nenn2_DT, by = "Thema") |> # erstmal die Nenn2-Daten an die Nenn2-Daten
+  full_join(., Nenn3_DT, by = "Thema") |> # dann noch die Nenn3_DT an die beiden von oben
+  rowwise() |> # mache einen Summenindex, der Zeilenweise (rowwise) ...
+  mutate(Nenn_Gesamt = sum(c(Nenn1, Nenn2, Nenn3))) # ... die Anzahl der Nennungen aus Nenn1 bis Nenn3 aufsummiert = Anzahl der Themanennungen
+
+# Diese Anzahl der Nennungen kleben wir jetzt hinten an den IA-Datensatz und nennen den fusionierten Datensatz "IAuBEF"
+IAuBEF <- left_join(IA, Nennungen, by = c("Thema" = "Thema"))
+
+```
+
+### Die Inhaltsanylsedaten an die Befragung machten {#IAanBefragung}
+
+```{r Inhaltsanalyse an die Befragung matchen, eval=FALSE, echo=TRUE}
+
+# Hier mache ich eine Tabelle "IA-Thema", 
+IA_Thema <- DATEN_IA |> 
+  filter(!is.na(TC)) |> # die keine NAs enthält und ...
+  group_by(TC) |> #... und nach "Thema" gruppiert ist, also Infos pro Thema enthält und zwar ...
+  summarise(MedienVorkomm = n(), # Die Anzahl der Artikel, wo das Thema vorkam
+            KURIO = mean(KURIO),   # Die durchschnittliche Reichweite, die für die Artikel zu diesem Thema kodiert wurden
+            KNTR = mean(KNTR),   # das Gleiche für das Risiko
+            SCHICK = mean(SCHICK), 
+            )   # und Personalisierung 
+
+# Hier werden jetzt, ähnlich wie oben, die Datensätze der IA an die BEF geklebt und zu BEFuIA fusioniert
+BEFuIA <- DATEN_BF |> 
+  select(-any_of(c("MedienVorkommen1", "KURIO1", "KNTR1", "SCHICK1", 
+                 "MedienVorkommen2", "KURIO2", "KNTR2", "SCHICK2", 
+                 "MedienVorkommen3", "KURIO3", "KNTR3", "SCHICK3"))) |> 
+  left_join(., IA_Thema, by = c("TCW1" = "TC")) |> # zu jeder Nennung (TCW) wir das "Thema" und die Mittelwerte der Variablen gehängt
+  rename(MedienVorkommen1 = "MedienVorkomm", KURIO1 = "KURIO", KNTR1 = "KNTR", SCHICK1 = "SCHICK") |> # hier umbenennen, damit es die Variablen nicht doppelt gibt
+  left_join(., IA_Thema, by = c("TCW2" = "TC")) |> # jetzt die Themenvariablen nach Nenn2
+  rename(MedienVorkommen2 = "MedienVorkomm", KURIO2 = "KURIO", KNTR2 = "KNTR", SCHICK2 = "SCHICK") |>  # wieder umbenennen
+  left_join(., IA_Thema, by = c("TCW3" = "TC")) |> # und, is klar, gell
+  rename(MedienVorkommen3 = "MedienVorkomm", KURIO3 = "KURIO", KNTR3 = "KNTR", SCHICK3 = "SCHICK") # und umbennenen, damit wir auch hier wissen, dass es zur Nenn3 gehört
+
+DATEN_BF <- BEFuIA |> # Jetzt machte ich aus den Variablen Themen noch jeweils einen Mittelwert als Interesse an den NFs
+  rowwise() |> 
+  mutate(KURIO_m = mean(c(KURIO1, KURIO2, KURIO3), na.rm = T)) |> 
+  mutate(KNTR_m = mean(c(KNTR1, KNTR2, KNTR3), na.rm = T)) |> 
+  mutate(SCHICK_m = mean(c(SCHICK1, SCHICK2, SCHICK3), na.rm = T)) |> 
+  mutate(KURIO_m = replace(KURIO_m, is.na(KURIO_m), 0)) |> # für eine Variable die NA durch 0 ersetzen (kopieren)
+  mutate(across(c(KNTR_m, KURIO_m, SCHICK_m), ~replace(.x, is.na(.x), 0) )) # across mehrere Varialblen gleichzeitig NA durch 0
+
+saveRDS(DATEN_BF, file = "Daten/DATEN_BF.RDS")
+```
+
+## Daten speichern und laden (TF E)
+
+Wenn Sie durch den Import der Daten aus SosciSurvey ein Objekt mit dem Namen DATEN_BF haben, dann können Sie dieses Objekt als R-Daten speichern. Später können Sie diese Daten immer wieder mit readRDS aufrufen. Sie können so auch zwischendurch mal ihre Daten als Datensatz speichern. Ich selbst packe mir diese Zeilen immer ganz an den Anfang in den r-Chung "Setup" wo auch die Pakete geladen werden. Die Daten liegen und werden abgespeichert im Unterordner "Daten".
+
+```{r Laden_und_Speichern, eval=FALSE, echo=TRUE}
+DATEN_BF <- readRDS("Daten/DATEN_BF.RDS")
+saveRDS(DATEN_BF, file = "Daten/DATEN_BF.RDS")
+
+# Das erste Mal oder wenn Sie nochmal was in der Excel editiert haben:
+#DATEN_IA <- read_xlsx("Daten/DATEN_IA.xlsx")
+
+DATEN_IA <- readRDS("Daten/DATEN_IA.RDS")
+saveRDS(DATEN_IA, file = "Daten/DATEN_IA.RDS")
+
+DATEN_BF <- readRDS("Daten/BEFuIA.RDS")
+
+DATEN_IA <- readRDS("Daten/IAuBEF.RDS")
+```

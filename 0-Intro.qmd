@@ -1,0 +1,29 @@
+# Intro
+
+```{r}
+#| include: false
+#| echo: false
+#| warning: false
+#| message: false
+ source("_common.R")
+```
+
+```{r}
+vembedr::embed_youtube("RIZ0ZAqXG5o") |>
+  vembedr::use_rounded()
+```
+
+R ist ein kostenloses, erweiterbares, modernes und freundliches Statistiksystem (programmierbar mit Lösungen in stapelweise Paketen). Mit R-Studio können Sie Ihre Datenverarbeitung und -analysen in R für sich und andere sehr gut dokumentieren. Mit den Einführungen auf dieser Seite sollen Sie in die Lage versetzt werden, so schnell und einfach wie möglich so viel wie möglich aus dem System herauszuholen. Es wird eine Herausforderung, die Sie schaffen werden. Gehen Sie gut gelaunt an R heran, üben Sie Frustrationstoleranz, machen Sie Ihre Tastatut nicht kaputt und sagen Sie sich immer wieder: Ich muss, ich will, ich kann. :-)
+
+Schauen Sie am Anfang mal Ihre Installation an. Wenn Sie R und R-Studio das erste Mal installieren, dann können Sie das nach der Anleitung tu, die Sie unter \[Installation\] finden. Dort erfahren Sie auch, wie Sie "tinytex" mit R-Studio installieren und damit die Möglichkeit haben, sehr schöne Berichte direkt in R-Studio setzen zu lassen ([zum Beispiel](./files/Forschungsbericht_UE_3_AG_B.pdf)). Damit Sie gleich noch Literaturverweise und Literaturverzeichnis automatisiert mitproduzieren können, finden Sie in der Installationsanleitung auch gleich noch Zotero. <img src="images/uzh.png" style="position:absolute;top:2px;right:0px;width:250px"/>
+
+## Programmieren heisst kopieren {.unnumbered .unlisted}
+
+Sie lernen mit der Zeit wie Sie Aufgaben in R lösen, indem Sie sich Codeschnipsel suchen, diese kopieren und an Ihre Daten und Variablen anpassen. Mit R zu arbeiten verlangt von Ihnen keine aktiven Programmierkenntnisse. Sie müssen nur den richtigen Code (z.B. auf "Stack Overflow") finden und für sich anpassen. So arbeiten übrigens die meisten Programmierer:innen in ihrem Alltag.
+
+```{r}
+#| label: Hacker
+vembedr::embed_youtube("rlb16AvXX3M") |> # oder er hier: AA_BW4qCxJ8
+  vembedr::use_rounded()
+```
+

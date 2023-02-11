@@ -1,0 +1,41 @@
+{
+  "index.qmd": {
+    "index.html": "4fdf3bec"
+  },
+  "02-Installation.qmd": {
+    "02-Installation.html": "eb3e9d88"
+  },
+  "03-Fehlerbehandlung.qmd": {
+    "03-Fehlerbehandlung.html": "9e030161"
+  },
+  "04-Relitest.qmd": {
+    "04-Relitest.html": "62909c6f"
+  },
+  "05-Daten-laden-Fusion.qmd": {
+    "05-Daten-laden-Fusion.html": "a2e9e990"
+  },
+  "06-Datenaufbereitung.qmd": {
+    "06-Datenaufbereitung.html": "d071da6b"
+  },
+  "07-Ergebnisse.qmd": {
+    "07-Ergebnisse.html": "907e95a1"
+  },
+  "09-Bookdown.qmd": {
+    "09-Bookdown.html": "7877b9e4"
+  },
+  "01-Basics.qmd": {
+    "01-Basics.html": "6d751440"
+  },
+  "09-Quarto.qmd": {
+    "09-Quarto.html": "27933090"
+  },
+  "references.qmd": {
+    "references.html": "0a01c207"
+  },
+  "11-references.qmd": {
+    "11-references.html": "1406cb48"
+  },
+  "90-Literatur.qmd": {
+    "90-Literatur.html": "a6efc941"
+  }
+}

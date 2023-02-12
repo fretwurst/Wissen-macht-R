@@ -1,2 +1,9 @@
 /.luarc.json
 .DS_Store
+/.quarto/
+.vscode/Lehre.code-workspace
+.vscode/sftp.json
+Wissen_macht_R!/search.json
+sftp.json
+.vscode/Lehre.code-workspace
+.vscode/

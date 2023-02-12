@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Wissen macht R! - 7&nbsp; Datenaufbereitung</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./09-Quarto.html" rel="next">
+<link href="./05-Daten-laden-Fusion.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<link href="site_libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="www/webex.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Datenaufbereitung</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Wissen macht R!</a> 
+        <div class="sidebar-tools-main">
+    <a href="./Wissen-macht-R.pdf" title="Download PDF" class="sidebar-tool px-1"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Intro</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-Basics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Basics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-Installation.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Installation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-Fehlerbehandlung.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Fehler erkennen und lösen</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-Relitest.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Relitest</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-Daten-laden-Fusion.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Daten laden und fusionieren</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-Datenaufbereitung.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Datenaufbereitung</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-Quarto.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Forschungsbericht mit Quarto/Word</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Auf dieser Seite</h2>
+   
+  <ul>
+  <li><a href="#leere-fälle-löschen-tf-e" id="toc-leere-fälle-löschen-tf-e" class="nav-link active" data-scroll-target="#leere-fälle-löschen-tf-e"><span class="toc-section-number">7.1</span>  Leere Fälle löschen (TF E)</a></li>
+  <li><a href="#variablen-umbenennen-und-löschen" id="toc-variablen-umbenennen-und-löschen" class="nav-link" data-scroll-target="#variablen-umbenennen-und-löschen"><span class="toc-section-number">7.2</span>  Variablen umbenennen und löschen</a></li>
+  <li><a href="#label-für-variablen-und-ausprägungen-teils-tf-e" id="toc-label-für-variablen-und-ausprägungen-teils-tf-e" class="nav-link" data-scroll-target="#label-für-variablen-und-ausprägungen-teils-tf-e"><span class="toc-section-number">7.3</span>  Label für Variablen und Ausprägungen (teils TF E)</a></li>
+  <li><a href="#befragungstag-aus-dem-datum" id="toc-befragungstag-aus-dem-datum" class="nav-link" data-scroll-target="#befragungstag-aus-dem-datum"><span class="toc-section-number">7.4</span>  Befragungstag aus dem Datum</a></li>
+  <li><a href="#umkodieren" id="toc-umkodieren" class="nav-link" data-scroll-target="#umkodieren"><span class="toc-section-number">7.5</span>  Umkodieren</a>
+  <ul>
+  <li><a href="#werte-wechseln" id="toc-werte-wechseln" class="nav-link" data-scroll-target="#werte-wechseln"><span class="toc-section-number">7.5.1</span>  Werte wechseln</a></li>
+  <li><a href="#mehrere-auf-einmal-umkodieren" id="toc-mehrere-auf-einmal-umkodieren" class="nav-link" data-scroll-target="#mehrere-auf-einmal-umkodieren"><span class="toc-section-number">7.5.2</span>  Mehrere auf einmal umkodieren</a></li>
+  <li><a href="#na-durch-0-ersetzen" id="toc-na-durch-0-ersetzen" class="nav-link" data-scroll-target="#na-durch-0-ersetzen"><span class="toc-section-number">7.5.3</span>  NA durch 0 ersetzen</a></li>
+  <li><a href="#ausprägungen-zusammenfassen" id="toc-ausprägungen-zusammenfassen" class="nav-link" data-scroll-target="#ausprägungen-zusammenfassen"><span class="toc-section-number">7.5.4</span>  Ausprägungen zusammenfassen</a></li>
+  <li><a href="#bedingt-umkodieren" id="toc-bedingt-umkodieren" class="nav-link" data-scroll-target="#bedingt-umkodieren"><span class="toc-section-number">7.5.5</span>  Bedingt umkodieren</a></li>
+  <li><a href="#variablen-zu-indizes-zusammenfassen" id="toc-variablen-zu-indizes-zusammenfassen" class="nav-link" data-scroll-target="#variablen-zu-indizes-zusammenfassen"><span class="toc-section-number">7.5.6</span>  Variablen zu Indizes zusammenfassen</a></li>
+  <li><a href="#umfangreiche-umkodierungstabellen-tf-e" id="toc-umfangreiche-umkodierungstabellen-tf-e" class="nav-link" data-scroll-target="#umfangreiche-umkodierungstabellen-tf-e"><span class="toc-section-number">7.5.7</span>  Umfangreiche Umkodierungstabellen (TF E)</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Datenaufbereitung</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Laden Sie sich als erstes die Datei <a href="templates/Auswertung.Rmd" download="">Auswertung.Rmd</a> herunter. Darin finden Sie Codebeispiele, die Sie kopieren können und so ändern, dass Sie auf Ihre Datensätze und zu Ihren Variablen passen.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a> vembedr<span class="sc">::</span><span class="fu">embed_youtube</span>(<span class="st">"huBJnXr70SE"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  vembedr<span class="sc">::</span><span class="fu">use_rounded</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="vembedr">
+<div class="vembedr-rounded">
+<iframe src="https://www.youtube.com/embed/huBJnXr70SE" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"></iframe>
+</div>
+</div>
+</div>
+</div>
+<section id="leere-fälle-löschen-tf-e" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="leere-fälle-löschen-tf-e"><span class="header-section-number">7.1</span> Leere Fälle löschen (TF E)</h2>
+<p>Hier gehe ich davon aus, dass ein Interview erfolgreich beendet wurde, wenn der:die Interviewer:in am Ende etwas zum Verständnis des Interviews eingegeben hat.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="ot">&lt;-</span> DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(PLZ))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Das geht nur einmal, weil R dann die Variablen nicht mehr findet, die wir gerade gelöscht haben, logisch</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="ot">&lt;-</span> DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(SERIAL<span class="sc">:</span>MODE)) </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="ot">&lt;-</span> DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(INTERVIEWER, <span class="at">.after =</span> STARTED)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="variablen-umbenennen-und-löschen" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="variablen-umbenennen-und-löschen"><span class="header-section-number">7.2</span> Variablen umbenennen und löschen</h2>
+<p>Wenn Sie den einfachen Befehl “select” nehmen, dann werden die Variablen behalten, die Sie aufführen. Wenn Sie ein Minus davor schreiben, werden die Variablen gelöscht, die Sie aufführen. Häufig führt das später zu Fehlermeldungen, weil bei mehrfacher Ausführung gelöschte Variablen natürlich nicht mehr im Datensatz gefunden werden. Um diesen Fehlermeldungen aus dem Weg zu gehen, können Sie “any_of” verwenden. Dann prüft R, ob eine der aufgeführten Variablen im Datensatz sind und löscht diese. Wenn die Variablen nicht im Datensatz sind, dann macht R nichts weiter (meldet auch keinen Fehler und stoppt Ihren Durchlauf nicht.). Seien Sie damit also mir Vorsicht. Beim Befehl “rename” können Sie das auch machen. Mit “any_of” werden nur die Variablen umbenannt, die auch wirklich da sind. Manchmal kommt das bei jedem Durchlauf vor, weil zB bei join-Befehlen immer nochmal ein Datensatz gematcht wird und wie im Beispiel vorhandene Variablen wie “Nenn1” umbenannt werden in “Nenn1.x” und Nenn1.y” Wenn Sie jetzt die mit “.y” löschen und die mit “.x” umbenennen, dann haben Sie das Problem auch glöst, wenn Ihnen nicht ganz klar ist, warum die immerwieder auftauchen. Für’s Erste ist das also auch eine Lösung eines Problems. ;-)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Manchmal macht es Sinn, von einer Variable eine Kopie mit besser lesbarem Namen anzulegen, wie hier:</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="ot">&lt;-</span> DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Alter =</span> SD01,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">Geschlecht =</span> SD02)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># So können Sie Variablen löschen. Durch das -any_of gibt es keine Fehler, wenn R die Variablen nicht findet</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="ot">&lt;-</span> DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">any_of</span>(<span class="fu">c</span>(<span class="st">"Nenn1.y"</span>, <span class="st">"Nenn2.y"</span>, <span class="st">"Nann3.y"</span>)))</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># So nenne Sie Variablen um (vorne wie es bisher hiess).</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="ot">&lt;-</span> DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="fu">any_of</span>(<span class="fu">c</span>(<span class="st">"Nenn1.x"</span> <span class="ot">=</span> <span class="st">"Nenn1"</span>, <span class="st">"Nenn2.x"</span> <span class="ot">=</span> <span class="st">"Nenn2"</span>, <span class="st">"Nenn3.x"</span> <span class="ot">=</span> <span class="st">"Nenn3"</span>))) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="label-für-variablen-und-ausprägungen-teils-tf-e" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="label-für-variablen-und-ausprägungen-teils-tf-e"><span class="header-section-number">7.3</span> Label für Variablen und Ausprägungen (teils TF E)</h2>
+<p>Wenn Sie messen, dann stehen am Ende Zahlen für das was Sie gemessen, also zB erfragt haben. Zum Beispiel steht dann eine 1 für “trifft nicht zu” und 5 für “trifft vollkommen zu”. In Ihren Auswertungen müssen Sie aber wieder die verbalen Entsprechungen nutze, statt nur Tabellen oder Grafiken zu haben, wo nur Zahlen ausgewiesen werden (Sie können das noch verbinden, aber Ihre Leser:innen nicht). In anderen Programmen (wie SPSS) ist es daher üblich, dass die gemessenen Zahlen mit verbalen Labeln versehen werden. In Base-R geht das nicht so toll. Da müssen Sie mit “factors” arbeiten, wo also statt der Zahlen die verbalen Entsprechungen verwendet werden. Mühsam an den Faktoren ist, dass man mit ihnen wieder nicht mehr rechnen kann, also z.B. weder einen Mittelwert ausgeben noch eine Korrelation. Da hilft das Paket sjmisc weiter. Mit dem können Sie den Zahlenwerten Ihrer Variablen ihre Merkmalsausprägungen als Label zuordnen. Das geht mit set_label(labels = c(“tzrifft nicht zu” = 1, “trifft voll zu” = 5)):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># So können Label vergeben werden</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="sc">|&gt;</span> sjmisc<span class="sc">::</span><span class="fu">frq</span>(GESCHL)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Hier wird das Variablenlabel vergeben</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="ot">&lt;-</span> DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  sjlabelled<span class="sc">::</span><span class="fu">var_labels</span>(<span class="at">GESCHL =</span> <span class="st">"Geschlecht"</span>) </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Hier werden für die einzelnen Ausprägungen die Label vergeben</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="ot">&lt;-</span> DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  sjlabelled<span class="sc">::</span><span class="fu">set_labels</span>(GESCHL, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"mänlich"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"weiblich"</span> <span class="ot">=</span> <span class="dv">2</span>, <span class="st">"divers"</span> <span class="ot">=</span> <span class="dv">3</span>, <span class="st">"k.A."</span> <span class="ot">=</span> <span class="cn">NA</span>))</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Mit dem Befehl für Häufigkeitstabellen (frq für frequencies) kann die Labelei schnell angesehen werden:</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  sjmisc<span class="sc">::</span><span class="fu">frq</span>(GESCHL)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="do">## Hier werden für einige Variablen Label vergeben, die zusammengehören und später als Auswertung für Mehrfrachantworten verarbeitet werden</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Ersteinmal die Variablen angucken. Die Variablen gehen von NACHRICHT_TITEL1 in einer Reihe bis M112_23 (wurde nicht umbenannt in SosciSurvey)</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(NACHRICHT_TITEL1<span class="sc">:</span>M112_23) <span class="sc">|&gt;</span> <span class="co"># Nur die interessierenden Variablen selektieren</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">multiResponse</span>() <span class="sc">|&gt;</span> <span class="co"># Mehrfachantworten ansehen</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Frequency)) <span class="sc">|&gt;</span> <span class="co"># Sortieren nach Häufigkeit</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kable</span>() <span class="sc">|&gt;</span> <span class="co"># besser lesbare Tabelle daraus machen</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kable_styling</span>() <span class="co"># Styling</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Mit set_variable_labels werden hier die Variablenlabel vergeben</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="ot">&lt;-</span> DATEN_BF <span class="sc">|&gt;</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>  sjlabelled<span class="sc">::</span><span class="fu">var_labels</span>(<span class="at">NACHRICHT_TITEL1 =</span> <span class="st">"NZZ"</span>, </span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>                      <span class="at">NACHRICHT_TITEL2 =</span> <span class="st">"TA"</span>, </span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>                      <span class="at">NACHRICHT_TITEL3 =</span> <span class="st">"20 Minuten"</span>,</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>                      <span class="at">NACHRICHT_TITEL4 =</span> <span class="st">"Blick"</span>, </span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>                      <span class="at">NACHRICHT_TITEL5 =</span> <span class="st">"Watson"</span>,</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>                      <span class="at">NACHRICHT_TITEL6 =</span> <span class="st">"SRF News"</span>, </span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>                      <span class="at">M112_20 =</span> <span class="st">"Social Media"</span>,</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>                      <span class="at">M112_21 =</span> <span class="st">"Google News"</span>,</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>                      <span class="at">M112_23 =</span> <span class="st">"anderes"</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>                      )</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Hier mal für den Nachrichtenfaktor "Kontroverse" aus der Inhaltsanalyse</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>DATEN_IA <span class="ot">&lt;-</span> DATEN_IA <span class="sc">|&gt;</span> </span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a> sjlabelled<span class="sc">::</span><span class="fu">var_labels</span>(KNTR, <span class="at">label =</span> <span class="st">"Kontroverse"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a> sjlabelled<span class="sc">::</span><span class="fu">set_labels</span>(KNTR, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"keine"</span> <span class="ot">=</span> <span class="dv">0</span>, <span class="st">"gering"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"stark"</span> <span class="ot">=</span> <span class="dv">2</span>, <span class="st">"k.A."</span> <span class="ot">=</span> <span class="cn">NA</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="befragungstag-aus-dem-datum" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="befragungstag-aus-dem-datum"><span class="header-section-number">7.4</span> Befragungstag aus dem Datum</h2>
+<p>Mit diesem Befehl kann der Befragungstag aus der Datumsvariable erzeugt werden, die von SosciSurvey automatisch erzeugt wird.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="ot">&lt;-</span> DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Befrag_Tag =</span> <span class="fu">day</span>(STARTED)) <span class="sc">|&gt;</span> <span class="co"># mit day wird aus der Datumsvariable der Tag rausgezogen</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(Befrag_Tag, <span class="at">.after =</span> STARTED) <span class="co"># Hiermit wird die Variable für den Befragungsstart an den Anfang gepackt</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="sc">|&gt;</span> sjmisc<span class="sc">::</span><span class="fu">frq</span>(Befrag_Tag)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="umkodieren" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="umkodieren"><span class="header-section-number">7.5</span> Umkodieren</h2>
+<section id="werte-wechseln" class="level3" data-number="7.5.1">
+<h3 data-number="7.5.1" class="anchored" data-anchor-id="werte-wechseln"><span class="header-section-number">7.5.1</span> Werte wechseln</h3>
+<p>Umkodieren bedeutet, dass Ausprägungen (also Werte) in einer Variablen verändert werden oder zu anderen Werten in einer neuen Variable werden. Typische Umkodierungen sind Veränderungen der Codes (also zB wenn man eine Skala umdrehen möchte von 1 bis 5 auf 5 bis 1) und Zusammenfassungen von Codes, also zB 1 und 2 werden neu in 1 zusammengefasst 3 wird die neue 2 und 4 sowie 5 werden als neue 3 kodiert. Dann hat man jeweils zwei Abstufungen in den Ausprägungen zu jeweils einer zusammengefasst.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Hier machen wir aus den beiden tieferen Bildungsgruppen eine einzelne Gruppe. In den Klammern kann man die Value Label gleich mit vergeben:</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="sc">|&gt;</span> sjmisc<span class="sc">::</span><span class="fu">frq</span>(BILDUNG) <span class="co"># erstmal angucken</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Erstelle mit mutate eine neue Variable BILDUNG_gr, die eine Rekodierung (rec) der Variable BILDUNG (zB 1 und 2 werden 1 mit dem Label "tief")</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="ot">&lt;-</span> DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a> <span class="fu">mutate</span>(<span class="at">BILDUNG_gr =</span> <span class="fu">rec</span>(BILDUNG, <span class="at">rec =</span> <span class="st">"1:2 = 1; 3 = 2; 4 = 3; 5 = 4"</span>))  <span class="co"># die offenen müssen noch kodiert werden</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="ot">&lt;-</span> DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  sjlabelled<span class="sc">::</span><span class="fu">set_labels</span>(BILDUNG_gr, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"tief"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"mittel"</span> <span class="ot">=</span> <span class="dv">2</span>, <span class="st">"hoch"</span> <span class="ot">=</span> <span class="dv">3</span>, <span class="st">"noch kodieren"</span> <span class="ot">=</span> <span class="dv">4</span>), <span class="at">force.labels =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  sjlabelled<span class="sc">::</span><span class="fu">var_labels</span>(BILDUNG_gr, <span class="at">label =</span> <span class="st">"Bildung (gruppiert)"</span>)  <span class="co"># hier das Variablenlabel</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    sjmisc<span class="sc">::</span><span class="fu">frq</span>(BILDUNG_gr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="mehrere-auf-einmal-umkodieren" class="level3" data-number="7.5.2">
+<h3 data-number="7.5.2" class="anchored" data-anchor-id="mehrere-auf-einmal-umkodieren"><span class="header-section-number">7.5.2</span> Mehrere auf einmal umkodieren</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">frq</span>(HAUFIGKEIT_01<span class="sc">:</span>HAUFIGKEIT_05)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># mutiere across die ganze Liste der Variablen von:bis, als Funktion (~) rec(.x) wobei .x für die Liste steht</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="ot">&lt;-</span> DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(HAUFIGKEIT_01<span class="sc">:</span>HAUFIGKEIT_05, </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                <span class="sc">~</span> <span class="fu">rec</span>(.x, <span class="at">rec =</span> <span class="st">"1 = -2 [viel zu wenig]; 2 = -1 [zu wenig]; 3 = 0 [richtig]; 4 = 1  [zu viel]; 5 = 2 [viel zu viel]; else = NA"</span>), </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">.names =</span> <span class="st">"{.col}_um0"</span>)) <span class="sc">|&gt;</span> <span class="co"># HIer werden an die Variablennamen Suffixe "_um0" angehängt</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  sjlabelled<span class="sc">::</span><span class="fu">var_labels</span>(<span class="at">HAUFIGKEIT_01_um0 =</span> <span class="st">"Corona"</span>, <span class="co"># Hier noch Label für die Variablen</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">HAUFIGKEIT_02_um0 =</span> <span class="st">"Abstimmungen"</span>, </span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">HAUFIGKEIT_03_um0 =</span> <span class="st">"Finanz"</span>, </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">HAUFIGKEIT_04_um0 =</span> <span class="st">"Klima"</span>, </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">HAUFIGKEIT_05_um0 =</span> <span class="st">"Geflüchtete"</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  sjmisc<span class="sc">::</span><span class="fu">frq</span>(HAUFIGKEIT_01_um0<span class="sc">:</span>HAUFIGKEIT_05_um0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="na-durch-0-ersetzen" class="level3" data-number="7.5.3">
+<h3 data-number="7.5.3" class="anchored" data-anchor-id="na-durch-0-ersetzen"><span class="header-section-number">7.5.3</span> NA durch 0 ersetzen</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>DATEN_IA <span class="sc">|&gt;</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(Nenn1<span class="sc">:</span>Nenn5), <span class="fu">ifelse</span>(<span class="fu">is.na</span>(.x) <span class="sc">==</span> <span class="cn">TRUE</span>, <span class="dv">0</span>, .x))<span class="er">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="ausprägungen-zusammenfassen" class="level3" data-number="7.5.4">
+<h3 data-number="7.5.4" class="anchored" data-anchor-id="ausprägungen-zusammenfassen"><span class="header-section-number">7.5.4</span> Ausprägungen zusammenfassen</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Das Alter in Gruppen zusammenfassen</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="ot">&lt;-</span> DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ALTER_gr =</span> <span class="fu">case_when</span>(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    ALTER <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    ALTER <span class="sc">&lt;=</span> <span class="dv">25</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    ALTER <span class="sc">&lt;=</span> <span class="dv">45</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    ALTER <span class="sc">&lt;=</span> <span class="dv">65</span> <span class="sc">~</span> <span class="dv">3</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    ALTER <span class="sc">&lt;=</span> <span class="dv">85</span> <span class="sc">~</span> <span class="dv">4</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    ALTER <span class="sc">&gt;</span> <span class="dv">85</span> <span class="sc">~</span> <span class="dv">5</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  ))  <span class="sc">|&gt;</span> </span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  sjlabelled<span class="sc">::</span><span class="fu">set_labels</span>(ALTER_gr, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"bis 25"</span>  <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"26-45"</span> <span class="ot">=</span> <span class="dv">2</span>, <span class="st">"46-65"</span> <span class="ot">=</span> <span class="dv">3</span>, <span class="st">"66-85"</span> <span class="ot">=</span> <span class="dv">4</span>, <span class="st">"85+"</span> <span class="ot">=</span> <span class="dv">5</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  sjlabelled<span class="sc">::</span><span class="fu">var_labels</span>(<span class="at">ALTER_gr =</span> <span class="st">"Alter gruppiert"</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="sc">|&gt;</span> <span class="fu">frq</span>(ALTER_gr)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Hier werden für die Inhaltsanalyse die Anzahl Worte in Gruppen zusammengefasst.</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>DATEN_IA <span class="ot">&lt;-</span> DATEN_IA <span class="sc">|&gt;</span> </span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">WORTE_gr =</span> <span class="fu">rec</span>(WORT_AZ, </span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>                        <span class="at">rec =</span> <span class="st">"0:100 = 1 [Kurzmeldung];</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="st">                        101:150 = 2 [kurzer Artikel]; </span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="st">                        151:300 = 3 [länger]; </span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="st">                        301:500 = 4 [lang]; </span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="st">                        501:max = 5 [Langtext]"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">relocate</span>(WORTE_gr, <span class="at">.after =</span> WORT_AZ) </span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="do">### Rekodierung der Anzahl Nennungen in wenige Gruppen</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>DATEN_IA <span class="ot">&lt;-</span> DATEN_IA <span class="sc">|&gt;</span> </span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Nenn_Gr =</span> <span class="fu">rec</span>(Nenn_Gesamt, <span class="at">rec =</span> <span class="st">"1:3 = 1; 4:16 = 2; 17:100 = 3"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>  sjlabelled<span class="sc">::</span><span class="fu">set_labels</span>(Nenn_Gr, <span class="at">labels =</span> (<span class="fu">c</span>(<span class="st">"selten"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"mittel"</span> <span class="ot">=</span> <span class="dv">2</span>, <span class="st">"häufig"</span> <span class="ot">=</span> <span class="dv">3</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Medium umkodieren</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1 SRF</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 2 20min</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 3 Watson</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 4 NZZ</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 5 Tagesanzeiger</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 6 Blick</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>DATEN_IA <span class="ot">&lt;-</span> DATEN_IA <span class="sc">|&gt;</span> </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Medium_Q =</span> <span class="fu">rec</span>(MEDIUM, </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                    <span class="at">rec =</span> <span class="st">"1,4,5 = 1 [Qualität]; 2,3,6 = 2 [Boulevard]"</span>)) </span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>DATEN_IA <span class="sc">|&gt;</span> sjmisc<span class="sc">::</span><span class="fu">frq</span>(Medium_Q)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="bedingt-umkodieren" class="level3" data-number="7.5.5">
+<h3 data-number="7.5.5" class="anchored" data-anchor-id="bedingt-umkodieren"><span class="header-section-number">7.5.5</span> Bedingt umkodieren</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  sjmisc<span class="sc">::</span><span class="fu">frq</span>(ALTER, BILDUNG_gr)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="ot">&lt;-</span> DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Alt_Bild1 =</span> <span class="fu">if_else</span>(ALTER <span class="sc">&lt;</span> <span class="dv">35</span> <span class="sc">&amp;</span> BILDUNG_gr <span class="sc">==</span> <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>)) </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="sc">|&gt;</span>  <span class="fu">frq</span>(Alt_Bild1)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Hier erstmal umkodieren uns anschauen</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Alt_Bild2 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    ALTER <span class="sc">&lt;</span> <span class="dv">35</span> <span class="sc">&amp;</span> BILDUNG_gr <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="dv">1</span>, </span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    ALTER <span class="sc">&gt;</span> <span class="dv">75</span> <span class="sc">&amp;</span> BILDUNG_gr <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span> </span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">var_labels</span>(<span class="at">Alt_Bild2 =</span> <span class="st">"Alter und Bildung"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_labels</span>(Alt_Bild2, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Junggebildet"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"Altgebildet"</span> <span class="ot">=</span> <span class="dv">2</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">frq</span>(Alt_Bild2) <span class="co"># erstmal nur eine Frequencies als Ergebnis und nicht gleich den Daten hinzufügen</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Dann dem Datensatz hinzufügen</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="ot">&lt;-</span> DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Alt_Bild2 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    ALTER <span class="sc">&lt;</span> <span class="dv">35</span> <span class="sc">&amp;</span> BILDUNG_gr <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="dv">1</span>, </span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    ALTER <span class="sc">&gt;</span> <span class="dv">75</span> <span class="sc">&amp;</span> BILDUNG_gr <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span> </span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>  sjlabelled<span class="sc">::</span><span class="fu">var_labels</span>(<span class="at">Alt_Bild2 =</span> <span class="st">"Alter und Bildung"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>  sjlabelled<span class="sc">::</span><span class="fu">set_labels</span>(Alt_Bild2, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Junggebildet"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"Altgebildet"</span> <span class="ot">=</span> <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="variablen-zu-indizes-zusammenfassen" class="level3" data-number="7.5.6">
+<h3 data-number="7.5.6" class="anchored" data-anchor-id="variablen-zu-indizes-zusammenfassen"><span class="header-section-number">7.5.6</span> Variablen zu Indizes zusammenfassen</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ein Summenindex für 10 Variablen zur Nachrichtennutzung Es wird zeilenweise die Summe für die Dummys (0/1-Variablen) berechnet</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="ot">&lt;-</span> DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">MEDIEN_sum =</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(NACHRICHT_TITEL1<span class="sc">:</span>NACHRICHT_TITEL10), <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  sjmisc<span class="sc">::</span><span class="fu">frq</span>(MEDIEN_sum)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Hier noch der Durchschnittswert als Index, was bei Dummys der Anteil der 1-er ist, also wenn 68 von knapp 200 Leuten 2 Medien nannten, dann gibt es 68 mal die 0.2 </span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="ot">&lt;-</span> DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">MEDIEN_mean =</span> <span class="fu">rowMeans</span>(<span class="fu">across</span>(NACHRICHT_TITEL1<span class="sc">:</span>NACHRICHT_TITEL10), <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>DATEN_BF <span class="sc">|&gt;</span> </span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  sjmisc<span class="sc">::</span><span class="fu">frq</span>(MEDIEN_mean)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>mutate</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>DATEN_IA <span class="ot">&lt;-</span> DATEN_IA <span class="sc">|&gt;</span> </span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(PERS<span class="sc">:</span>KNTR, KAT<span class="sc">:</span>NAEHE), <span class="sc">~</span><span class="fu">replace</span>(.x, <span class="fu">is.na</span>(.x),<span class="dv">0</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(PERS<span class="sc">:</span>KNTR, KAT<span class="sc">:</span>NAEHE), <span class="sc">~</span><span class="fu">replace</span>(.x, .x <span class="sc">==</span> <span class="sc">-</span><span class="dv">9</span>,<span class="dv">0</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Jour_Beacht =</span> <span class="fu">sum</span>(<span class="fu">c</span>(PERS<span class="sc">:</span>KNTR, KAT<span class="sc">:</span>NAEHE)))</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>DATEN_IA <span class="sc">|&gt;</span> sjmisc<span class="sc">::</span><span class="fu">frq</span>(Jour_Beacht)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="umfangreiche-umkodierungstabellen-tf-e" class="level3" data-number="7.5.7">
+<h3 data-number="7.5.7" class="anchored" data-anchor-id="umfangreiche-umkodierungstabellen-tf-e"><span class="header-section-number">7.5.7</span> Umfangreiche Umkodierungstabellen (TF E)</h3>
+<p>Zum Beispiel für Ländereigenschaften über die Ländercodes</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>vembedr<span class="sc">::</span><span class="fu">embed_youtube</span>(<span class="st">"5BR3m7E6E-s"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  vembedr<span class="sc">::</span><span class="fu">use_rounded</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="vembedr">
+<div class="vembedr-rounded">
+<iframe src="https://www.youtube.com/embed/5BR3m7E6E-s" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"></iframe>
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Aus der Länderliste mit den Kodierungen kommen die Variablen für eine Laenderliste:</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>Laenderliste <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="st">"Daten/Laender_Liste_Kodierung.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"Länderliste"</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Die Codes für die Länder kommen aus einer anderen Untertabelle der Excel, darum steht hinten bei sheets etwas anderes:</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>Ländercodes <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="st">"Daten/Laender_Liste_Kodierung.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"Ländercodes"</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Dann gibt es noch lauter weitere Codes, die wir jetzt anmatchen können, die können wir später gut gebrauchen, weil verschiedene Datensätze aus dem Internetz verschiedene Ländercodes verwenden</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>Land_AlphaISO <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="st">"Daten/Laender_Liste_Kodierung.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"AlphaISO"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(name, <span class="st">"alpha2"</span>, <span class="st">"alpha3"</span>, <span class="st">"CountryCode"</span>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Hier binden wir die zusammen, erst die Ländercodes an die Laenderliste und dann noch die Land_AlphaISO hinten dran</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>Laender <span class="ot">&lt;-</span> <span class="fu">left_join</span>(Laenderliste, Ländercodes, <span class="at">by =</span> <span class="st">"Land"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(., Land_AlphaISO, <span class="at">by =</span> <span class="st">"alpha2"</span>)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co"># oh, und hier noch ein paar Handelsdaten, falls das jemanden interessiert</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>WorldTrade <span class="ot">&lt;-</span> economiccomplexity<span class="sc">::</span>world_gdp_avg_1998_to_2000</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="co"># So, die kleben wir jetzt auch noch hinten an unsere Laendervariable</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>Laender <span class="ot">&lt;-</span> <span class="fu">left_join</span>(Laender, WorldTrade, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"alpha3"</span> <span class="ot">=</span> <span class="st">"country"</span>))</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="co"># mit diesem Paket können Sie die Coronazahlen aller Länder als Datensatz laden, für jeden Tag</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>Covid_JHU <span class="ot">&lt;-</span> tidycovid19<span class="sc">::</span><span class="fu">download_jhu_csse_covid19_data</span>() <span class="co"># das dauert bischen</span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>Covid_WBank <span class="ot">&lt;-</span> tidycovid19<span class="sc">::</span><span class="fu">download_wbank_data</span>()</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="co"># jetzt nehme ich den Covid-Datensatz und ...</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>Covid_Land <span class="ot">&lt;-</span> Covid_JHU <span class="sc">|&gt;</span> </span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(date <span class="sc">&gt;=</span> <span class="st">"2020-12-4"</span> <span class="sc">&amp;</span> date <span class="sc">&lt;=</span> <span class="st">"2020-12-6"</span>) <span class="sc">|&gt;</span> <span class="co"># filtere so, dass nur die Daten der Feldphase bleiben (auf die Tage der Feldphase achten)</span></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(iso3c) <span class="sc">|&gt;</span> <span class="co"># hier gruppiere ich nach den Ländern, die im Code iso3c (dreistellig character) stehn</span></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">C19_Gesamt =</span> <span class="fu">max</span>(confirmed), <span class="co"># hier summiert R die maximal bestätigten (also kummulierten) Fallzahlen</span></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>            <span class="at">C19_Feldwoche_krank =</span> <span class="fu">sum</span>(confirmed <span class="sc">-</span> recovered)) <span class="co"># hier noch die Summe der Kranken in der Feldphase</span></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Hier kleben wir wieder die Covid-Daten an die Laender dran</span></span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>Laender <span class="ot">&lt;-</span> <span class="fu">left_join</span>(Laender, Covid_Land, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"alpha3"</span> <span class="ot">=</span> <span class="st">"iso3c"</span>)) </span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Schreibe die Laender-Daten raus in die Exceldatei "Laender_codes.xlsx"</span></span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>writexl<span class="sc">::</span><span class="fu">write_xlsx</span>(Laender, <span class="st">"Daten/Laender_codes.xlsx"</span>)</span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Hier die Laender-Daten wieder aus der (eventuell ergänzten Laender-Excel) in R laden:</span></span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>Laender <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="st">"Daten/Laender_codes.xlsx"</span>)</span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Jetzt kommt die Magie. Wie matchen die Laendervariable an die Inhaltsanalysedaten:</span></span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Hier lade ich die Inhaltanalysedaten aus meiner Excel. Vermutlich heisst die Excel bei Ihnen anders und liegt vielleicht auch nicht im Unterordner "Daten".</span></span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a>IA <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read.xlsx</span>(<span class="st">"Daten/IA_Gesamt.xlsx"</span>)</span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Hier werden alle Variablen aus der Laendertabelle hinten an die Inhaltsanalyse geklebt</span></span>
+<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a>IA <span class="ot">&lt;-</span> <span class="fu">left_join</span>(IA, Laender, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"LAND"</span> <span class="ot">=</span> <span class="st">"Code"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script>
+
+/* update total correct if #webex-total_correct exists */
+update_total_correct = function() {
+  console.log("webex: update total_correct");
+
+  if (t = document.getElementById("webex-total_correct")) {
+    var correct = document.getElementsByClassName("webex-correct").length;
+    var solvemes = document.getElementsByClassName("webex-solveme").length;
+    var radiogroups = document.getElementsByClassName("webex-radiogroup").length;
+    var selects = document.getElementsByClassName("webex-select").length;
+    
+    t.innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+  }
+}
+
+/* webex-solution button toggling function */
+b_func = function() {
+  console.log("webex: toggle hide");
+  
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  console.log("webex: check solveme");
+
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "")
+  }
+
+  if (my_answer == "") {
+    cl.remove("webex-correct");
+    cl.remove("webex-incorrect");
+  } else if (real_answers.includes(my_answer)) {
+    cl.add("webex-correct");
+    cl.remove("webex-incorrect");
+  } else {
+    cl.add("webex-incorrect");
+    cl.remove("webex-correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol > 0){
+    var tol = JSON.parse(this.dataset.tol);
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("webex-correct");
+    } else {
+      cl.remove("webex-correct");
+    }
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("webex-correct");
+    }
+  }
+
+  update_total_correct();
+}
+
+/* function for checking select answers */
+select_func = function(e) {
+  console.log("webex: check select");
+  
+  var cl = this.classList
+  
+  /* add style */
+  cl.remove("webex-incorrect");
+  cl.remove("webex-correct");
+  if (this.value == "answer") {
+    cl.add("webex-correct");
+  } else if (this.value != "blank") {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+/* function for checking radiogroups answers */
+radiogroups_func = function(e) {
+  console.log("webex: check radiogroups");
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+  var cl = checked_button.parentElement.classList;
+  var labels = checked_button.parentElement.parentElement.children;
+  
+  /* get rid of styles */
+  for (i = 0; i < labels.length; i++) {
+    labels[i].classList.remove("webex-incorrect");
+    labels[i].classList.remove("webex-correct");
+  }
+  
+  /* add style */
+  if (checked_button.value == "answer") {
+    cl.add("webex-correct");
+  } else {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+window.onload = function() {
+  console.log("onload");
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+
+  /* set up webex-solveme inputs */
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off");
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+  }
+  
+  /* set up radiogroups */
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+  for (var i = 0; i < radiogroups.length; i++) {
+    radiogroups[i].onchange = radiogroups_func;
+  }
+  
+  /* set up selects */
+  var selects = document.getElementsByClassName("webex-select");
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].onchange = select_func;
+  }
+
+  update_total_correct();
+}
+
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./05-Daten-laden-Fusion.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Daten laden und fusionieren</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./09-Quarto.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Forschungsbericht mit Quarto/Word</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

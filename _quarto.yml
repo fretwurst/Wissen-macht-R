@@ -9,6 +9,7 @@ book:
 
   chapters:
     - index.qmd
+    - 0-intro.qmd
     - 01-Basics.qmd
     - 02-Installation.qmd
     - 03-Fehlerbehandlung.qmd

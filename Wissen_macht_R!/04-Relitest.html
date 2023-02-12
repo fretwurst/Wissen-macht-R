@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Wissen macht R! - 5&nbsp; Relitest</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./05-Daten-laden-Fusion.html" rel="next">
+<link href="./03-Fehlerbehandlung.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<link href="site_libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet">
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="www/webex.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Relitest</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Wissen macht R!</a> 
+        <div class="sidebar-tools-main">
+    <a href="./Wissen-macht-R.pdf" title="Download PDF" class="sidebar-tool px-1"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Intro</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-Basics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Basics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-Installation.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Installation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-Fehlerbehandlung.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Fehler erkennen und lösen</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-Relitest.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Relitest</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-Daten-laden-Fusion.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Daten laden und fusionieren</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-Datenaufbereitung.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Datenaufbereitung</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-Quarto.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Forschungsbericht mit Quarto/Word</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Auf dieser Seite</h2>
+   
+  <ul>
+  <li><a href="#relitest-für-inhaltsanalysen" id="toc-relitest-für-inhaltsanalysen" class="nav-link active" data-scroll-target="#relitest-für-inhaltsanalysen"><span class="toc-section-number">6</span>  Relitest für Inhaltsanalysen</a>
+  <ul>
+  <li><a href="#relitest" id="toc-relitest" class="nav-link" data-scroll-target="#relitest"><span class="toc-section-number">6.1</span>  Relitest</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Relitest</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="relitest-für-inhaltsanalysen" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Relitest für Inhaltsanalysen</h1>
+<p>Dazu gibt es auch ein Video:</p>
+<div class="cell">
+<pre><code>## ── Attaching packages ───────────────────────────────────────────────── tidyverse 1.3.2 ──
+## ✔ ggplot2 3.4.0      ✔ purrr   1.0.1 
+## ✔ tibble  3.1.8      ✔ dplyr   1.0.10
+## ✔ tidyr   1.2.1      ✔ stringr 1.5.0 
+## ✔ readr   2.1.3      ✔ forcats 0.5.2 
+## ── Conflicts ──────────────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<div class="cell-output-display">
+<div class="vembedr">
+<div class="vembedr-rounded">
+<iframe src="https://www.youtube.com/embed/bwjSkKUeQgA" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"></iframe>
+</div>
+</div>
+</div>
+</div>
+<p><a href="https://www.ikmz.uzh.ch/static/methoden/R_Introduction/Relitest_mit_R.zip"> Hier </a> finden Sie den im Video erwähnten gezippten Ordner mit der Relitest.Rmd. Den Ordner müssen Sie entpacken und an eine gute Stelle in ihrem System tun. In dem Ordner wo sich diese Datei “Relitest.Rmd” befindet, muss es einen Unterordner mit der Bezeichnung “Daten” geben, wo die Excel-Dateien “RelidatenCoder1.xlsx” usw. liegen. s ## Relidaten Zusammenbinden</p>
+<p>Sie werden die Inhaltsanalyse in Excel kodieren. Die Exceldateien müssen dann in R importiert werden. Das geht zB mit <strong>read_xlsx</strong> des Pakets <strong>read.xl</strong>. Wie Sie sehen werden die Exceldateien der Coder (im Beispiel 1 bis 3) jeweils in R-Dateien eingelesen (RelitestCoder1 &lt;- …) und dann mit dem Befehl rbind (steht für Rows aneinander binden) zu einer Datei zusammengefügt, die dann angeschaut oder für Relitests weiterverarbeitet werden kann.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Lade alle Relitestdateien aus dem Ordner "Daten" (den es geben muss mit allen Relidateien):</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>RelitestCoder1 <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(<span class="st">"Daten/RelidatenCoder1.xlsx"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>RelitestCoder2 <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(<span class="st">"Daten/RelidatenCoder2.xlsx"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>RelitestCoder3 <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(<span class="st">"Daten/Klausis erster Relitest.xlsx"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Binde die Relidatensätze der Coder:innen zu einem Datenobjekt "RelitestGesamt zusammen:</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>Relitest_Gesamt <span class="ot">&lt;-</span> <span class="fu">rbind</span>(RelitestCoder1, RelitestCoder2, RelitestCoder3) </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>Relitest_Gesamt <span class="sc">|&gt;</span> </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(CODER, CU) <span class="sc">|&gt;</span> </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Fehler =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(CODER) <span class="sc">|</span> <span class="fu">is.na</span>(CU), <span class="st">"FEHLER! Muss in der RelitestGesamt.xlsx repariert und als Relitest_bearbeitet.xlsx gespeichert werden oder der:die Coder:in muss es überarbeiten"</span>, <span class="st">"alles gut"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">count</span>(Fehler)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 2 × 2</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="do">##   Fehler                                                                                 n</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;                                                                              &lt;int&gt;</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 alles gut                                                                             15</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 FEHLER! Muss in der RelitestGesamt.xlsx repariert und als Relitest_bearbeitet.xls…     7</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"># hier schreibe ich die Daten mal aus R raus in Excel, damit ich sie in Excel besser angucken kann und dort easy bereinige. Kann so gemacht werden oder alles in R, was schicker ist, aber nicht so praktisch.</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>writexl<span class="sc">::</span><span class="fu">write_xlsx</span>(Relitest_Gesamt, <span class="st">"Daten/Relitest_Gesamt.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="relitest" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="relitest"><span class="header-section-number">6.1</span> Relitest</h2>
+<p>Den Relitest selbst kann man mit test_icr des Pakets tidycomm machen. Dazu werden zunächst die Daten geladen (im Beispiel “RelitestDaten”) und dann mit der Pipe (neu statt %&gt;% der Pipoperator |&gt; ) der Befehl test_icr ausgeführt. An erster Stelle steht die Variable für die Coding Unit (CU), die im Datensatz RelitestBeispiele einfach “CU” heisst. Als nächstes folgt die Variable für den Coder (im Beispiel einfach “CODER”). In den Variablen CU und CODER dürfen nur Zahlen stehen! Also muss jeder Kodierer eine Nummer eingeben und auch die Artikel im Relimaterial nummeriert sein. Dann können Sie einzelne Variablennamen anfügen, für die die Reliwerte ausgewertet werden sollen oooooder Sie lassen das weg und es werden für alle Variablen Reliwerte berechnet. Wenn Sie fehlende Werte im Datensatz haben, dann sollten Sie am Ende “na.omit = TRUE” stehen haben, sonst meckert R, dass Fehlende Werte gefunden wurden.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># hier lade ich die Relidaten aus Excel wieder rein in R</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>RelitestDaten <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="st">"Daten/Relitest_bearbeitet.xlsx"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Sie können mit dem folgenden Befehl Variablen umkodieren und gleich in eckigen Klammern labeln </span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>RelitestDaten <span class="ot">&lt;-</span> RelitestDaten <span class="sc">|&gt;</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Worte_gr =</span> sjmisc<span class="sc">::</span><span class="fu">rec</span>(Worte, <span class="at">rec =</span> </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"min:100 = 1 [Kurzmeldung]; </span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="st">                        101:150 = 2 [kurzer Artikel]; </span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="st">                        151:300 = 3 [länger]; </span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="st">                        301:500 = 4 [lang]; </span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="st">                        501:max = 5 [Langtext]"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">relocate</span>(Worte_gr, <span class="at">.after =</span> Worte) <span class="co"># hier sortiere ich die neue Variable direkt hinter die alte</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>RelitestDaten <span class="sc">|&gt;</span> </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  sjmisc<span class="sc">::</span><span class="fu">frq</span>(Worte_gr) <span class="co"># machen wir mal ne Häufigkeitsauszählung für "Worte_gr"</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Worte_gr &lt;numeric&gt; </span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="do">## # total N=190 valid N=190 mean=3.61 sd=1.20</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="do">## Value |          Label |  N | Raw % | Valid % | Cum. %</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="do">## ------------------------------------------------------</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="do">##     1 |    Kurzmeldung | 19 | 10.00 |   10.00 |  10.00</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="do">##     2 | kurzer Artikel | 19 | 10.00 |   10.00 |  20.00</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="do">##     3 |         länger | 18 |  9.47 |    9.47 |  29.47</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="do">##     4 |           lang | 96 | 50.53 |   50.53 |  80.00</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="do">##     5 |       Langtext | 38 | 20.00 |   20.00 | 100.00</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="do">##  &lt;NA&gt; |           &lt;NA&gt; |  0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>RelitestDaten <span class="ot">&lt;-</span> RelitestDaten <span class="sc">|&gt;</span> </span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Voyer_r =</span> sjmisc<span class="sc">::</span><span class="fu">rec</span>(Voyeur, <span class="at">rec =</span> <span class="st">"0 = 0 [kommt nicht vor]; 1:3 = 1 [kommt vor]; else = copy"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">relocate</span>(Voyer_r, <span class="at">.after =</span> Voyeur)</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>RelitestDaten <span class="sc">|&gt;</span> </span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  sjmisc<span class="sc">::</span><span class="fu">frq</span>(Voyer_r)</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="do">## Voyer_r &lt;numeric&gt; </span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="do">## # total N=190 valid N=190 mean=0.44 sd=0.50</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="do">## Value |           Label |   N | Raw % | Valid % | Cum. %</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="do">## --------------------------------------------------------</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="do">##     0 | kommt nicht vor | 106 | 55.79 |   55.79 |  55.79</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="do">##     1 |       kommt vor |  84 | 44.21 |   44.21 | 100.00</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="do">##  &lt;NA&gt; |            &lt;NA&gt; |   0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="co"># hier kommt dann der eigentliche Relitest. in test_icr muss ganz vorne der Variblenname der Kodiereinheit (CU) stehen und danach für die CODER. </span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>RelitestOutput <span class="ot">&lt;-</span> RelitestDaten <span class="sc">|&gt;</span> </span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>  tidycomm<span class="sc">::</span><span class="fu">test_icr</span>(<span class="at">unit_var =</span> CU, <span class="at">coder_var =</span> CODER, Medium<span class="sc">:</span>Kurios, <span class="at">kripp_alpha =</span> <span class="cn">TRUE</span>, <span class="at">lotus =</span> <span class="cn">TRUE</span>, <span class="at">s_lotus =</span> <span class="cn">TRUE</span>, <span class="at">na.omit =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>RelitestOutput <span class="co"># hier den Output des Relitest mal schnell in R angucken</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 39 × 10</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="do">##   Variable   n_Units n_Coders n_Categories Level   Agreement Holst…¹ Kripp…² Lotus S_Lotus</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;        &lt;int&gt;    &lt;int&gt;        &lt;int&gt; &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 Medium          10       19            5 nominal       1     1       1     1       1    </span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 ThemSchwer      10       19            6 nominal       0.5   0.860   0.794 0.911   0.893</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 Titel           10       19           36 nominal       0.1   0.665   0.643 0.795   0.789</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 Worte           10       19           42 nominal       0     0.378   0.343 0.589   0.579</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 Worte_gr        10       19            5 nominal       0.2   0.850   0.780 0.921   0.901</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 ArtLang         10       19            2 nominal       0.7   0.959   0.915 0.979   0.958</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="do">## # … with 33 more rows, and abbreviated variable names ¹​Holstis_CR, ²​Krippendorffs_Alpha</span></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a><span class="co"># Das ist im Prinzip das Gleiche wie oben, aber für Worte wird das Skalenniveau "interval" angegeben und für Artikellänge "ordinal"</span></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>RelitestOutput <span class="ot">&lt;-</span> RelitestDaten <span class="sc">|&gt;</span> </span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>tidycomm<span class="sc">::</span><span class="fu">test_icr</span>(<span class="at">unit_var =</span> CU, <span class="at">coder_var =</span> CODER, Medium<span class="sc">:</span>Kurios, <span class="co"># </span></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>           <span class="at">levels =</span> <span class="fu">c</span>(<span class="at">Worte =</span> <span class="st">"interval"</span>, <span class="at">ArtLang =</span> <span class="st">"ordinal"</span>), <span class="co"># hier die Skalnenniveaus; nominal ist Standard</span></span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>           <span class="at">kripp_alpha =</span> <span class="cn">TRUE</span>, <span class="at">lotus =</span> <span class="cn">TRUE</span>, <span class="at">s_lotus =</span> <span class="cn">TRUE</span>, <span class="at">agreement =</span> <span class="cn">FALSE</span>, <span class="at">holsti =</span> <span class="cn">FALSE</span>, <span class="at">na.omit =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate_if</span>(is.numeric, round, <span class="at">digits =</span> <span class="dv">2</span>) <span class="sc">|&gt;</span>  <span class="co"># hiermit noch auf zwei Stellen runden - reicht jas</span></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">S_Lotus =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(S_Lotus), <span class="dv">1</span>, S_Lotus)) <span class="co"># Wenn alle Coder:innen nur eine und dieselbe Kategorie gewählt haben, ist S_Lotus nicht definiert, aber 1</span></span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>RelitestOutput <span class="sc">|&gt;</span> </span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kbl</span>() <span class="sc">|&gt;</span> <span class="co"># und hier noch hübsch und dann bunt mit kbl</span></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kable_material</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>    kableExtra<span class="sc">::</span><span class="fu">column_spec</span>(<span class="dv">6</span>, <span class="at">color =</span> <span class="fu">ifelse</span>(RelitestOutput<span class="sc">$</span>Krippendorffs_Alpha <span class="sc">&gt;</span> <span class="fl">0.3</span> <span class="sc">&amp;</span> RelitestOutput<span class="sc">$</span>Krippendorffs_Alpha <span class="sc">&lt;</span> <span class="fl">0.75</span>, <span class="st">"black"</span>, <span class="st">"white"</span>),</span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>              <span class="at">background =</span> kableExtra<span class="sc">::</span><span class="fu">spec_color</span>(RelitestOutput<span class="sc">$</span>Krippendorffs_Alpha[<span class="dv">0</span><span class="sc">:</span><span class="dv">100</span>], <span class="at">begin =</span> <span class="dv">0</span>, <span class="at">end =</span> <span class="dv">1</span>, <span class="at">option =</span> <span class="st">"turbo"</span>, <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>    kableExtra<span class="sc">::</span><span class="fu">column_spec</span>(<span class="dv">7</span>, <span class="at">color =</span> <span class="fu">ifelse</span>(RelitestOutput<span class="sc">$</span>Lotus <span class="sc">&gt;</span> <span class="fl">0.6</span> <span class="sc">&amp;</span> RelitestOutput<span class="sc">$</span>Lotus <span class="sc">&lt;</span> <span class="fl">0.9</span>, <span class="st">"black"</span>, <span class="st">"white"</span>),</span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>              <span class="at">background =</span> kableExtra<span class="sc">::</span><span class="fu">spec_color</span>(RelitestOutput<span class="sc">$</span>Lotus[<span class="dv">0</span><span class="sc">:</span><span class="dv">100</span>], <span class="at">begin =</span> <span class="dv">0</span>, <span class="at">end =</span> <span class="dv">1</span>, <span class="at">option =</span> <span class="st">"turbo"</span>, <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>    kableExtra<span class="sc">::</span><span class="fu">column_spec</span>(<span class="dv">8</span>, <span class="at">color =</span> <span class="fu">ifelse</span>(RelitestOutput<span class="sc">$</span>S_Lotus <span class="sc">&gt;</span> <span class="fl">0.6</span> <span class="sc">&amp;</span> RelitestOutput<span class="sc">$</span>S_Lotus <span class="sc">&lt;</span> <span class="fl">0.9</span>, <span class="st">"black"</span>, <span class="st">"white"</span>),</span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>              <span class="at">background =</span> kableExtra<span class="sc">::</span><span class="fu">spec_color</span>(RelitestOutput<span class="sc">$</span>S_Lotus[<span class="dv">0</span><span class="sc">:</span><span class="dv">100</span>], <span class="at">begin =</span> <span class="dv">0</span>, <span class="at">end =</span> <span class="dv">1</span>, <span class="at">option =</span> <span class="st">"turbo"</span>, <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>))</span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning in ensure_len_html(background, nrows, "background"): The number of provided values</span></span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a><span class="do">## in background does not equal to the number of rows.</span></span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning in ensure_len_html(background, nrows, "background"): The number of provided values</span></span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a><span class="do">## in background does not equal to the number of rows.</span></span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning in ensure_len_html(background, nrows, "background"): The number of provided values</span></span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a><span class="do">## in background does not equal to the number of rows.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<table class=" lightable-material" style="font-family: &quot;Source Sans Pro&quot;, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Variable </th>
+   <th style="text-align:right;"> n_Units </th>
+   <th style="text-align:right;"> n_Coders </th>
+   <th style="text-align:right;"> n_Categories </th>
+   <th style="text-align:left;"> Level </th>
+   <th style="text-align:right;"> Krippendorffs_Alpha </th>
+   <th style="text-align:right;"> Lotus </th>
+   <th style="text-align:right;"> S_Lotus </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Medium </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(48, 18, 59, 1) !important;"> 1.00 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(48, 18, 59, 1) !important;"> 1.00 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(48, 18, 59, 1) !important;"> 1.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ThemSchwer </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 6 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(58, 163, 252, 1) !important;"> 0.79 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(61, 158, 254, 1) !important;"> 0.91 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(66, 148, 255, 1) !important;"> 0.89 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Titel </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 36 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(42, 239, 161, 1) !important;"> 0.64 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(146, 255, 71, 1) !important;"> 0.79 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(39, 238, 164, 1) !important;"> 0.79 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Worte </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 42 </td>
+   <td style="text-align:left;"> interval </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(28, 205, 216, 1) !important;"> 0.72 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(175, 24, 1, 1) !important;"> 0.59 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(254, 147, 42, 1) !important;"> 0.58 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Worte_gr </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(53, 171, 248, 1) !important;"> 0.78 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(68, 143, 254, 1) !important;"> 0.92 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(69, 138, 252, 1) !important;"> 0.90 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ArtLang </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> ordinal </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(67, 78, 186, 1) !important;"> 0.92 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(61, 53, 139, 1) !important;"> 0.98 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(65, 70, 172, 1) !important;"> 0.96 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Datum </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(26, 228, 182, 1) !important;"> 0.67 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(68, 143, 254, 1) !important;"> 0.92 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(66, 148, 255, 1) !important;"> 0.89 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Format </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(70, 125, 244, 1) !important;"> 0.85 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(68, 84, 195, 1) !important;"> 0.96 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(68, 81, 191, 1) !important;"> 0.95 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bilder </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 13 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(40, 188, 235, 1) !important;"> 0.75 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(29, 231, 178, 1) !important;"> 0.85 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(31, 201, 221, 1) !important;"> 0.84 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Nutzen_ig </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(241, 203, 58, 1) !important;"> 0.37 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(60, 245, 142, 1) !important;"> 0.83 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(53, 243, 148, 1) !important;"> 0.78 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Alltagswelt </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(155, 15, 1, 1) !important;"> 0.05 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(146, 255, 71, 1) !important;"> 0.79 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(185, 246, 53, 1) !important;"> 0.69 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Nah_Welt </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(229, 217, 56, 1) !important;"> 0.40 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(31, 201, 221, 1) !important;"> 0.88 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(67, 247, 135, 1) !important;"> 0.77 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Nah_EU </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(34, 235, 170, 1) !important;"> 0.65 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(70, 130, 248, 1) !important;"> 0.93 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(44, 183, 240, 1) !important;"> 0.86 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Nah_CH </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(217, 228, 54, 1) !important;"> 0.42 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(42, 239, 161, 1) !important;"> 0.84 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(198, 240, 52, 1) !important;"> 0.68 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Nah_Kant </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(238, 207, 58, 1) !important;"> 0.38 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(31, 201, 221, 1) !important;"> 0.88 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(85, 250, 118, 1) !important;"> 0.76 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Nah_Stadt </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(205, 236, 52, 1) !important;"> 0.44 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(24, 222, 192, 1) !important;"> 0.86 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(136, 255, 78, 1) !important;"> 0.73 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Nah_Gem </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(253, 174, 53, 1) !important;"> 0.32 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(70, 130, 248, 1) !important;"> 0.93 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(37, 192, 231, 1) !important;"> 0.85 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Nah_nix </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(169, 22, 1, 1) !important;"> 0.07 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(65, 67, 167, 1) !important;"> 0.97 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(68, 81, 191, 1) !important;"> 0.95 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Naehe </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 16 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(229, 217, 56, 1) !important;"> 0.40 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(247, 111, 26, 1) !important;"> 0.66 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(235, 211, 57, 1) !important;"> 0.64 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Voyeur </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(254, 161, 48, 1) !important;"> 0.30 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(254, 161, 48, 1) !important;"> 0.69 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(254, 161, 48, 1) !important;"> 0.59 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Voyer_r </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(254, 167, 50, 1) !important;"> 0.31 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(164, 252, 60, 1) !important;"> 0.78 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(250, 123, 31, 1) !important;"> 0.56 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sex </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(48, 18, 59, 1) !important;"> 1.00 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(48, 18, 59, 1) !important;"> 1.00 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(48, 18, 59, 1) !important;"> 1.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Schicksal </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(245, 197, 58, 1) !important;"> 0.36 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(60, 245, 142, 1) !important;"> 0.83 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(217, 228, 54, 1) !important;"> 0.66 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Risiko </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(237, 85, 16, 1) !important;"> 0.20 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(175, 24, 1, 1) !important;"> 0.59 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(178, 26, 1, 1) !important;"> 0.46 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Serviceinfos </td>
+   <td style="text-align:right;"> 9 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(218, 57, 7, 1) !important;"> 0.15 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(60, 245, 142, 1) !important;"> 0.83 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(217, 228, 54, 1) !important;"> 0.66 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Person </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(254, 147, 42, 1) !important;"> 0.28 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(226, 67, 10, 1) !important;"> 0.63 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(236, 83, 15, 1) !important;"> 0.53 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Promis </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(212, 231, 53, 1) !important;"> 0.43 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(231, 215, 57, 1) !important;"> 0.73 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(235, 211, 57, 1) !important;"> 0.64 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Emo </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(218, 57, 7, 1) !important;"> 0.15 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(254, 147, 42, 1) !important;"> 0.68 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(252, 135, 37, 1) !important;"> 0.57 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Einfluss </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(132, 255, 81, 1) !important;"> 0.54 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(101, 253, 105, 1) !important;"> 0.81 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(101, 253, 105, 1) !important;"> 0.75 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Kontroverse </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(229, 217, 56, 1) !important;"> 0.40 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(146, 255, 71, 1) !important;"> 0.79 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(150, 254, 68, 1) !important;"> 0.72 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Konflikt </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(190, 33, 2, 1) !important;"> 0.10 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(61, 158, 254, 1) !important;"> 0.91 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(24, 219, 197, 1) !important;"> 0.82 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Normbruch </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(24, 224, 189, 1) !important;"> 0.68 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(26, 212, 208, 1) !important;"> 0.87 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(24, 219, 197, 1) !important;"> 0.82 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Katastrophe </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(233, 213, 57, 1) !important;"> 0.39 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(101, 253, 105, 1) !important;"> 0.81 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(117, 254, 92, 1) !important;"> 0.74 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Aktual </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(169, 22, 1, 1) !important;"> 0.07 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(122, 4, 3, 1) !important;"> 0.56 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(122, 4, 3, 1) !important;"> 0.42 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Kontinuität </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(172, 251, 56, 1) !important;"> 0.49 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(78, 249, 125, 1) !important;"> 0.82 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(235, 211, 57, 1) !important;"> 0.64 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Ueberrasch </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(122, 4, 3, 1) !important;"> 0.01 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(221, 224, 55, 1) !important;"> 0.74 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(251, 184, 56, 1) !important;"> 0.61 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sensation </td>
+   <td style="text-align:right;"> 9 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(248, 114, 28, 1) !important;"> 0.24 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(221, 224, 55, 1) !important;"> 0.74 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(188, 32, 2, 1) !important;"> 0.47 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Superlative </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(122, 4, 3, 1) !important;"> 0.01 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(70, 100, 218, 1) !important;"> 0.95 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(70, 128, 246, 1) !important;"> 0.91 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Kurios </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> nominal </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(241, 93, 19, 1) !important;"> 0.21 </td>
+   <td style="text-align:right;color: black !important;background-color: rgba(146, 255, 71, 1) !important;"> 0.79 </td>
+   <td style="text-align:right;color: white !important;background-color: rgba(254, 161, 48, 1) !important;"> 0.59 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>writexl<span class="sc">::</span><span class="fu">write_xlsx</span>(RelitestOutput, <span class="st">"RelitestOutput.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script>
+
+/* update total correct if #webex-total_correct exists */
+update_total_correct = function() {
+  console.log("webex: update total_correct");
+
+  if (t = document.getElementById("webex-total_correct")) {
+    var correct = document.getElementsByClassName("webex-correct").length;
+    var solvemes = document.getElementsByClassName("webex-solveme").length;
+    var radiogroups = document.getElementsByClassName("webex-radiogroup").length;
+    var selects = document.getElementsByClassName("webex-select").length;
+    
+    t.innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+  }
+}
+
+/* webex-solution button toggling function */
+b_func = function() {
+  console.log("webex: toggle hide");
+  
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  console.log("webex: check solveme");
+
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "")
+  }
+
+  if (my_answer == "") {
+    cl.remove("webex-correct");
+    cl.remove("webex-incorrect");
+  } else if (real_answers.includes(my_answer)) {
+    cl.add("webex-correct");
+    cl.remove("webex-incorrect");
+  } else {
+    cl.add("webex-incorrect");
+    cl.remove("webex-correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol > 0){
+    var tol = JSON.parse(this.dataset.tol);
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("webex-correct");
+    } else {
+      cl.remove("webex-correct");
+    }
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("webex-correct");
+    }
+  }
+
+  update_total_correct();
+}
+
+/* function for checking select answers */
+select_func = function(e) {
+  console.log("webex: check select");
+  
+  var cl = this.classList
+  
+  /* add style */
+  cl.remove("webex-incorrect");
+  cl.remove("webex-correct");
+  if (this.value == "answer") {
+    cl.add("webex-correct");
+  } else if (this.value != "blank") {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+/* function for checking radiogroups answers */
+radiogroups_func = function(e) {
+  console.log("webex: check radiogroups");
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+  var cl = checked_button.parentElement.classList;
+  var labels = checked_button.parentElement.parentElement.children;
+  
+  /* get rid of styles */
+  for (i = 0; i < labels.length; i++) {
+    labels[i].classList.remove("webex-incorrect");
+    labels[i].classList.remove("webex-correct");
+  }
+  
+  /* add style */
+  if (checked_button.value == "answer") {
+    cl.add("webex-correct");
+  } else {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+window.onload = function() {
+  console.log("onload");
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+
+  /* set up webex-solveme inputs */
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off");
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+  }
+  
+  /* set up radiogroups */
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+  for (var i = 0; i < radiogroups.length; i++) {
+    radiogroups[i].onchange = radiogroups_func;
+  }
+  
+  /* set up selects */
+  var selects = document.getElementsByClassName("webex-select");
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].onchange = select_func;
+  }
+
+  update_total_correct();
+}
+
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./03-Fehlerbehandlung.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Fehler erkennen und lösen</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./05-Daten-laden-Fusion.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Daten laden und fusionieren</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
